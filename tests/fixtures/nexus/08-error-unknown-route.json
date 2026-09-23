@@ -1,0 +1,14 @@
+{
+  "request": {
+    "path": "/search",
+    "body": {
+      "query": "x",
+      "tenant": "picasso",
+      "route": "no_such_route"
+    }
+  },
+  "status": 400,
+  "response": {
+    "detail": "unknown_route: 'no_such_route'. 가능한 값: auto, graph_then_hybrid, hybrid_only, hybrid_then_graph, keyword_only, vector_only"
+  }
+}

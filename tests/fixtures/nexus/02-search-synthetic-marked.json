@@ -1,0 +1,118 @@
+{
+  "request": {
+    "path": "/search",
+    "body": {
+      "query": "잔여 파지가 감지되면 어떻게 조치하는가",
+      "tenant": "picasso",
+      "top_k": 5
+    }
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "results": [
+        {
+          "rid": "chunk_de5ba492c1aa",
+          "doc_rid": "doc_663fb4a623e1",
+          "doc_title": "SOP-01 파지 실패와 잔여 파지 처리",
+          "section_path": "SOP-01 파지 실패와 잔여 파지 처리 > 3. 두 사건은 다른 것이다",
+          "source_uri": "picasso:SOP-01-파지-실패와-잔여-파지.md",
+          "snippet": "## 3. 두 사건은 다른 것이다\n\n**빈손으로 끝난 것**과 **놓았다는데 들고 있는 것**을 같은 사건으로 처리하면 안 된다.\n처방이 반대다.\n\n| | 무엇이 관측되나 | 무엇이 문제인가 |\n|---|---|---|\n| 파지 실패 | 그리퍼 압력 신호 없음, 단위가 `FAILED` | 자재가 원래 자리에 남아 있을 가능성이 높다 |\n| 잔여 파지 (`residualHold`) | 단위는 `SUCCEEDED` 인데 압력 신호가 유지 | 하류는 끝났다고 알고 있고, 물건은 손에 있다 |\n\n⛔ **잔여 파지는 성공으로 끝난 사건이다. …",
+          "score": 0.031754032258064516,
+          "bm25_rank": 1,
+          "vector_rank": 3,
+          "classification": "INTERNAL",
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true
+        },
+        {
+          "rid": "chunk_40a4192744a0",
+          "doc_rid": "doc_663fb4a623e1",
+          "doc_title": "SOP-01 파지 실패와 잔여 파지 처리",
+          "section_path": "SOP-01 파지 실패와 잔여 파지 처리 > 5. 절차",
+          "source_uri": "picasso:SOP-01-파지-실패와-잔여-파지.md",
+          "snippet": "## 5. 절차\n\n### 5.1 파지 실패 (`GRASP_FAILED`)\n\n1. 단위를 `NEEDS_INTERVENTION` 으로 두고 후속 단위를 **보류**한다.\n2. 원 위치에 자재가 있는지 육안으로 확인한다.\n   - 있으면 → 같은 위치로 재시도 **1회**.\n   - 없으면 → 자재가 이동한 것이므로 재시도하지 않는다. SOP-03 으로 간다.\n3. 재시도도 실패하면 **재시도를 반복하지 않는다.** 같은 조건에서 두 번 실패한 것은\n   조건이 다르다는 뜻이고, 세 번째는 정보를 주지 않는다.\n4. …",
+          "score": 0.03128054740957967,
+          "bm25_rank": 5,
+          "vector_rank": 1,
+          "classification": "INTERNAL",
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true
+        },
+        {
+          "rid": "chunk_e06b63cd4669",
+          "doc_rid": "doc_663fb4a623e1",
+          "doc_title": "SOP-01 파지 실패와 잔여 파지 처리",
+          "section_path": "SOP-01 파지 실패와 잔여 파지 처리 > 7. 이 절차가 못 하는 것",
+          "source_uri": "picasso:SOP-01-파지-실패와-잔여-파지.md",
+          "snippet": "## 7. 이 절차가 못 하는 것\n\n**그리퍼가 관측되지 않는 기종에서는 잔여 파지를 판정할 수 없다.** 신호가 없으면\n「놓았다」와 「들고 있다」가 같은 모양이다. 그 기종에서는 이 절차의 §5.2 를 쓰지 말고,\n작업 종료 시 육안 확인을 공정에 넣는다.\n\n⚠ 이 한계는 기종의 문제이지 절차의 문제가 아니다. 절차를 고쳐서 해결되지 않는다.",
+          "score": 0.03125763125763126,
+          "bm25_rank": 4,
+          "vector_rank": 2,
+          "classification": "INTERNAL",
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true
+        },
+        {
+          "rid": "chunk_192654691ba4",
+          "doc_rid": "doc_663fb4a623e1",
+          "doc_title": "SOP-01 파지 실패와 잔여 파지 처리",
+          "section_path": "SOP-01 파지 실패와 잔여 파지 처리",
+          "source_uri": "picasso:SOP-01-파지-실패와-잔여-파지.md",
+          "snippet": "# SOP-01 파지 실패와 잔여 파지 처리\n\n> ⚠ **이 문서는 합성 자료다.** 실제 현장 절차가 아니라 검색·설명 계층을 시연하고 평가하기\n> 위해 지어낸 것이다. 운영에 쓰지 마라. 표식은 `labels: [synthetic]` 이고 검색 결과에도\n> 같은 표시가 실린다.",
+          "score": 0.030330882352941176,
+          "bm25_rank": 3,
+          "vector_rank": 7,
+          "classification": "INTERNAL",
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true
+        },
+        {
+          "rid": "chunk_815c6249ce4f",
+          "doc_rid": "doc_663fb4a623e1",
+          "doc_title": "SOP-01 파지 실패와 잔여 파지 처리",
+          "section_path": "SOP-01 파지 실패와 잔여 파지 처리 > 1. 목적",
+          "source_uri": "picasso:SOP-01-파지-실패와-잔여-파지.md",
+          "snippet": "## 1. 목적\n\n로봇이 집기에 실패했거나, 놓았다고 보고했는데 그리퍼에 물건이 남아 있는 상황에서\n운영자가 무엇을 확인하고 어떤 순서로 처리하는지 정한다.",
+          "score": 0.029877369007803793,
+          "bm25_rank": 8,
+          "vector_rank": 4,
+          "classification": "INTERNAL",
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true
+        }
+      ],
+      "graph_findings": null,
+      "route_used": "hybrid_only",
+      "n_unknown_origin_time": null,
+      "timing_ms": {
+        "total_ms": 117,
+        "bm25_ms": 109
+      },
+      "degraded": []
+    },
+    "error": null,
+    "meta": {}
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "request": {
+    "path": "/search",
+    "body": {
+      "query": "완료 판정",
+      "tenant": "picasso",
+      "top_k": 3,
+      "origin_since": "2026-09-01T00:00:00Z"
+    }
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "results": [
+        {
+          "rid": "chunk_95409c54d5cb",
+          "doc_rid": "doc_294472e825e6",
+          "doc_title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section_path": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의 > 2. 3계층 완료 모델 및 4단계 근거 등급 체계",
+          "source_uri": "picasso:scenarios.md",
+          "snippet": "## 2. 3계층 완료 모델 및 4단계 근거 등급 체계\n\n공정 완료의 의미를 세 가지 계층으로 엄격히 분리하여 상태 모호성을 배제합니다:\n\n| 완료 계층 | 판정 주체 | 기술적 정의 | picasso 처리 위치 |\n|---|---|---|---|\n| **명령 완료 (Command Complete)** | 로봇 기체 / 플릿 | 할당된 원자적 명령의 물리적 실행 완료 | 표준 계약 `TaskState` 종착 상태 (`SUCCEEDED`, `FAILED` 등) |\n| **논리적 완료 (Logical Complete)** | 미들웨어 …",
+          "score": 0.03128054740957967,
+          "bm25_rank": 1,
+          "vector_rank": 5,
+          "classification": "INTERNAL",
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "labels": [],
+          "synthetic": false
+        },
+        {
+          "rid": "chunk_bea02380e876",
+          "doc_rid": "doc_a1a8d84e8dc8",
+          "doc_title": "완료 기준 설계 사양 — 시스템 완결성 검증 체계 (Completion Criterion Specification)",
+          "section_path": "완료 기준 설계 사양 — 시스템 완결성 검증 체계 (Completion Criterion Specification)",
+          "source_uri": "picasso:superpowers/specs/2026-09-10-completion-criterion-design.md",
+          "snippet": "# 완료 기준 설계 사양 — 시스템 완결성 검증 체계 (Completion Criterion Specification)\n\n본 문서는 `picasso` 프로젝트의 개발 완료 판정 기준과 기술적 주장의 참/거짓 무결성을 기계적으로 집행하기 위한 **완료 기준(Completion Criterion) 아키텍처**를 정의합니다.\n\n---",
+          "score": 0.031054405392392875,
+          "bm25_rank": 6,
+          "vector_rank": 1,
+          "classification": "INTERNAL",
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "labels": [],
+          "synthetic": false
+        },
+        {
+          "rid": "chunk_6d00c14d297a",
+          "doc_rid": "doc_a1a8d84e8dc8",
+          "doc_title": "완료 기준 설계 사양 — 시스템 완결성 검증 체계 (Completion Criterion Specification)",
+          "section_path": "완료 기준 설계 사양 — 시스템 완결성 검증 체계 (Completion Criterion Specification) > 2. 핵심 완료 조건 (The Criterion)",
+          "source_uri": "picasso:superpowers/specs/2026-09-10-completion-criterion-design.md",
+          "snippet": "## 2. 핵심 완료 조건 (The Criterion)\n\n> **\"저장소 내부의 모든 대외 공개 기술 주장은 다음 3가지 상태 중 정확히 하나에 속해야 한다:  \n> ① 자동화 테스트 및 물리 검증으로 완전히 뒷받침(Proven)되었거나,  \n> ② 한계 대장에 공식 미결 과제(Open)로 명시 등록되었거나,  \n> ③ 문서에서 완전히 삭제(Removed)되었거나.  \n> 셋 중 어디에도 속하지 않는 불명확한 문장이 0개이고 §4의 거버넌스 비용을 충족할 때 완료로 판정한다.\"**\n\n---",
+          "score": 0.03057889822595705,
+          "bm25_rank": 7,
+          "vector_rank": 2,
+          "classification": "INTERNAL",
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "labels": [],
+          "synthetic": false
+        }
+      ],
+      "graph_findings": null,
+      "route_used": "hybrid_only",
+      "n_unknown_origin_time": 3,
+      "timing_ms": {
+        "total_ms": 84,
+        "bm25_ms": 80
+      },
+      "degraded": []
+    },
+    "error": null,
+    "meta": {}
+  }
+}

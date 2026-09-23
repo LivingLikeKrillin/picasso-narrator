@@ -1,0 +1,232 @@
+# 시퀀스 — 여섯 가지 운영 경로
+
+- 작성 2026-09-17 · 짝: `narrator-BOUNDARY.md`
+- 참가자 표기: **어댑터**(로봇 한 쌍) · **picasso**(미들웨어) · **registry**(적재·현장 정책) · **수신기**·**explainer**(narrator 의 두 조각) · **Nexus** · **운영자** · **관리자**
+
+## 읽는 방법 — 세 가지 불변식
+
+세 다이어그램 모두 아래를 지킨다. 지키지 않는 배선이 보이면 그것이 결함이다.
+
+1. **picasso 는 narrator 를 호출하지 않는다.** 적재하고, 수신기가 집어온다
+2. **자격은 승인 API 가 판정한다.** narrator 는 승인을 *시도*하고, picasso 가 호출자 신원과 선언 목록을 대조해 허락하거나 거부한다. narrator 가 스스로 자격을 판단하면 우회가 가능해진다
+3. **설명은 사건 처리의 앞이 아니라 옆이다.** 설명이 없어도 운영자는 사건을 알고 승인할 수 있다
+
+---
+
+## 1. 알려진 조치로 자동 회복 — 자격이 선언돼 있는 경우
+
+```mermaid
+sequenceDiagram
+    participant A as 어댑터
+    participant P as picasso
+    participant R as registry
+    participant Rx as 수신기
+    participant E as explainer
+    participant N as Nexus
+    participant O as 운영자
+
+    A->>P: 실패 보고 / 설비 신호 없음
+    Note over P: 판정 — 단위 미완료<br/>깨진 사전 조건 확인
+    P->>P: 대안 탐색 (깊이 3)
+    Note over P: Remedy.Found(steps)
+    P->>R: 사건 번들 + 제안 적재
+    P->>O: 통지 (사건 발생, 제안 있음)
+    Rx->>R: 미처리 번들 조회 (스캔 또는 구독)
+    R-->>Rx: 번들 전문 + 제안
+    Rx->>E: 질의 구성 → 설명 요청
+    E->>N: 사건 맥락으로 근거 검색
+    N-->>E: 답변 + 인용 (인용 검증 통과)
+    E->>R: 설명·인용 기록
+    Rx->>P: 승인 시도 (조치 유형, 사건 id, 호출자 = 에이전트)
+    P->>R: 자격 조회 — 선언 목록 · 범위 · 만료 · 반복 카운터
+    R-->>P: 자격 있음
+    Note over P: 승인 수리. 감사에 「승인자 = 에이전트」
+    P->>A: 조치 실행 (승인된 걸음)
+    A-->>P: 조치 완료
+    P->>A: 막혀 있던 원 주문 재개
+    P->>R: 결과 적재 (조치 이력 + 원 주문 진행)
+    P->>O: 통지 (자동 회복됨, 설명 링크)
+```
+
+**증명하는 것.** 회복이 narrator 의 실행이 아니라 **picasso 의 실행**이라는 것. narrator 가 보낸 것은 승인 한 번이고, 자격 판정은 picasso 가 registry 의 선언 목록으로 한다. 운영자는 두 번 통지받는다 — 사건 발생 시 한 번, 자동 회복 후 한 번. 차단은 없다.
+
+**설명과 승인의 순서는 고정이 아니다.** 위 그림은 설명이 먼저 붙은 경우고, 승인이 먼저 수리돼도 무방하다. 설명은 사건 처리의 전제가 아니다(불변식 3).
+
+---
+
+## 2. 신규 조치 제안 — 아무도 실행한 적 없는 경우
+
+```mermaid
+sequenceDiagram
+    participant P as picasso
+    participant R as registry
+    participant Rx as 수신기
+    participant E as explainer
+    participant N as Nexus
+    participant O as 운영자
+    participant Ad as 관리자
+
+    Note over P: 판정 → 대안 탐색<br/>Remedy.Found(steps)
+    P->>R: 사건 번들 + 제안 적재
+    P->>O: 차단 통지 (승인 필요)
+    Rx->>R: 번들 조회
+    R-->>Rx: 번들 + 제안
+    Rx->>E: 설명 요청
+    E->>N: 근거 검색
+    N-->>E: 답변 + 인용
+    E->>R: 설명·인용 기록
+    Rx->>P: 승인 시도
+    P->>R: 자격 조회
+    R-->>P: 자격 없음 — 선언 목록에 없음
+    Note over P: 승인 거부. 사람에게 남는다
+    O->>P: 사람이 승인 (조치 실행)
+    P->>R: 실행 결과 적재 — 계보 「현장 1회 통과」
+    Note over R: 조치 계보: 계산됨 → 현장 검증 진행 중 (1/N)
+    Ad->>R: 신규 조치 검토
+    Note over Ad: 묻는 질문은<br/>「선언에 없는 부작용이 있나」
+    Ad->>R: 승격 경로에 올림 (근거 · 범위 · 만료 기재)
+    Note over R: N 회 무사통과 후 자동 승인으로 등재<br/>실패 또는 이의 시 강등, 사유 기록
+```
+
+**증명하는 것.** 관리자 승인이 **자동화가 아니라 승격 경로에 올림**이라는 것. 신규 조치는 관리자가 봐도 바로 자동 승인이 되지 않고, 현장 N 회를 거친다. 그리고 관리자 검토의 질문이 "목표를 달성하나"가 아니라 "선언에 없는 부작용이 있나"다 — 목표 달성은 탐색기가 이미 계산했다.
+
+**미믹 재생을 끼우는 변형.** 관리자가 검토 전에 그 조치를 에뮬레이터에서 재생해 볼 수 있다. 통과하면 계보가 「시뮬 검증됨」으로 한 칸 오른다. 현장 N 회보다 싼 검증이라 먼저 두는 편이 낫다.
+
+---
+
+## 3. 대안 없음 — 「모른다」가 정상 출력인 경로
+
+```mermaid
+sequenceDiagram
+    participant A as 어댑터
+    participant P as picasso
+    participant R as registry
+    participant Rx as 수신기
+    participant E as explainer
+    participant N as Nexus
+    participant O as 운영자
+
+    A->>P: 실패 보고 (파지 관측 불가)
+    Note over P: 관측이 없으면 판정도 없다<br/>IN_DOUBT 유지
+    P->>P: 대안 탐색
+    Note over P: Remedy.None(cause = NO_CAPABILITY)<br/>못 보는 것은 조치로 못 덮는다
+    P->>R: 번들 적재 (제안 없음 + 사유)
+    P->>O: 차단 통지 (운영자 판단 필요)
+    Rx->>R: 번들 조회
+    Rx->>E: 설명 요청
+    E->>N: 근거 검색
+    N-->>E: 관련 근거 없음
+    Note over E: 지어내지 않는다
+    E->>R: 「근거 없음」 기록 (실패가 아니라 정상 출력)
+    Note over O: 사람이 직접 진단<br/>시스템은 여기서 멈춘다
+```
+
+**증명하는 것.** 세 가지가 서로 다른 상태로 구별된다는 것 — **대안 없음**(탐색 결과), **근거 없음**(검색 결과), **아직 오지 않음**(설명 미도착). 빈 칸 하나로 접으면 운영자가 셋을 구별하지 못한다. 그리고 `NO_CAPABILITY` 와 `DEPTH_LIMIT` 이 갈리므로 운영자는 "이 기체로는 안 된다"와 "더 찾아보면 있을 수 있다"를 구별한다.
+
+---
+
+## 4. 설명이 늦거나 실패 — 사건 처리는 진행된다
+
+```mermaid
+sequenceDiagram
+    participant P as picasso
+    participant R as registry
+    participant Rx as 수신기
+    participant E as explainer
+    participant N as Nexus
+    participant O as 운영자
+
+    P->>R: 번들 + 제안 적재
+    P->>O: 차단 통지 (승인 필요)
+    Note over O: 운영자는 이미 사건을 안다<br/>설명 칸은 비어 있다
+    O->>P: 승인 (설명을 기다리지 않는다)
+    P->>R: 실행 결과 적재
+    Rx->>R: 번들 조회 (뒤늦게)
+    Rx->>E: 설명 요청
+    E->>N: 근거 검색
+    N--xE: 타임아웃 / 오류
+    E->>R: 「생성 실패 (재시도 3/3 초과)」 기록
+    Note over R: 번들 id 기준 멱등<br/>같은 번들에 설명은 한 건
+```
+
+**증명하는 것.** 판정은 결정적이고 설명은 비결정적이라는 비대칭. 설명 경로가 통째로 죽어도 사건은 처리된다. **이 순서가 뒤집혀 설명을 기다려야 화면이 채워지면 그 순간 LLM 이 운영 경로에 들어간 것이다.** 그리고 실패 사유를 기록하므로 운영자가 "아직인가, 실패인가, 근거가 없어서인가"를 구별한다.
+
+---
+
+## 5. 의도적 비자동화 — 사람이 먼저 진단해야 풀린다
+
+```mermaid
+sequenceDiagram
+    participant P as picasso
+    participant R as registry
+    participant Rx as 수신기
+    participant O as 운영자
+
+    Note over P: 판정 → 대안 탐색 성공
+    P->>R: 번들 적재 (제안 있음, 그러나 가림 차례)
+    Note over P: 「대안 없음」 이 아니라 「가려졌다」 로 답한다
+    P->>O: 차단 통지 (사람이 먼저 진단)
+    Rx->>P: 승인 시도
+    P-->>Rx: 거부 — 가려진 제안은 승인할 수 없다
+    O->>P: 사람의 진단 기록
+    P->>R: 진단 적재
+    Note over P: 제안이 풀린다
+    P->>O: 제안 노출 (이제 승인 가능)
+    O->>P: 승인
+```
+
+**증명하는 것.** 훈련 지분을 시스템이 강제한다는 것. 가림은 **대안 없음으로 위장하지 않는다** — 그러면 사람이 "없구나" 하고 넘어가고 훈련 효과가 0 이 된다. 「가려졌다」로 말하고, 사람의 진단이 기록된 뒤에만 풀린다.
+
+---
+
+## 6. 자격의 강등 — 실패 또는 만료
+
+```mermaid
+sequenceDiagram
+    participant P as picasso
+    participant R as registry
+    participant Rx as 수신기
+    participant O as 운영자
+    participant Ad as 관리자
+
+    rect rgb(245,245,245)
+    Note over R: 경우 A — 자동 승인 후 실패
+    Rx->>P: 승인 시도
+    P->>R: 자격 조회 → 있음
+    P->>P: 조치 실행 → 실패
+    P->>R: 실패 적재 + 자격 강등 (사유 기록)
+    P->>O: 차단 통지 (자동 자격이 사라졌다)
+    end
+
+    rect rgb(245,245,245)
+    Note over R: 경우 B — 모델이 바뀌어 만료
+    Ad->>R: 프로파일 개정판 갱신 (또는 계약 마이너 · 펌웨어 변경)
+    Note over R: 그 범위의 자동 승인 선언이 만료
+    Rx->>P: 승인 시도
+    P->>R: 자격 조회
+    R-->>P: 만료 — 자격 없음
+    P-->>Rx: 거부
+    P->>O: 차단 통지 (사람 승인으로 복귀)
+    end
+
+    rect rgb(245,245,245)
+    Note over R: 경우 C — 반복이 한도를 넘음
+    Rx->>P: 승인 시도
+    P->>R: 자격 조회 — 반복 카운터 초과
+    P-->>Rx: 거부
+    P->>O: 에스컬레이션 — 같은 조치가 거듭 승인되고 있다
+    Note over O: 두 출구 중 하나를 사람이 고른다<br/>근본 원인 항목 · 정상 경로 인정
+    end
+```
+
+**증명하는 것.** 자동 자격이 **한 방향으로만 움직이지 않는다**는 것. 올라가는 데는 사람의 선언과 N 회 통과가 필요하고, 내려오는 데는 실패 한 번·모델 변경 한 번·반복 한도 초과 한 번으로 충분하다. 비대칭이 의도적이다.
+
+경우 C 가 특히 중요하다. 반복이 한도를 넘으면 **시스템이 스스로 고발하고 사람에게 출구를 고르게 한다.** 시스템이 출구를 정하면 증상 우회가 자동화된다.
+
+---
+
+## 더 그릴 만한 것 — 이 문서에 없는 경로
+
+- **교대 종료 요약과 사후 검토** — 사람이 읽고 동의·이의를 달고 이의율이 집계되는 경로. 개별 사건이 아니라 묶음이라 시퀀스보다 표가 맞을 수 있다
+- **발신자 거절 경로**(§15.150) — 어댑터 호스트가 접수를 거절한 경우. 이 층에 파지 관측이 없어 대안을 계산하지 못하므로, 그림을 그리면 빠진 화살표가 드러난다. 그 자체로 한계의 증거가 된다
+- **운영자 질의**(대화형) — 이미 설명이 붙은 사건에 추가 질문을 던지는 경로

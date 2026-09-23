@@ -1,0 +1,110 @@
+{
+  "request": {
+    "path": "/search",
+    "body": {
+      "query": "깊이 상한은 왜 셋인가",
+      "tenant": "picasso",
+      "top_k": 5
+    }
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "results": [
+        {
+          "rid": "chunk_05e804c28f05",
+          "doc_rid": "doc_c914c77c1520",
+          "doc_title": "ADR 40 — 사건 번들과 대안 탐색을 계약이 아닌 조회 결과로 두고, 탐색 깊이를 세 걸음으로 제한",
+          "section_path": "ADR 40 — 사건 번들과 대안 탐색을 계약이 아닌 조회 결과로 두고, 탐색 깊이를 세 걸음으로 제한 > 3. 결정 근거",
+          "source_uri": "picasso:adr/0040-remedy-is-a-query-not-a-contract.md",
+          "snippet": "## 3. 결정 근거\n\n계약은 기종 간 상호운용의 최소 공통 표면이며, 여기에 파생값을 올리면 모든 발신자가 그 값을 생성할 책임을 지게 됩니다. 번들은 발신자가 만드는 것이 아니라 미들웨어가 관측으로부터 구성하는 것이므로 계약의 책임이 아닙니다.\n\n깊이 제한은 성능이 아닌 **책임 소재**의 문제입니다. 승인이 형식적 절차로 전락하면 운영자 개입이라는 안전 장치가 명목만 남습니다. 상한은 검토 가능성의 경계이며, 그 경계를 넘는 판단은 시스템이 아닌 사람에게 남깁니다. …",
+          "score": 0.03021353930031804,
+          "bm25_rank": 10,
+          "vector_rank": 1,
+          "classification": "INTERNAL",
+          "doc_type": "api_spec",
+          "provenance_tier": "authored",
+          "labels": [],
+          "synthetic": false
+        },
+        {
+          "rid": "chunk_2506427bff51",
+          "doc_rid": "doc_c914c77c1520",
+          "doc_title": "ADR 40 — 사건 번들과 대안 탐색을 계약이 아닌 조회 결과로 두고, 탐색 깊이를 세 걸음으로 제한",
+          "section_path": "ADR 40 — 사건 번들과 대안 탐색을 계약이 아닌 조회 결과로 두고, 탐색 깊이를 세 걸음으로 제한 > 2. 결정",
+          "source_uri": "picasso:adr/0040-remedy-is-a-query-not-a-contract.md",
+          "snippet": "## 2. 결정\n\n### 2.1 계약을 변경하지 않고 조회 결과로 둡니다\n\n번들과 대안은 **미들웨어가 자신의 상태로부터 계산하는 파생값**이며, 하류 로봇이나 상류 시스템이 새로 전달해야 하는 값이 아닙니다.\n\n- 번들이 담는 사실은 전부 기존 계약 필드 또는 미들웨어 모델에서 옮겨 실은 것입니다. 유일한 신규 계산은 효과-관측 어긋남이며, 이 역시 기존 카탈로그 옵션과 기존 관측의 대조 결과입니다\n- 운영자 판단 상태, 작업 응답, 취소 보고서가 모두 계약 외부의 미들웨어 모델에 위치합니다. …",
+          "score": 0.028850145288501453,
+          "bm25_rank": 12,
+          "vector_rank": 5,
+          "classification": "INTERNAL",
+          "doc_type": "api_spec",
+          "provenance_tier": "authored",
+          "labels": [],
+          "synthetic": false
+        },
+        {
+          "rid": "chunk_3d200dadbe5c",
+          "doc_rid": "doc_b7dc64c911a6",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "snippet": "    **닫히지 않은 채로 끝난다.** `limits.md` 는 117 개의 열림 표기를 든 채 남고, 그것이 이 조건의 요점이다 — **안 비는 대장으로 끝날 수 있다.** C-3(실물 미검증)은 지어서 못 닫으므로 열린 채 선언한다.\n\n131. **공개하자마자 CI 가 빨개졌다 — 한 번도 돌아 본 적 없는 검사가 거기 있었다.**\n\n    원격을 만들고 push 하니 **검사 2번(`buf breaking`)이 실패했다.** 파괴가 아니라 인프라였다 — 컨테이너 안의 git 이 마운트된 `/workspace/.git` 을 …",
+          "score": 0.02684684684684685,
+          "bm25_rank": 14,
+          "vector_rank": 13,
+          "classification": "INTERNAL",
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "labels": [],
+          "synthetic": false
+        },
+        {
+          "rid": "chunk_88d378081e14",
+          "doc_rid": "doc_c6079c28f8f1",
+          "doc_title": "SOP-04 이동 경로 차단 대응",
+          "section_path": "SOP-04 이동 경로 차단 대응 > 5. 대기의 상한",
+          "source_uri": "picasso:SOP-04-이동-경로-차단.md",
+          "snippet": "## 5. 대기의 상한\n\n움직이는 차단물을 기다리는 것은 합리적이지만 무한정은 아니다.\n\n| 경과 | 처리 |\n|---|---|\n| ~2분 | 대기. 대부분 여기서 풀린다 |\n| 2~5분 | 운영자에게 알린다. 아직 로봇은 대기 |\n| 5분 초과 | 단위를 `NEEDS_INTERVENTION` 으로 올리고 사람이 현장을 본다 |\n\n⚠ 이 수는 예시다. 현장 동선과 교대 인원에 따라 달라야 한다.",
+          "score": 0.016129032258064516,
+          "bm25_rank": 1,
+          "vector_rank": null,
+          "classification": "INTERNAL",
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true
+        },
+        {
+          "rid": "chunk_7867bd8a69ba",
+          "doc_rid": "doc_b7dc64c911a6",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "snippet": "    설계안 §6. 사전 조건과 효과가 선언에 들어온 뒤로 «이 조건을 참으로 만들려면 무엇을 해야 하나» 는 상태 공간의 문제가 됐다. 능력 하나가 전이 하나이고, 조건이 적용 가능성이고, 효과가 결과 상태다. 계획 시점 사슬 검사의 역방향이며, 적용 가능성은 그 검사를 그대로 부른다 — 두 곳이 다른 답을 내면 계획과 제안이 갈린다.\n\n    **호출자 없이 병합한다.** 규칙을 단위 시험으로 고정한 뒤 경로를 붙인다(§9). 순서를 바꾸면 탐색의 오류와 경로의 오류가 섞인다. …",
+          "score": 0.015873015873015872,
+          "bm25_rank": 2,
+          "vector_rank": null,
+          "classification": "INTERNAL",
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "labels": [],
+          "synthetic": false
+        }
+      ],
+      "graph_findings": null,
+      "route_used": "hybrid_only",
+      "n_unknown_origin_time": null,
+      "timing_ms": {
+        "total_ms": 154,
+        "bm25_ms": 137
+      },
+      "degraded": []
+    },
+    "error": null,
+    "meta": {}
+  }
+}

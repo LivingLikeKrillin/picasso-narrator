@@ -1,0 +1,877 @@
+{
+  "request": {
+    "path": "/search/answer",
+    "body": {
+      "query": "로봇이 SUCCEEDED 인데 완료가 아닌 경우가 있는가",
+      "tenant": "picasso"
+    }
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "answer": "**결론 먼저:** 있습니다. 세 가지 경우가 명시돼 있습니다.\n\n---\n\n## 전제: 완료는 세 계층이다\n\n로봇의 `SUCCEEDED`는 **명령 완료(Command Complete)** — E0/E1 — 에 해당할 뿐입니다. 시스템이 \"완료\"로 처리하려면 **논리적 완료(Logical Complete, E2)** — 셀 검증 장치와의 교차 확인 — 까지 통과해야 합니다.\n\n> \"명령 완료 `SEQ-204#S01`이 `SUCCEEDED` — 로봇 → 계약(E0/E1). 논리적 완료 — S01에 A형이 안착했음이 확인됨 — 층 ③, 셀 검증 장치(E2)와 결합.\"\n> [출처: 운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의, §4.3]\n\n---\n\n## 경우 1 — UNVERIFIED (로봇: SUCCEEDED, 설비: 침묵)\n\n설비 신호가 시간창 δ 안에 들어오지 않으면 `UNVERIFIED`가 됩니다. 완료로 닫지 않고 **운영자 확인**을 요구하며, 재작업은 금지됩니다.\n\n> \"신호가 없다는 것이 「없었다」는 뜻은 아니다. ⛔ UNVERIFIED에서 재작업을 돌리면 안 된다 — 이미 정상적으로 놓였는데 신호만 늦은 경우가 있고, 그때 재작업은 자재를 하나 더 올린다.\"\n> [출처: SOP-02 안착 실패와 품번 불일치, §3]\n\n`VERIFYING`은 이 중간 단계입니다 — 하류(로봇)는 끝났다는데 설비가 아직 말이 없을 때 창이 닫힐 때까지 반복 확인하고, 그래도 없으면 `UNVERIFIED`로 확정됩니다.\n\n> \"VERIFYING — 하류는 끝났다는데 설비는 아직 말이 없다. 창이 닫힐 때까지 pump()마다 다시 묻고, 그 안에 들어온 신호는 보고보다 늦게 왔어도 이 완료의 근거다.\"\n> [출처: picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계, §15.90]\n\n---\n\n## 경우 2 — VERIFICATION_MISMATCH (로봇: SUCCEEDED, 설비: 다른 자재 감지)\n\n로봇은 성공이라 했지만 설비가 다른 품번을 봤을 때입니다. `FAILED + VERIFICATION_MISMATCH`로 처리되고 슬롯을 비워야 합니다.\n\n> \"B형 슬롯에 A형이 감지됨 → 해당 슬롯을 완료 처리하지 않고 불일치 보고. 없음 — 로봇은 `SUCCEEDED`. 이 판정은 E2이고 계약 밖이다.\"\n> [출처: 운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의, §4.4]\n\n불일치 위치도 기록됩니다: `observed=A at RACK-204.S02` 형태로 어디서 무엇을 봤는지를 남깁니다.\n\n> [출처: picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계, §15.90]\n\n---\n\n## 경우 3 — 버전 변경 후 지연 도착한 SUCCEEDED (옛 revision의 완료)\n\nv17로 실행 중 v18로 버전이 바뀐 뒤, v17의 `SUCCEEDED`가 늦게 도착하는 경우입니다. 이 완료는 **폐기하지 않고 보존**하지만, 새 버전(v18)의 완료로 닫지 않습니다. 설비가 v18의 기대에 대고 다시 판정합니다.\n\n> \"옛 버전의 완료만 있고 새 버전의 갱신은 오지 않을 때 — 새 버전의 완료로 적지 않는다. 물리적으로 일어난 일은 옛 파라미터로 한 일이므로 설비가 새 버전의 기대에 대고 본다.\"\n> [출처: picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계, §15.92]\n\n---\n\n## 정리\n\n| 로봇 | 설비 | 시스템 판정 | 완료 여부 |\n|---|---|---|---|\n| SUCCEEDED | 침묵 (창 안) | VERIFYING → UNVERIFIED | ❌ 운영자 확인 |\n| SUCCEEDED | 다른 자재 감지 | VERIFICATION_MISMATCH | ❌ 슬롯 비움, 사건 개시 |\n| SUCCEEDED (옛 revision) | — | 보존, 새 버전 기대에 재판정 | 조건부 (설비 재확인 결과에 따름) |\n\n근거 범위 안의 결론: **로봇 `SUCCEEDED`는 논리적 완료의 필요조건이지 충분조건이 아닙니다.** 이것이 E2(독립 설비) 결합을 층 ③(미들웨어)이 반드시 수행해야 하는 이유입니다.\n\n> \"로봇이 파지 여부를 말할 수는 있어도 품번 일치는 로봇의 관측 밖이다.\"\n> [출처: SOP-02 안착 실패와 품번 불일치, §5]\n",
+      "evidence_snippets": [
+        {
+          "chunk_rid": "chunk_349dc31e5190",
+          "doc_title": "SOP-02 안착 실패와 품번 불일치",
+          "section_path": "SOP-02 안착 실패와 품번 불일치 > 5. 왜 로봇의 성공을 믿지 않는가",
+          "source_uri": "picasso:SOP-02-안착-실패와-품번-불일치.md",
+          "text": "## 5. 왜 로봇의 성공을 믿지 않는가\n\n로봇은 `object_id` 로 **장소 이름**을 받을 뿐 그 자리에 어떤 부품이 있는지 모른다.\n파지 여부는 로봇이 말할 수 있어도 **품번 일치는 로봇의 관측 밖**이다.\n\n그래서 완료 판정은 로봇 신호(E0/E1)와 설비 신호(E2)를 **함께** 본다. 로봇 신호만으로\n단위를 닫으면 *\"B형 슬롯에 A형이 들어갔는데 로봇은 성공이라고 한다\"* 를 막을 길이 없다.",
+          "score": 0.031054405392392875,
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true,
+          "updated_at": "2026-09-18T00:29:57.309400+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_a3685f9c85bd",
+          "doc_title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section_path": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의 > 4. 시나리오 ② — 부품 시퀀싱 (휴머노이드, `pick_place`)",
+          "source_uri": "picasso:scenarios.md",
+          "text": "| 계층 | 이 시나리오에서 | 누가 |\n|---|---|---|\n| 명령 완료 | `SEQ-204#S01` 이 `SUCCEEDED` | 로봇 → 계약 (E0/E1) |\n| 논리적 완료 | S01 에 A형이 안착했음이 **확인**됨 | 층 ③ — 셀 검증 장치(E2)와 결합 |\n| 상류 반영 | 시퀀싱 작업 완료, 후속 랙 운반 판단 | MES |\n\n로봇의 `SUCCEEDED` 만으로 S01 을 닫으면 *\"B형 슬롯에 A형이 들어갔는데 로봇은 성공이라고 한다\"* 를 막을 길이 없다. …",
+          "score": 0.030017921146953404,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.324505+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_199a7aea0842",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    ### 들이면서 보인 것\n\n    - **완료 근거 등급(E0 로봇 보고 / E1 플릿 확인 / E2 독립 설비 / E3 업무)이 ADR 37 과 맞물린다.** E0 은 어댑터가 로봇에 직결된 경우이고 E1 은 플릿에 붙은 경우다. 계약은 지금 E0/E1 까지를 나르되 **둘 중 어느 것인지 결과에 싣지 않는다.** §15.81 이 *\"현장이 보증하는 셋째 쪽이 계약 어디에도 없다\"* 고 적은 그 자리의 이름이 E2 이고, 그것은 **계약 밖이 맞다** — 층 ③ 이 로봇 보고와 시간창 안에서 결합한다. …",
+          "score": 0.028782894736842105,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_ca50b0918586",
+          "doc_title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section_path": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의 > 4. 시나리오 ② — 부품 시퀀싱 (휴머노이드, `pick_place`)",
+          "source_uri": "picasso:scenarios.md",
+          "text": "### 4.1b 시퀀스 — 슬롯 하나가 지나는 길\n\n```mermaid\nsequenceDiagram\n    autonumber\n    participant MES as 상류 (MES)\n    participant MW as picasso (층 ③)\n    participant RB as 로봇 (계약 ④)\n    participant CELL as 셀 검증 장치\n\n    MES->>MW: JobOrder SEQ-204 v17 (슬롯 넷, 요구 E2)\n    Note over MW: 자재 선언과 배정이 어긋나면 접수 자체를 거절 …",
+          "score": 0.02871794871794872,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.324505+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_10193d2246b9",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    **그래서 \"못 덮는다\" 를 세 종류로 갈라 적는다** — ① 추출기가 못 읽는다(고칠 수 있다) ② 벤더가 타입으로 안 적었다(Digit 의 일반 오류 봉투가 그것이고, 실물이나 시뮬레이터에서 받아 봐야 안다) ③ 검사의 성질(있는 이름이면 통과, 거동, 낡음). **①을 ②로 적는 것이 이 저장소가 반복해 물린 실수다.**\n\n    **못 하는 것 넷.** ① **거동을 안 본다** — 그 메시지를 보냈을 때 로봇이 무엇을 하는지는 여전히 §9.7 ④·C-3이다. …",
+          "score": 0.02857142857142857,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_ac0c6bc7af1d",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    ### `IN_DOUBT` — 요청은 갔고 답만 없다\n\n    응답 유실은 미들웨어와 하류 사이의 선에서 난다. 미믹의 gRPC 에는 장애 주입이 없고(`InjectTransportFault` 는 발행 축) 그것이 맞다 — 하류는 정상 접수했다. 그래서 시험은 그 선의 더블(`LossyRobotPort`·`LossyFleet`)로 **위임한 뒤에 던진다.** 미들웨어는 다시 보내지 않고 단위를 `IN_DOUBT` 로 세우며 상류에 그 사실을 통보한다(16장 — `JobResponse.inDoubtUnits`). 해소는 13. …",
+          "score": 0.028373015873015873,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_084786bf6f53",
+          "doc_title": "SOP-06 제어권 상실과 명령 덮어쓰기",
+          "section_path": "SOP-06 제어권 상실과 명령 덮어쓰기 > 3. 이 갈래의 성질 — **로봇은 멀쩡하다**",
+          "source_uri": "picasso:SOP-06-제어권-상실과-명령-덮어쓰기.md",
+          "text": "## 3. 이 갈래의 성질 — **로봇은 멀쩡하다**\n\n다른 실패와 다르다. 로봇도 자재도 정상이고, **우리 쪽이 권한을 잃은 것**이다.\n그래서 「로봇을 고치는」 조치가 전부 헛돈다.\n\n| 상태 | 무슨 일이 있었나 |\n|---|---|\n| `CONTROL_AUTHORITY_LOST` | 임대권 만료 또는 다른 주체가 제어권을 가져갔다 |\n| `COMMAND_OVERRIDDEN` | 우리 명령이 후속 명령에 덮였다 |\n| `SEQUENCE_EVICTED` | 우리 작업 열이 대기열에서 밀려났다 |\n\n⛔ **셋 다 「누가 …",
+          "score": 0.02797067901234568,
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true,
+          "updated_at": "2026-09-18T00:29:58.155078+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_1070721633f6",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    이것은 §15.78의 공간 셋과 같은 종류의 실수다 — 이름 공간 하나(`is_object_reference`)에 뜻 둘(참조/쥠)을 얹었다. 구분할 수 있으면 구분한다. 그리고 §15.84 후보 ②를 열 때 미믹 시험을 `pick_place`로만 써서 놓쳤다 — **한 스킬로 만든 규칙은 다른 스킬에 대 봐야 규칙이다.**\n\n    ### 시험이 물어본 것\n\n    - **점검 결과.** 시나리오 ③의 결과는 *항목별 수행 상태와 측정값 또는 증거 자료 참조*인데 계약에는 그 자리가 없다. …",
+          "score": 0.0273972602739726,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_0f0492040da2",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "90. **근거 결합에 시간이 들어갔다 — 시간창 δ, PLC 래치, 불일치 표 12.3 의 세 행.**\n\n    앞 판(§15.88)의 정직 항목 첫째가 *\"시간창 δ 없음 — 묻는 순간의 신호\"* 였다. 그것을 닫았다(계획 단계 3). 보고서 12.1 의 식 그대로다 — `physically_done := robot_report(FINISHED, t_r) ∧ plc_signal(present, tag, t_p) ∧ t_p ∈ [t_r − δ_before, t_r + δ_after]`. …",
+          "score": 0.027364110201042444,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_95409c54d5cb",
+          "doc_title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section_path": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의 > 2. 3계층 완료 모델 및 4단계 근거 등급 체계",
+          "source_uri": "picasso:scenarios.md",
+          "text": "## 2. 3계층 완료 모델 및 4단계 근거 등급 체계\n\n공정 완료의 의미를 세 가지 계층으로 엄격히 분리하여 상태 모호성을 배제합니다:\n\n| 완료 계층 | 판정 주체 | 기술적 정의 | picasso 처리 위치 |\n|---|---|---|---|\n| **명령 완료 (Command Complete)** | 로봇 기체 / 플릿 | 할당된 원자적 명령의 물리적 실행 완료 | 표준 계약 `TaskState` 종착 상태 (`SUCCEEDED`, `FAILED` 등) |\n| **논리적 완료 (Logical Complete)** | 미들웨어 …",
+          "score": 0.015873015873015872,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.324505+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_815c6249ce4f",
+          "doc_title": "SOP-01 파지 실패와 잔여 파지 처리",
+          "section_path": "SOP-01 파지 실패와 잔여 파지 처리 > 1. 목적",
+          "source_uri": "picasso:SOP-01-파지-실패와-잔여-파지.md",
+          "text": "## 1. 목적\n\n로봇이 집기에 실패했거나, 놓았다고 보고했는데 그리퍼에 물건이 남아 있는 상황에서\n운영자가 무엇을 확인하고 어떤 순서로 처리하는지 정한다.",
+          "score": 0.015384615384615385,
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true,
+          "updated_at": "2026-09-18T00:29:57.082096+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_8b68f1e46578",
+          "doc_title": "SOP-02 안착 실패와 품번 불일치",
+          "section_path": "SOP-02 안착 실패와 품번 불일치 > 3. 세 상태를 가른다",
+          "source_uri": "picasso:SOP-02-안착-실패와-품번-불일치.md",
+          "text": "## 3. 세 상태를 가른다\n\n⛔ **이 셋을 한 덩어리로 보면 처방이 반대로 간다.**\n\n| 상태 | 로봇이 말한 것 | 설비가 말한 것 | 무엇을 해야 하나 |\n|---|---|---|---|\n| `PLACE_FAILED` | 실패 | — | 자재 위치를 찾는다 |\n| `UNVERIFIED` | `SUCCEEDED` | **아무 말도 안 했다** | 재작업 금지. 사람이 확인 |\n| `VERIFICATION_MISMATCH` | `SUCCEEDED` | 다른 자재를 봤다 | 슬롯을 비우고 사건을 연다 …",
+          "score": 0.015151515151515152,
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true,
+          "updated_at": "2026-09-18T00:29:57.309400+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_97aa062856cf",
+          "doc_title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section_path": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의 > 6. 검증 시나리오 열 — picasso 가 이미 증명하는 것과 못 하는 것",
+          "source_uri": "picasso:scenarios.md",
+          "text": "## 6. 검증 시나리오 열 — picasso 가 이미 증명하는 것과 못 하는 것\n\n외부 문서의 교체 가능성 시험 열 개를 §12.2 의 완료 기준에 대 본다.\n\n> **2026-09-10 재대조.** 이 표를 처음 적었을 때(§15.84)는 *6 증명 · 3 의도적 밖 · 1 반* 이었다. 그 뒤로 미들웨어의 가운데(`picasso`)와 어댑터의 북쪽(`adapter-host`)이 서면서 **셋이 올라갔다** — 6 번은 반에서 온전으로(§15.92), 7·8 번은 계약 밖인 채로 **층 ③ 에서 증명됨**이 됐다. …",
+          "score": 0.014492753623188406,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.324505+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_b8a71e976e62",
+          "doc_title": "SOP-02 안착 실패와 품번 불일치",
+          "section_path": "SOP-02 안착 실패와 품번 불일치 > 1. 목적",
+          "source_uri": "picasso:SOP-02-안착-실패와-품번-불일치.md",
+          "text": "## 1. 목적\n\n로봇이 목표 지점에 놓지 못했거나, 놓기는 했는데 **설비가 다른 자재를 감지한** 경우의\n처리 순서를 정한다.",
+          "score": 0.014084507042253521,
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true,
+          "updated_at": "2026-09-18T00:29:57.309400+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_d543e6988bce",
+          "doc_title": "SOP-05 자기 위치 상실 복구",
+          "section_path": "SOP-05 자기 위치 상실 복구 > 1. 목적",
+          "source_uri": "picasso:SOP-05-자기-위치-상실-복구.md",
+          "text": "## 1. 목적\n\n로봇이 자기 위치를 잃었을 때의 처리 순서를 정한다. 이 상태의 위험은 멈춘 것이 아니라\n**로봇이 틀린 위치를 믿고 계속 움직이는 것**이다.",
+          "score": 0.012987012987012988,
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true,
+          "updated_at": "2026-09-18T00:29:57.900520+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_6864f1851c06",
+          "doc_title": "SOP-04 이동 경로 차단 대응",
+          "section_path": "SOP-04 이동 경로 차단 대응 > 7. 이 절차가 못 하는 것",
+          "source_uri": "picasso:SOP-04-이동-경로-차단.md",
+          "text": "## 7. 이 절차가 못 하는 것\n\n**로봇이 멈춘 이유를 로봇이 항상 말해 주지는 않는다.** 일부 기종은 차단과 자기 위치\n상실을 같은 정지로 보고한다. 그 경우 이 절차와 SOP-05 중 어느 쪽인지 사람이 현장에서\n가려야 하고, 그 판단은 여기서 자동화되지 않는다.",
+          "score": 0.01282051282051282,
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true,
+          "updated_at": "2026-09-18T00:29:57.707067+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_a344802fb81e",
+          "doc_title": "SOP-06 제어권 상실과 명령 덮어쓰기",
+          "section_path": "SOP-06 제어권 상실과 명령 덮어쓰기 > 1. 목적",
+          "source_uri": "picasso:SOP-06-제어권-상실과-명령-덮어쓰기.md",
+          "text": "## 1. 목적\n\n우리가 로봇을 더 이상 지시하지 못하게 된 상황, 그리고 우리 명령이 다른 명령에 덮인\n상황의 처리 순서를 정한다.",
+          "score": 0.0125,
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true,
+          "updated_at": "2026-09-18T00:29:58.155078+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_da9513213648",
+          "doc_title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section_path": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의 > 4. 시나리오 ② — 부품 시퀀싱 (휴머노이드, `pick_place`)",
+          "source_uri": "picasso:scenarios.md",
+          "text": "---\n\n### 4.6 ① 과 ② 가 만나는 자리\n\n```mermaid\nsequenceDiagram\n    autonumber\n    participant MW as picasso\n    participant FL as AMR 플릿\n    participant RB as 로봇\n    participant CELL as 설비\n\n    rect rgb(238, 244, 250)\n        Note over MW,FL: 시나리오 ①\n        MW->>FL: 용기 HU-1042 를 SEQ-IN-02 로 …",
+          "score": 0.012345679012345678,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.324505+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_b5928d7d46a3",
+          "doc_title": "오케스트레이션 — 세 층과 자원 소유",
+          "section_path": "오케스트레이션 — 세 층과 자원 소유 > 2. 자원 소유 대장",
+          "source_uri": "picasso:orchestration.md",
+          "text": "## 2. 자원 소유 대장\n\n**한 자원에 소유자는 하나입니다.** 소유가 겹치면 우선순위 규칙을 추가하지 않고 소유 경계를 다시 긋습니다. 그리고 **소유자가 없는 자원에는 명령을 내지 않습니다** — 자격은 선언으로만 발생합니다.\n\n| 자원 | 소유자 | 관문 (승인 지점) | 현재 |\n|---|---|---|---|\n| 셀 내 기체의 작업 배정 | 본 저장소 | `Middleware.admits` — 순수 술어. 고르지 않고 상태를 바꾸지 않는다. …",
+          "score": 0.011764705882352941,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.685445+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_6f6ce867d5ba",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "85. **잔여 물리 상태를 계약에 열었다 — 그리고 \"취소가 내려놓기가 아니다\"가 두 어댑터에서 드러났다.**\n\n    §15.84 후보 ②. `WatchTaskResponse.hold`(`HoldState`, 계약 0.4.0)이 갱신마다 로봇이 무엇을 들고 있는지를 나른다. 발신자 넷(mimic · Spot · Digit · G1)과 소비자(하네스 `HoldOnCancelTest`, 완료 기준 8b의 나머지 반)가 함께 생겼으므로 ADR 9를 통과한다. …",
+          "score": 0.025708635464733027,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_1db180c05181",
+          "doc_title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section_path": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "source_uri": "picasso:scenarios.md",
+          "text": "# 운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의\n\n본 문서는 `picasso` 미들웨어가 적용되는 공장 시퀀싱 셀(Sequencing Cell) 환경의 **3대 핵심 운영 시나리오**를 정의하고, 각 서브시스템 참여자의 추상화 계층(ADR 36)과 책임 한계를 규정하는 설계 입력 명세서입니다.\n\n본 시나리오의 규격은 **OPC UA ISA-95 Job Control 10031-4 표준** 및 **벤더 1차 공식 명세**(`vendor-manifest.txt` 대조)를 엄격히 준수합니다.",
+          "score": 0.0,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.324505+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_40e548755bae",
+          "doc_title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section_path": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의 > 3대 핵심 작업 시나리오 개요",
+          "source_uri": "picasso:scenarios.md",
+          "text": "## 3대 핵심 작업 시나리오 개요\n\n| 시나리오 | 작업 정의 | 발주 상류 시스템 | 주 실행 주체 | picasso 계약 인터페이스 연동 여부 |\n|---|---|---|---|---|\n| **시나리오 ①** | 부품 용기 공급 (창고 출고 버퍼 → 시퀀싱 셀 입고처 이송) | WMS | **AMR 플릿** (위임 제어) | **비연동 (포트 연계)**: 플릿 관리 포트를 통해 위임하며, 그 결과는 시나리오 ②의 환경 전제조건을 형성 |\n| **시나리오 ②** | 생산 시퀀스 맞춤 부품 피킹 및 랙 슬롯 적치 | MES | …",
+          "score": 0.0,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.324505+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_e688e9458fc6",
+          "doc_title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section_path": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의 > 1. 아키텍처 계층별 역할 및 책임 경계 (ADR 36)",
+          "source_uri": "picasso:scenarios.md",
+          "text": "## 1. 아키텍처 계층별 역할 및 책임 경계 (ADR 36)\n\n| 참여 시스템 | 아키텍처 계층 | 미들웨어 책임 범위 | 주요 역할 및 책임 |\n|---|---|---|---|\n| **MES · WMS · 보전 시스템** | ① 현장 일감 (Job) | 스코프 외 (상류 시스템) | 공정 작업 발주 및 최종 비즈니스 상태 갱신 |\n| **미들웨어 코어 (`picasso`)** | ② 어휘 · ③ 배정 및 결정 | **스코프 내 (핵심 엔진)** | 상위 일감 수신, 원자 단위 작업 분해, 실행 상태 관리, 다중 근거 결합, …",
+          "score": 0.0,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.324505+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_3cd47faab5a2",
+          "doc_title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section_path": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의 > 2b. 상위 일감의 원자적 실행 단위 분해 구조",
+          "source_uri": "picasso:scenarios.md",
+          "text": "## 2b. 상위 일감의 원자적 실행 단위 분해 구조\n\n<picture>\n  <source media=\"(prefers-color-scheme: dark)\" srcset=\"diagrams/mission.dark.svg\">\n  <img alt=\"일감 분해 구조 다이어그램. 상류 JobOrder가 LogicalCapability를 통해 개별 실행 단위(ExecutionUnit)로 분해되는 과정이 표시되어 있습니다.\" …",
+          "score": 0.0,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.324505+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_250cabf6e119",
+          "doc_title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section_path": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의 > 3. 시나리오 ① — 부품 용기 공급 (AMR 플릿 위임)",
+          "source_uri": "picasso:scenarios.md",
+          "text": "## 3. 시나리오 ① — 부품 용기 공급 (AMR 플릿 위임)\n\n시퀀싱 셀 작업에 필요한 엔진 부품 용기를 창고 출고 버퍼에서 시퀀싱 셀 입고 스테이션으로 이송하는 시나리오입니다. 운반 전체를 AMR 플릿(`AmrFleetMimic`)에 위임하고, 플릿 완료 보고(E1)를 현장 PLC 인계 신호와 시간창 내에서 교차 결합하여 최종 E2 등급의 완료를 상류 WMS에 통보합니다. …",
+          "score": 0.0,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.324505+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_890ae9955232",
+          "doc_title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section_path": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의 > 4. 시나리오 ② — 부품 시퀀싱 (휴머노이드, `pick_place`)",
+          "source_uri": "picasso:scenarios.md",
+          "text": "## 4. 시나리오 ② — 부품 시퀀싱 (휴머노이드, `pick_place`)\n\n> **이 시나리오는 두 층에서 돌린다** — 계약 층은 `harness/src/test/kotlin/dev/picasso/harness/SequencingCellTest.kt`, **미들웨어 층은 `picasso/src/test/kotlin/dev/picasso/middleware/SequencingRackTest.kt`**(§15.88 — JobOrder 접수 → 조합 → 근거 결합 → JobResponse 까지, 상황표 넷 전부). …",
+          "score": 0.0,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.324505+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_1d1874f1d85d",
+          "doc_title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section_path": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의 > 5. 시나리오 ③ — 설비 점검 순회 (4족, `inspect`)",
+          "source_uri": "picasso:scenarios.md",
+          "text": "## 5. 시나리오 ③ — 설비 점검 순회 (4족, `inspect`)\n\n> **이 시나리오는 하네스가 돌린다** — `harness/src/test/kotlin/dev/picasso/harness/InspectionPatrolTest.kt`(4족 픽스처). 지점마다 `navigate_to` + `inspect`, 일시정지·재개, 위치 상실 뒤 개입과 재시도, 취소, 그리고 **점검 결과를 실을 자리가 없다**는 사실을 고정한다. …",
+          "score": 0.0,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.324505+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_79624980afe9",
+          "doc_title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section_path": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의 > 5. 시나리오 ③ — 설비 점검 순회 (4족, `inspect`)",
+          "source_uri": "picasso:scenarios.md",
+          "text": "**어댑터 가용성이 곧 로봇 거동이다 — Spot 1 차 자료.** `KeepaliveService.Policy` 의 `ActionAfter` 가 `AutoReturn`·`ControlledMotorsOff`·`ImmediateRobotOff`·`LeaseStale` 을 두고, E-Stop 엔드포인트의 `timeout` 초과는 `SETTLE_THEN_CUT`, `cut_power_timeout` 초과는 CUT 이다. 팔에 든 것은 `CarryState` 가 가른다. …",
+          "score": 0.0,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.324505+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_22291c89b9ad",
+          "doc_title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section_path": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의 > 7. 이 시나리오들이 계약에 요구하는데 아직 없는 것 — 후보이지 결정이 아니다",
+          "source_uri": "picasso:scenarios.md",
+          "text": "## 7. 이 시나리오들이 계약에 요구하는데 아직 없는 것 — 후보이지 결정이 아니다\n\n| # | 요구 | 지금 | 어디로 가는가 |\n|---|---|---|---|\n| ① | **도달한 근거 등급** — 로봇 보고인가 플릿 확인인가 | `TaskResult` 에 자리 없음. ADR 37 의 문이 사실을 나르지만 결과에는 안 실린다 | **결과 어휘 정준화**와 같은 자리. …",
+          "score": 0.0,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.324505+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_d2ab21e82602",
+          "doc_title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section_path": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의 > 8. 이 문서에 없는 것",
+          "source_uri": "picasso:scenarios.md",
+          "text": "## 8. 이 문서에 없는 것\n\n- 상류 시스템의 제품명, 사업장, 일정. 근거는 표준과 벤더 1 차 자료뿐이다.\n- 층 ② 의 어휘(논리적 능력의 이름). 외부 문서는 이름을 붙였으나 *프로젝트 정의*라고 표시했고, 이 저장소는 ADR 36 에 따라 상류나 벤더가 이미 가진 것만 들인다. `WorkMasterID` 자리에 무엇이 오는지는 실제 상류를 만나야 안다.\n- AMR 플릿의 계약. §1 의 경계 규칙 그대로다. …",
+          "score": 0.0,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.324505+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_c6212e521023",
+          "doc_title": "현장 배포 및 시운전(Commissioning) 운영 가이드",
+          "section_path": "현장 배포 및 시운전(Commissioning) 운영 가이드 > 3. 운영 중 동적 변경 관리 (Day-2 Operations)",
+          "source_uri": "picasso:commissioning.md",
+          "text": "## 3. 운영 중 동적 변경 관리 (Day-2 Operations)\n\n<picture>\n  <source media=\"(prefers-color-scheme: dark)\" srcset=\"diagrams/change-plan.dark.svg\">\n  <img alt=\"변경 계획 검증 흐름 다이어그램. 사전조건 검증(6개 항목) 및 변경 의도 4단계가 정의되어 있습니다.\" src=\"diagrams/change-plan.svg\">\n</picture>\n\n| 변경 대상 작업 | 호출 API 엔드포인트 | 라인 정지(Downtime) 수반 …",
+          "score": 0.029236022193768675,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:25.886793+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_8b8fa7b3ba25",
+          "doc_title": "현장 배포 및 시운전(Commissioning) 운영 가이드",
+          "section_path": "현장 배포 및 시운전(Commissioning) 운영 가이드 > 변경 4대 축 및 가역성(Reversibility) 분석",
+          "source_uri": "picasso:commissioning.md",
+          "text": "## 변경 4대 축 및 가역성(Reversibility) 분석\n\n<picture>\n  <source media=\"(prefers-color-scheme: dark)\" srcset=\"diagrams/four-axes.dark.svg\">\n  <img alt=\"4대 변경 축 분석 다이어그램. 계약 축은 비가역적(불가)이며, 프로파일·어댑터·바인딩 축은 롤백 가능함이 명시되어 있습니다.\" …",
+          "score": 0.027673192771084338,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:25.886793+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_7424987ac9f3",
+          "doc_title": "picasso — 표준 용어 사전 (Glossary)",
+          "section_path": "picasso — 표준 용어 사전 (Glossary) > 5. 운영 변경 및 거버넌스 (Operational Changes & Governance)",
+          "source_uri": "picasso:glossary.md",
+          "text": "## 5. 운영 변경 및 거버넌스 (Operational Changes & Governance)\n\n### 4대 독립 변경 축\n1. **계약 축 (`contracts/`)**: Protobuf 사양 (배포 시 SemVer 변경, 비가역).\n2. **프로파일 축 (`profile/`)**: 기종 능력 선언 문서 (런타임 개정판 활성화, 가역).\n3. **어댑터 축 (`adapter-*/`)**: 기종 연동 드라이버 바이너리 (버전 관리 및 재배포, 가역).\n4. …",
+          "score": 0.027271052146674038,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.122128+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_fc9ad7a8c01c",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    **그래도 인증은 아니다.** §6.3이 신원과 접근을 범위 밖으로 두었고, 이것은 역할 둘을 가르는 공유 비밀일 뿐이다 — 누가 조작했는지는 여전히 `X-Actor`의 자기 신고이고 위조 가능하다(§15.3). 감사 로그가 부인방지 근거가 아니라 조사 단서인 이유다.\n\n    원래 이 항목은 *\"조작 API가 붙는 순간 이것은 한계가 아니라 결함이 된다\"* 로 끝났다. 조작 API가 붙었고, 결함이 되지 않게 문을 나눴다.\n39. …",
+          "score": 0.028991596638655463,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_ca91fb8a5a85",
+          "doc_title": "Boston Dynamics Orbit — 벤더 API 사양 분석 및 측정 노트 (Vendor Measurement Note)",
+          "section_path": "Boston Dynamics Orbit — 벤더 API 사양 분석 및 측정 노트 (Vendor Measurement Note) > 2. API 기능 표면 및 상태 변경 엔드포인트",
+          "source_uri": "picasso:vendors/orbit.md",
+          "text": "## 2. API 기능 표면 및 상태 변경 엔드포인트\n\n전체 35개 엔드포인트 중 상태 변경(Write)이 가능한 인터페이스:\n\n| REST 경로 | 지원 HTTP 메서드 | 기능 분류 |\n|---|---|---|\n| `/calendar/schedule` | GET, **POST** | 스케줄 등록 및 조회 |\n| `/calendar/schedule/{eventid}` | DELETE | 스케줄 삭제 |\n| `/calendar/disable-enable` | POST | 스케줄러 활성화/비활성화 |\n| `/site_walks` · …",
+          "score": 0.0264301860545992,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:28.613093+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        }
+      ],
+      "graph_findings": null,
+      "provenance": [
+        {
+          "doc_rid": "doc_1a01eb23b739",
+          "source_uri": "picasso:SOP-02-안착-실패와-품번-불일치.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_294472e825e6",
+          "source_uri": "picasso:scenarios.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_b7dc64c911a6",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_1e7cacc91f29",
+          "source_uri": "picasso:SOP-06-제어권-상실과-명령-덮어쓰기.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_663fb4a623e1",
+          "source_uri": "picasso:SOP-01-파지-실패와-잔여-파지.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_ea1d8c799f6c",
+          "source_uri": "picasso:SOP-05-자기-위치-상실-복구.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_c6079c28f8f1",
+          "source_uri": "picasso:SOP-04-이동-경로-차단.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_5e0c23ad300e",
+          "source_uri": "picasso:orchestration.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_f45e15ad22a6",
+          "source_uri": "picasso:commissioning.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_0faf7c35a2a5",
+          "source_uri": "picasso:glossary.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_9087803757c4",
+          "source_uri": "picasso:vendors/orbit.md",
+          "source_version": "",
+          "approved_hash": ""
+        }
+      ],
+      "route_used": "hybrid_only",
+      "n_unknown_origin_time": null,
+      "timing_ms": {
+        "total_ms": 121,
+        "bm25_ms": 109,
+        "llm_ms": 45407
+      },
+      "citations": [
+        {
+          "title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section": "§4.3",
+          "verified": true,
+          "provenance_tier": "authored"
+        },
+        {
+          "title": "SOP-02 안착 실패와 품번 불일치",
+          "section": "§3",
+          "verified": true,
+          "provenance_tier": "authored"
+        },
+        {
+          "title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section": "§15.90",
+          "verified": true,
+          "provenance_tier": "authored"
+        },
+        {
+          "title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section": "§4.4",
+          "verified": true,
+          "provenance_tier": "authored"
+        },
+        {
+          "title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section": "§15.90",
+          "verified": true,
+          "provenance_tier": "authored"
+        },
+        {
+          "title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section": "§15.92",
+          "verified": true,
+          "provenance_tier": "authored"
+        },
+        {
+          "title": "SOP-02 안착 실패와 품번 불일치",
+          "section": "§5",
+          "verified": true,
+          "provenance_tier": "authored"
+        }
+      ],
+      "unverified_citations": 0,
+      "unverified_numbers": 0,
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "cost_usd": null,
+        "model": "claude-sonnet-4-6"
+      },
+      "n_stale": 0,
+      "abstained": false,
+      "abstain_reason": "",
+      "weak_evidence": false,
+      "degraded": [],
+      "llm_failed": false,
+      "llm_failure_reason": null,
+      "searched_tenants": [
+        "picasso"
+      ],
+      "evidence_tenants": {
+        "picasso": 35
+      }
+    },
+    "error": null,
+    "meta": {}
+  }
+}

@@ -1,0 +1,588 @@
+{
+  "request": {
+    "path": "/search/answer",
+    "body": {
+      "query": "오늘 부산 날씨 알려줘",
+      "tenant": "picasso"
+    }
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "answer": "이 질문에 대한 내용은 검색된 문서에 없는 것으로 보입니다.\n\n제공된 근거는 전부 로봇 운영 시스템(이기종 로봇 인터페이스, Boston Dynamics API, 현장 SOP 등) 관련 내부 기술 문서이며, 날씨 정보는 포함되어 있지 않습니다.\n",
+      "evidence_snippets": [
+        {
+          "chunk_rid": "chunk_4dab32cce181",
+          "doc_title": "환경 전제 사양 — 작업 실행을 위한 현장 인프라 필수 조건",
+          "section_path": "환경 전제 사양 — 작업 실행을 위한 현장 인프라 필수 조건 > J. 무선 네트워크 인프라 (Wireless Connectivity)",
+          "source_uri": "picasso:environment-preconditions.md",
+          "text": "## J. 무선 네트워크 인프라 (Wireless Connectivity)\n\n| 환경 전제 | 벤더 근거 심볼 | 검증 가능성 |\n|---|---|---|\n| **실시간 명령 제어 경로의 무단절 보증** | BD 공식 가이드: *\"send short-lived commands and **continuously resend** them so that the robot stops in the event of a client-side issue\"* 요구 | 부분적 |\n\n> 제어 패킷이 단절되면 로봇은 안전을 위해 즉시 동작을 정지합니다. …",
+          "score": 0.016129032258064516,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:25.988965+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_37b865332788",
+          "doc_title": "Boston Dynamics Orbit — 벤더 API 사양 분석 및 측정 노트 (Vendor Measurement Note)",
+          "section_path": "Boston Dynamics Orbit — 벤더 API 사양 분석 및 측정 노트 (Vendor Measurement Note)",
+          "source_uri": "picasso:vendors/orbit.md",
+          "text": "# Boston Dynamics Orbit — 벤더 API 사양 분석 및 측정 노트 (Vendor Measurement Note)\n\n- **근거 등급**: `VENDOR_PRIMARY` (공식 1차 자료 기반)\n- **측정 대상**: Orbit Web API 공식 게시본 (`openapi: \"3.0.1\"`, `info.version: \"5.0.0\"`, `servers: [{ url: \"/api/v0\" }]`) 및 `boston-dynamics/spot-sdk` 공식 기술 문서 …",
+          "score": 0.015873015873015872,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:28.613093+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_618b1be78ea6",
+          "doc_title": "환경 전제 사양 — 작업 실행을 위한 현장 인프라 필수 조건",
+          "section_path": "환경 전제 사양 — 작업 실행을 위한 현장 인프라 필수 조건 > H. 통행 금지 구역 (Keep-out / No-Go Regions)",
+          "source_uri": "picasso:environment-preconditions.md",
+          "text": "## H. 통행 금지 구역 (Keep-out / No-Go Regions)\n\n| 환경 전제 | 벤더 근거 심볼 | 검증 가능성 |\n|---|---|---|\n| 진입 불가 영역(No-Go) 지오메트리 정의 | `NoGoRegionProperties` (벤더 주석: *\"Property for a **user** no-go\"*) | 관측 가능 |",
+          "score": 0.015625,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:25.988965+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_c47b056f233f",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    ### 정직하게 적어 둘 것\n\n    - **여전히 진짜 인스턴스가 아니다.** 스텁이 답하는 모양은 우리가 벤더 문서에서 읽어 적은 것이다. 배포본이 그와 같은지, 파견 경로가 실재하는지, `missionStatus` 의 실제 값이 무엇인지는 붙어 봐야 안다(C-3).\n    - **정렬을 벤더에게 안 맡긴다.** `orderBy` 질의 파라미터가 있지만 값 집합이 스펙에 없어 무엇을 넣어야 하는지 모른다. …",
+          "score": 0.015384615384615385,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_f5c5711083c4",
+          "doc_title": "Boston Dynamics Orbit — 벤더 API 사양 분석 및 측정 노트 (Vendor Measurement Note)",
+          "section_path": "Boston Dynamics Orbit — 벤더 API 사양 분석 및 측정 노트 (Vendor Measurement Note) > 4. 작업 지시(Work Order) 모델의 방향성",
+          "source_uri": "picasso:vendors/orbit.md",
+          "text": "## 4. 작업 지시(Work Order) 모델의 방향성\n\n공식 가이드 문서(`about_orbit.md`)에 기술된 Work Order 연동 방식:\n> *\"When alerts occur in Orbit, work orders can be created manually from within the Orbit UI or automatically at the time of the alert. …",
+          "score": 0.015151515151515152,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:28.613093+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_d3158af55370",
+          "doc_title": "SOP-02 안착 실패와 품번 불일치",
+          "section_path": "SOP-02 안착 실패와 품번 불일치 > 6. 기록",
+          "source_uri": "picasso:SOP-02-안착-실패와-품번-불일치.md",
+          "text": "## 6. 기록\n\n- 기대 품번과 관측 품번\n- 설비 신호 도착 시각과 시간창 경계\n- 수동 완료 처리한 경우 그 판단을 한 사람",
+          "score": 0.014925373134328358,
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true,
+          "updated_at": "2026-09-18T00:29:57.309400+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_6f6ce867d5ba",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "85. **잔여 물리 상태를 계약에 열었다 — 그리고 \"취소가 내려놓기가 아니다\"가 두 어댑터에서 드러났다.**\n\n    §15.84 후보 ②. `WatchTaskResponse.hold`(`HoldState`, 계약 0.4.0)이 갱신마다 로봇이 무엇을 들고 있는지를 나른다. 발신자 넷(mimic · Spot · Digit · G1)과 소비자(하네스 `HoldOnCancelTest`, 완료 기준 8b의 나머지 반)가 함께 생겼으므로 ADR 9를 통과한다. …",
+          "score": 0.014705882352941176,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_7f3d672836b5",
+          "doc_title": "환경 전제 사양 — 작업 실행을 위한 현장 인프라 필수 조건",
+          "section_path": "환경 전제 사양 — 작업 실행을 위한 현장 인프라 필수 조건 > G. 통행 가능성 (Passability — Floor, Stairs, Doors)",
+          "source_uri": "picasso:environment-preconditions.md",
+          "text": "## G. 통행 가능성 (Passability — Floor, Stairs, Doors)\n\n| 환경 전제 | 벤더 근거 심볼 | 검증 가능성 |\n|---|---|---|\n| 통행 경로 상의 계단이 지도에 기등록됨 | `Staircase.KnowledgeType.KNOWLEDGE_TYPE_MAPPED` | 관측 가능 |\n| 바닥 표면 마찰 계수의 적합성 확보 | `FootState.TerrainState.ground_mu_est` | 관측 가능 (사후 추정) |\n| **문의 경첩 위치 및 개폐 방향(Swing Direction) …",
+          "score": 0.014492753623188406,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:25.988965+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_46350ce709a0",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    **② 미션 노드 49개 = 서비스 참조 29 + 미션 소유 20.**\n\n    참조 29개는 **전부 같은 모양**이다 — `(string service_name, string host, <그 서비스의 요청 메시지 원본>)`. 예:\n\n    ```proto\n    message BosdynRobotCommand {\n        string service_name = 1;\n        string host = 2;\n        RobotCommand command = 3;   // 벤더 요청을 그대로 싣는다 …",
+          "score": 0.014285714285714285,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_0f0492040da2",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "90. **근거 결합에 시간이 들어갔다 — 시간창 δ, PLC 래치, 불일치 표 12.3 의 세 행.**\n\n    앞 판(§15.88)의 정직 항목 첫째가 *\"시간창 δ 없음 — 묻는 순간의 신호\"* 였다. 그것을 닫았다(계획 단계 3). 보고서 12.1 의 식 그대로다 — `physically_done := robot_report(FINISHED, t_r) ∧ plc_signal(present, tag, t_p) ∧ t_p ∈ [t_r − δ_before, t_r + δ_after]`. …",
+          "score": 0.014084507042253521,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_b8f909d97fff",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    `reachable: YES`가 프로파일 선언과 양방향으로 묶여 있는 것이 이 판단의 유일한 기계적 제동이다. 판단이 느슨해지면 선언이 함께 틀리고, 그때는 하네스가 잡는다.\n\n62. **Spot 어댑터도 붙여 보지 못했다.** 남쪽 포트가 미검증인 것은 G1과 같으나(§15.56) **이유가 다르다.** G1은 JVM이 그 wire에 설 길 자체가 없었다(CycloneDDS에 Java 바인딩 없음). Spot은 gRPC라 기술적 장벽이 없고 — 막는 것은 **실물과 라이선스**다. …",
+          "score": 0.013888888888888888,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_88d378081e14",
+          "doc_title": "SOP-04 이동 경로 차단 대응",
+          "section_path": "SOP-04 이동 경로 차단 대응 > 5. 대기의 상한",
+          "source_uri": "picasso:SOP-04-이동-경로-차단.md",
+          "text": "## 5. 대기의 상한\n\n움직이는 차단물을 기다리는 것은 합리적이지만 무한정은 아니다.\n\n| 경과 | 처리 |\n|---|---|\n| ~2분 | 대기. 대부분 여기서 풀린다 |\n| 2~5분 | 운영자에게 알린다. 아직 로봇은 대기 |\n| 5분 초과 | 단위를 `NEEDS_INTERVENTION` 으로 올리고 사람이 현장을 본다 |\n\n⚠ 이 수는 예시다. 현장 동선과 교대 인원에 따라 달라야 한다.",
+          "score": 0.013333333333333334,
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true,
+          "updated_at": "2026-09-18T00:29:57.707067+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_b8f4a0fe3701",
+          "doc_title": "환경 전제 사양 — 작업 실행을 위한 현장 인프라 필수 조건",
+          "section_path": "G1 — 전수 조사 확장에 따른 전제 도출 > 벤더 에러 어휘 체계",
+          "source_uri": "picasso:environment-preconditions.md",
+          "text": "## 벤더 에러 어휘 체계\n\n```\nUT_ROBOT_LOCO_ERR_{ LOCOSTATE_NOT_AVAILABLE, INVALID_FSM_ID, INVALID_TASK_ID }\nUT_ROBOT_ARM_ACTION_ERR_{ INVALID_ACTION_ID, HOLDING, ARMSDK, INVALID_FSM_ID }\nUT_ROBOT_G1_AGV_ERR_{ NOT_INIT, EXEC_MOVE, EXEC_HEIGHT_ADJUST }\nUT_ROBOT_AUDIO_ERR_COMM\n```",
+          "score": 0.012987012987012988,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:25.988965+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_8b68f1e46578",
+          "doc_title": "SOP-02 안착 실패와 품번 불일치",
+          "section_path": "SOP-02 안착 실패와 품번 불일치 > 3. 세 상태를 가른다",
+          "source_uri": "picasso:SOP-02-안착-실패와-품번-불일치.md",
+          "text": "## 3. 세 상태를 가른다\n\n⛔ **이 셋을 한 덩어리로 보면 처방이 반대로 간다.**\n\n| 상태 | 로봇이 말한 것 | 설비가 말한 것 | 무엇을 해야 하나 |\n|---|---|---|---|\n| `PLACE_FAILED` | 실패 | — | 자재 위치를 찾는다 |\n| `UNVERIFIED` | `SUCCEEDED` | **아무 말도 안 했다** | 재작업 금지. 사람이 확인 |\n| `VERIFICATION_MISMATCH` | `SUCCEEDED` | 다른 자재를 봤다 | 슬롯을 비우고 사건을 연다 …",
+          "score": 0.01282051282051282,
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true,
+          "updated_at": "2026-09-18T00:29:57.309400+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_084786bf6f53",
+          "doc_title": "SOP-06 제어권 상실과 명령 덮어쓰기",
+          "section_path": "SOP-06 제어권 상실과 명령 덮어쓰기 > 3. 이 갈래의 성질 — **로봇은 멀쩡하다**",
+          "source_uri": "picasso:SOP-06-제어권-상실과-명령-덮어쓰기.md",
+          "text": "## 3. 이 갈래의 성질 — **로봇은 멀쩡하다**\n\n다른 실패와 다르다. 로봇도 자재도 정상이고, **우리 쪽이 권한을 잃은 것**이다.\n그래서 「로봇을 고치는」 조치가 전부 헛돈다.\n\n| 상태 | 무슨 일이 있었나 |\n|---|---|\n| `CONTROL_AUTHORITY_LOST` | 임대권 만료 또는 다른 주체가 제어권을 가져갔다 |\n| `COMMAND_OVERRIDDEN` | 우리 명령이 후속 명령에 덮였다 |\n| `SEQUENCE_EVICTED` | 우리 작업 열이 대기열에서 밀려났다 |\n\n⛔ **셋 다 「누가 …",
+          "score": 0.012658227848101266,
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true,
+          "updated_at": "2026-09-18T00:29:58.155078+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_133912dd57d0",
+          "doc_title": "오케스트레이션 — 세 층과 자원 소유",
+          "section_path": "오케스트레이션 — 세 층과 자원 소유 > 3. 배선도",
+          "source_uri": "picasso:orchestration.md",
+          "text": "## 3. 배선도\n\n점선은 **아직 없는 것**입니다. 자리와 방향만 확정해 둡니다.\n\n```mermaid\nflowchart TB\n  MES[\"상류 MES·WMS<br/>작업 순서 소유\"]\n  DISP[\"L1 배정 정책<br/>셀 내 또는 전역<br/>결정권 없음 · 제안만\"]\n  OP[\"운영자<br/>통지 수신 · 승인 · 진단\"]\n\n  subgraph PIC[\"본 저장소 — L2 실행 보증\"]\n    GATE[\"배정 관문<br/>submit · chainViolation · liveHold<br/>순수 술어: 고르지 …",
+          "score": 0.012345679012345678,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.685445+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_46be869ffd4b",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    **이름 공간 안에서도 또 갈린다.** 장소(`location`·`destination`)와 대상(`object_id`·`target`)은 **쓰임과 의도가 다르다**:\n\n    - 장소는 사이트가 지도에 **저작**한 것이고 지속한다. 등록의 대상이다.\n    - 대상은 **인지가 필요**하고(§1.3 비목표) 만료된다. Spot의 `WorldObject`를 벤더는 *\"the currently perceived world objects\"*라 부른다. …",
+          "score": 0.0136986301369863,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_f232b178f28b",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    ### 저장소가 함께 움직인 것\n\n    `spot-arm.json` 에 `inspect`(revision 2) · `distance/spot-arm.json` YES + 재측정 근거 · `provenance/spot-arm.json` 두 항목 · `environment-preconditions.md` B 두 행 · 매니페스트 시험에 새 남쪽 타입 열(`WorldLayer`·`AcquisitionLayer`·열거 셋·데이터 클래스 넷) — 짚은 이름 전부 원문에 있다. …",
+          "score": 0.013513513513513514,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_a6d9cdb37b74",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    ### 판정을 바꿨다 — PARTIAL → YES, 근거와 함께\n\n    `distance/spot-arm.json` 은 `inspect` 를 PARTIAL 로 적고 *\"진짜 결손은 모양의 어긋남 — 우리 계약은 물체 신원을 묻는데 BD 는 어디에 서서 어느 이름의 액션을 돌리는가\"* 라 했다. 어댑터를 실제로 들면서 그 어긋남을 두 자리가 메운다는 것이 보였다.\n\n    | 계약이 묻는 것 | Spot 의 자리 | 어댑터 |\n    |---|---|---|\n    | 대상의 신원(`target`) | …",
+          "score": 0.013157894736842105,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_0305337db923",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    ### 그리고 미믹은 브로커 없이는 기동조차 못 했다\n\n    ★위 시험을 세우려 발행을 막아 보니 **기동이 실패했다.** §10.6 은 *\"발행 실패가 태스크 실행을 막으면 브로커가 죽은 날 로봇이 함께 멈춘다\"* 고 적고 이벤트 경로가 그 규율을 지키는데, **기동 발행(`announceOnline`)과 상태 발행만 예외를 그대로 올려보내고 있었다.** 현재값 발행 하나로 모아 삼킨다 — 이벤트와 달리 상태·연결은 *현재값* 이라 못 보내면 버리고 다음 것이 대신한다(큐에 쌓으면 재연결 순간 낡은 현재값이 줄줄이 …",
+          "score": 0.0125,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_c6212e521023",
+          "doc_title": "현장 배포 및 시운전(Commissioning) 운영 가이드",
+          "section_path": "현장 배포 및 시운전(Commissioning) 운영 가이드 > 3. 운영 중 동적 변경 관리 (Day-2 Operations)",
+          "source_uri": "picasso:commissioning.md",
+          "text": "## 3. 운영 중 동적 변경 관리 (Day-2 Operations)\n\n<picture>\n  <source media=\"(prefers-color-scheme: dark)\" srcset=\"diagrams/change-plan.dark.svg\">\n  <img alt=\"변경 계획 검증 흐름 다이어그램. 사전조건 검증(6개 항목) 및 변경 의도 4단계가 정의되어 있습니다.\" src=\"diagrams/change-plan.svg\">\n</picture>\n\n| 변경 대상 작업 | 호출 API 엔드포인트 | 라인 정지(Downtime) 수반 …",
+          "score": 0.027417840375586856,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:25.886793+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_ca91fb8a5a85",
+          "doc_title": "Boston Dynamics Orbit — 벤더 API 사양 분석 및 측정 노트 (Vendor Measurement Note)",
+          "section_path": "Boston Dynamics Orbit — 벤더 API 사양 분석 및 측정 노트 (Vendor Measurement Note) > 2. API 기능 표면 및 상태 변경 엔드포인트",
+          "source_uri": "picasso:vendors/orbit.md",
+          "text": "## 2. API 기능 표면 및 상태 변경 엔드포인트\n\n전체 35개 엔드포인트 중 상태 변경(Write)이 가능한 인터페이스:\n\n| REST 경로 | 지원 HTTP 메서드 | 기능 분류 |\n|---|---|---|\n| `/calendar/schedule` | GET, **POST** | 스케줄 등록 및 조회 |\n| `/calendar/schedule/{eventid}` | DELETE | 스케줄 삭제 |\n| `/calendar/disable-enable` | POST | 스케줄러 활성화/비활성화 |\n| `/site_walks` · …",
+          "score": 0.027271052146674038,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:28.613093+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_8b8fa7b3ba25",
+          "doc_title": "현장 배포 및 시운전(Commissioning) 운영 가이드",
+          "section_path": "현장 배포 및 시운전(Commissioning) 운영 가이드 > 변경 4대 축 및 가역성(Reversibility) 분석",
+          "source_uri": "picasso:commissioning.md",
+          "text": "## 변경 4대 축 및 가역성(Reversibility) 분석\n\n<picture>\n  <source media=\"(prefers-color-scheme: dark)\" srcset=\"diagrams/four-axes.dark.svg\">\n  <img alt=\"4대 변경 축 분석 다이어그램. 계약 축은 비가역적(불가)이며, 프로파일·어댑터·바인딩 축은 롤백 가능함이 명시되어 있습니다.\" …",
+          "score": 0.024393871783430016,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:25.886793+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_fc9ad7a8c01c",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    **그래도 인증은 아니다.** §6.3이 신원과 접근을 범위 밖으로 두었고, 이것은 역할 둘을 가르는 공유 비밀일 뿐이다 — 누가 조작했는지는 여전히 `X-Actor`의 자기 신고이고 위조 가능하다(§15.3). 감사 로그가 부인방지 근거가 아니라 조사 단서인 이유다.\n\n    원래 이 항목은 *\"조작 API가 붙는 순간 이것은 한계가 아니라 결함이 된다\"* 로 끝났다. 조작 API가 붙었고, 결함이 되지 않게 문을 나눴다.\n39. …",
+          "score": 0.026785714285714288,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        }
+      ],
+      "graph_findings": null,
+      "provenance": [
+        {
+          "doc_rid": "doc_0734c531c8c2",
+          "source_uri": "picasso:environment-preconditions.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_9087803757c4",
+          "source_uri": "picasso:vendors/orbit.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_b7dc64c911a6",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_1a01eb23b739",
+          "source_uri": "picasso:SOP-02-안착-실패와-품번-불일치.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_c6079c28f8f1",
+          "source_uri": "picasso:SOP-04-이동-경로-차단.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_1e7cacc91f29",
+          "source_uri": "picasso:SOP-06-제어권-상실과-명령-덮어쓰기.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_5e0c23ad300e",
+          "source_uri": "picasso:orchestration.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_f45e15ad22a6",
+          "source_uri": "picasso:commissioning.md",
+          "source_version": "",
+          "approved_hash": ""
+        }
+      ],
+      "route_used": "hybrid_only",
+      "n_unknown_origin_time": null,
+      "timing_ms": {
+        "total_ms": 199,
+        "bm25_ms": 192,
+        "llm_ms": 5386
+      },
+      "citations": [],
+      "unverified_citations": 0,
+      "unverified_numbers": 0,
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "cost_usd": null,
+        "model": "claude-sonnet-4-6"
+      },
+      "n_stale": 0,
+      "abstained": false,
+      "abstain_reason": "",
+      "weak_evidence": true,
+      "degraded": [],
+      "llm_failed": false,
+      "llm_failure_reason": null,
+      "searched_tenants": [
+        "picasso"
+      ],
+      "evidence_tenants": {
+        "picasso": 24
+      }
+    },
+    "error": null,
+    "meta": {}
+  }
+}

@@ -1,0 +1,2 @@
+{"granted": true, "reason": "", "refusal": null, "robotId": "hum-02", "runId": "run-2026-09-22T13:46:26.420385400Z-1", "sawSkillTypes": ["pick_place"], "schemaVersion": "2", "searchId": "search-1"}
+{"granted": false, "reason": "자동 승인 자격의 범위 밖 기체다: hum-05", "refusal": "ROBOT_OUT_OF_SCOPE", "robotId": "hum-05", "runId": "run-2026-09-22T13:46:26.420385400Z-1", "sawSkillTypes": ["pick_place"], "schemaVersion": "2", "searchId": "search-3"}

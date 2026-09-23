@@ -1,0 +1,1 @@
+{"request":{"approverId":"narrator-1","approverKind":"AGENT","robotId":"hum-04","jobOrderId":"PATROL-WITHHELD","sawSkillTypes":["pick_place"]},"status":200,"response":{"schemaVersion":"1","contractSemver":"0.9.0","outcome":"REFUSED","refusal":"WITHHELD","reason":"가려 둔 제안이다 — 사람이 먼저 진단해야 한다: hum-04|PATROL-WITHHELD"}}

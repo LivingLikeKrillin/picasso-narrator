@@ -1,0 +1,702 @@
+{
+  "request": {
+    "path": "/search/answer",
+    "body": {
+      "query": "zzqqxx",
+      "tenant": "picasso"
+    }
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "answer": "이 질문에 대한 내용은 검색된 문서에 없는 것으로 보입니다.\n\n\"zzqqxx\"는 시스템 내 어떤 문서와도 연결되지 않습니다. 찾으시는 내용이 있다면 구체적으로 다시 질문해 주세요.\n",
+      "evidence_snippets": [
+        {
+          "chunk_rid": "chunk_44dbfd09ac9e",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "96. **정리 여섯 — 미결로 적어 두었던 작은 것들을 닫는다.**\n\n    | 항목 | 어디서 미결이 됐나 | 무엇을 했나 |\n    |---|---|---|\n    | `client` 에 `GetKnownSiteNames` 없음 | §15.87 | `PicassoClient.knownSiteNames()`. 판단하지 않는다 — `unsupported` 와 빈 목록을 가르는 것도, `total_count` 로 잘림을 아는 것도 소비자의 일. …",
+          "score": 0.016129032258064516,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_a909760ce381",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 3. 아키텍처",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "카운터를 분리함으로써 gRPC 스트림 전용 메시지가 MQTT 소비자의 결손 감지 로직에 오탐을 유발하는 문제를 근본적으로 차단한다.\n\n토픽 스트림 유형(`{stream}`)은 `state`, `event`, `connection` 3종으로 엄격히 제한된다.\n\n**순서 및 재정렬 보장**: MQTT 프로토콜 자체는 파티션 기반 전역 순서를 보장하지 않으므로, 기체별 전용 토픽과 `sequence` 번호를 통해 수신 측에서 계약 기반 재정렬을 수행한다. …",
+          "score": 0.015873015873015872,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_a6d9cdb37b74",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    ### 판정을 바꿨다 — PARTIAL → YES, 근거와 함께\n\n    `distance/spot-arm.json` 은 `inspect` 를 PARTIAL 로 적고 *\"진짜 결손은 모양의 어긋남 — 우리 계약은 물체 신원을 묻는데 BD 는 어디에 서서 어느 이름의 액션을 돌리는가\"* 라 했다. 어댑터를 실제로 들면서 그 어긋남을 두 자리가 메운다는 것이 보였다.\n\n    | 계약이 묻는 것 | Spot 의 자리 | 어댑터 |\n    |---|---|---|\n    | 대상의 신원(`target`) | …",
+          "score": 0.015625,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_917ce2d7b77b",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    **2026-09-08에 첫 실물 프로파일이 섰다** — `profile/profiles/unitree-g1.json`. 어댑터 설계가 먼저라던 것이 맞았고, 설계하면서 스킬 어휘(`move_relative`)와 프로토콜 한계와 발행 주기가 정해졌다.\n\n    **`derived_from.software_version`은 채워졌으나 펌웨어가 아니다.** `unitree_sdk2_python master (2026-09-08)` 이며, 우리가 본 것이 SDK 소스이지 어느 기체의 펌웨어가 아니기 때문이다. …",
+          "score": 0.015384615384615385,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_fc9ad7a8c01c",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    **그래도 인증은 아니다.** §6.3이 신원과 접근을 범위 밖으로 두었고, 이것은 역할 둘을 가르는 공유 비밀일 뿐이다 — 누가 조작했는지는 여전히 `X-Actor`의 자기 신고이고 위조 가능하다(§15.3). 감사 로그가 부인방지 근거가 아니라 조사 단서인 이유다.\n\n    원래 이 항목은 *\"조작 API가 붙는 순간 이것은 한계가 아니라 결함이 된다\"* 로 끝났다. 조작 API가 붙었고, 결함이 되지 않게 문을 나눴다.\n39. …",
+          "score": 0.015151515151515152,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_a18150d708e9",
+          "doc_title": "시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt)",
+          "section_path": "시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt) > 3. 외부 미결 과제 (External Open — 외부 실물 연동 필요)",
+          "source_uri": "picasso:limits.md",
+          "text": "---",
+          "score": 0.014492753623188406,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.435873+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_c3e223010255",
+          "doc_title": "ADR 23 — 정적 아키텍처 규칙 검사의 문자열 기반 구현",
+          "section_path": "ADR 23 — 정적 아키텍처 규칙 검사의 문자열 기반 구현 > 3. 검증 대상 패턴 및 알려진 한계",
+          "source_uri": "picasso:adr/0023-string-checks-over-ast.md",
+          "text": "## 3. 검증 대상 패턴 및 알려진 한계\n\n### 검사 5번(의존성) 탐지 대상\n- `project(\":x\")`\n- `project(path = \":x\")`\n- `projects.x` (Kotlin DSL 타입세이프 프로젝트 접근자 지원)\n\n### 정규식 검사의 구조적 사각지대 및 한계\n- 외부 플러그인이나 별도 스크립트 파일이 간접 주입하는 의존성은 탐지하지 못합니다 (§15.11).\n- 블록 주석(`/* ... …",
+          "score": 0.013888888888888888,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:25.460842+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_44fbf88e83e6",
+          "doc_title": "시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt)",
+          "section_path": "시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt) > 2. 내부 미결 과제 (Internal Open — 자체 구현으로 해소 가능)",
+          "source_uri": "picasso:limits.md",
+          "text": "---",
+          "score": 0.0136986301369863,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.435873+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_b4e1c7629dca",
+          "doc_title": "시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt)",
+          "section_path": "시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt) > 3. 외부 미결 과제 (External Open — 외부 실물 연동 필요)",
+          "source_uri": "picasso:limits.md",
+          "text": "## 3. 외부 미결 과제 (External Open — 외부 실물 연동 필요)",
+          "score": 0.013513513513513514,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.435873+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_1a7a4cc4caa7",
+          "doc_title": "SOP-06 제어권 상실과 명령 덮어쓰기",
+          "section_path": "SOP-06 제어권 상실과 명령 덮어쓰기",
+          "source_uri": "picasso:SOP-06-제어권-상실과-명령-덮어쓰기.md",
+          "text": "# SOP-06 제어권 상실과 명령 덮어쓰기\n\n> ⚠ **이 문서는 합성 자료다.** 실제 현장 절차가 아니라 검색·설명 계층을 시연하고 평가하기\n> 위해 지어낸 것이다. 운영에 쓰지 마라.",
+          "score": 0.013157894736842105,
+          "doc_type": "policy",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true,
+          "updated_at": "2026-09-18T00:29:58.155078+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_219ab037208c",
+          "doc_title": "합성 SOP 6종 — 코퍼스 안내",
+          "section_path": "합성 SOP 6종 — picasso 코퍼스 평가용 > ⚠ 비운 여섯도 완전한 공백은 아니다",
+          "source_uri": "picasso:README.md",
+          "text": "## ⚠ 비운 여섯도 완전한 공백은 아니다\n\n설계 문서(`2026-09-09-middleware-core-design.md` §1.3)가 **15종을 전부 표로 나열한다.**\n그래서 *\"`ROBOT_FELL` 이 뭔가\"* 라고 물으면 정의는 나온다. 비어 있는 것은 **절차**이지\n용어가 아니다.\n\n근거 없는 사건을 만들려면 질문을 **절차 쪽으로** 세워야 한다 — 예를 들어\n*\"기체가 넘어졌을 때 자재를 어떻게 회수하는가\"*. 어느 편을 얼마나 비울지는 골든셋을\n짜는 쪽에서 정하고, 필요하면 이 표를 그때 다시 맞춘다.",
+          "score": 0.01282051282051282,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [
+            "synthetic"
+          ],
+          "synthetic": true,
+          "updated_at": "2026-09-18T00:38:58.989966+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_5658992a5a53",
+          "doc_title": "ADR 30 — Protobuf 코드 생성의 Gradle 플러그인 위임",
+          "section_path": "ADR 30 — Protobuf 코드 생성의 Gradle 플러그인 위임 > 4. 트레이드오프 및 관리 규칙",
+          "source_uri": "picasso:adr/0030-codegen-outside-buf.md",
+          "text": "## 4. 트레이드오프 및 관리 규칙\n\n- **이중 컴파일러 운영**: Gradle 플러그인이 참조하는 protoc와 `buf` 내장 protoc 버전이 다를 수 있으나, 표준 메시지 직렬화 규격 내에서 동작하므로 상호 운용성 문제는 없습니다.\n- **계약 다이제스트 일관성 검증**: `contracts` 바이너리 디스크립터의 SHA-256 해시가 헤더의 `contract_digest`로 쓰이므로, 빌드 도구 버전 업그레이드 시 디스크립터 바이트의 불변성을 대조 검증해야 합니다. …",
+          "score": 0.012658227848101266,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:25.504863+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_dc75a2a1bd62",
+          "doc_title": "ADR 29 — 기종 프로파일 공용 파싱 모델(profile-model) 분리 및 공유",
+          "section_path": "ADR 29 — 기종 프로파일 공용 파싱 모델(`profile-model`) 분리 및 공유 > 4. 관련 사양 및 문서",
+          "source_uri": "picasso:adr/0029-shared-profile-model.md",
+          "text": "## 4. 관련 사양 및 문서\n\n- 설계 문서 §3.1, §3.2 (모듈 아키텍처 구성도), §7.2 ([ADR 10](0010-projection-boundary.md) 투영 경계)\n- [ADR 30](0030-codegen-outside-buf.md) (Gradle 기반 빌드 도구 구성)\n\n> 마지막 대조: 2026-09-15 · sha256:a914932608e6 · 열림: 없음",
+          "score": 0.0125,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:25.480481+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_890ae9955232",
+          "doc_title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+          "section_path": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의 > 4. 시나리오 ② — 부품 시퀀싱 (휴머노이드, `pick_place`)",
+          "source_uri": "picasso:scenarios.md",
+          "text": "## 4. 시나리오 ② — 부품 시퀀싱 (휴머노이드, `pick_place`)\n\n> **이 시나리오는 두 층에서 돌린다** — 계약 층은 `harness/src/test/kotlin/dev/picasso/harness/SequencingCellTest.kt`, **미들웨어 층은 `picasso/src/test/kotlin/dev/picasso/middleware/SequencingRackTest.kt`**(§15.88 — JobOrder 접수 → 조합 → 근거 결합 → JobResponse 까지, 상황표 넷 전부). …",
+          "score": 0.012345679012345678,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.324505+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_c4e77e59089a",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    §15.94 의 첫 정직 항목(*시작 직전 스냅샷 한 번*)을 닫았다. 계약 §4.8 이 소비자에게 요구한 패턴 그대로다: `GetSnapshot` 으로 현재값(활성 결함·연결 상태·태스크 상태)과 **다음에 올 번호**를 받고, `ReplayEvents(from)` 로 그 사이의 사실을 이어 붙이며, `SEQUENCE_EVICTED` 면 스냅샷부터 다시 세운다. 이것이 보고서 17장 9번 *단절 후 재동기화 — 스냅샷 조회로 놓친 전이를 복원, 중간 상태 유실 없음* 이다. …",
+          "score": 0.014925373134328358,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_119beaae3050",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    ★**먼저 댄 것은 계약 다이제스트다.** 헤더의 `contract_digest` 가 `descriptor.binpb` 의 SHA-256 이라, 플러그인이 디스크립터 바이트를 한 바이트라도 바꾸면 **전 소비자가 `CONTRACT_REVISION_MISMATCH` 경보를 받는다.** 올리기 전에 기준값을 떠 두고(27084 바이트 · `76dc026d…`) 올린 뒤 다시 떴다 — **같다.** 도구 판을 올릴 때 이 저장소가 가장 먼저 확인해야 하는 값이다. …",
+          "score": 0.014705882352941176,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_7e726dda00bb",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    ★**적기만 하면 이번에는 반대로 낡는다.** 플러그인을 올려도 이 줄이 그대로면 새 컴파일러로 옛 언어 판을 쓰게 되고 그것도 아무도 안 본다. 그래서 `KotlinLanguageVersionTest` 가 카탈로그의 `kotlin` 판과 `build.gradle.kts` 의 고정을 **묶는다.** 이 시험이 빨개지는 뜻은 *언어 판이 틀렸다* 가 아니라 ***플러그인을 올렸으니 언어 판을 어떻게 할지 정하라*** 다 — 막는 장치가 아니라 **사람이 봐야 하는 순간에 빨개지는 장치**이고, 도장의 해시가 문서에 대해 하는 …",
+          "score": 0.014285714285714285,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_8e3bf1389378",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    `SpotHostEndToEndTest`(Spot 모듈 — 기종을 아는 쪽이 조립한다): 상류 JobOrder(점검 대상 둘) → `InspectAsset` → 계약 → 호스트 → `SpotAdapter` → 가짜 벤더 표면(미션·지도·세계 모델·취득). 이동 둘은 미션으로, 점검 둘은 취득으로 갔고, `DataIdentifier` 가 대상의 이름을 달고 `partial_result` → `ExecutionUnit.result` → **`JobResponse.results`** 에 닿았다. …",
+          "score": 0.014084507042253521,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_ebde5a1732d3",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "    **게이트 검사로 만들지 않았다.** 게이트는 PR 을 막는 것이고, 산문의 숫자 하나로 남의 PR 을 막으면 그 검사는 곧 꺼진다. 그리고 `gate` 는 `contracts` 에도 `registry` 에도 의존하지 않으므로(§3.2) **소스를 문자열로 읽어** 센다 — 의존을 만들어 시험을 편하게 하면 그것이 §3.2 의 첫 예외가 된다.\n\n    같은 훑기에서 **거짓이 된 진술 둘**을 잡았다: §15.21 이 *\"실물 어댑터는 ULID 를 쓴다\"* 고 적었는데 어댑터 호스트도 카운터를 쓴다(계획이 사실로 적혀 …",
+          "score": 0.013333333333333334,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_7a589e355e01",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 15. 알려진 한계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "125. **감사가 문서 셋을 훑었다 — 그리고 \"참이지만 아무도 안 받치는 문장\"이 무더기로 나왔다.**\n\n    완료 조건의 첫 감사 묶음(`verification.md`·`limits.md`·`architecture.md`). **틀린 여섯**은 고쳐서 넷을 시험으로 받쳤다(같은 커밋). 그런데 남은 갈래가 하나 더 있었다 — **틀리지는 않았는데 그것을 지키는 것이 아무것도 없는 문장들.**\n\n    ★가장 큰 덩이는 `architecture.md` 의 **의존 규칙 그림**이다. …",
+          "score": 0.012987012987012988,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_8879b46efbed",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 3. 아키텍처",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "## 3. 아키텍처\n\n### 3.1 모듈 구성\n\n```\npicasso/\n  contracts/          proto. 스킬·태스크·이벤트·결함           A-1 A-2 A-4\n  profile/\n    schema/           능력 프로파일 JSON Schema                C-1\n    profiles/         기종 프로파일 문서들 (*.json)\n    fixtures/         게이트·시험 전용 픽스처 (프로파일·요구 집합)\n  profile-model/      프로파일 문서의 …",
+          "score": 0.0,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_7ab2fb00972c",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 3. 아키텍처",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "**`adapter-core`의 태동**: ADR 33에서 예고한 바와 같이, 다수 어댑터 간의 공통 어휘 추출 요구에 따라 신설되었다. 추출된 공통 모듈은 기종 무의존성을 유지해야 하므로 게이트 7번 검사 목록에 편입되었다. 검사 7번 대상 모듈은 현재 총 8개이다 — `client` · `mimic` · `harness` · `adapter-core` · `picasso` · `capability` · `adapter-host` · `uplink`. …",
+          "score": 0.0,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_9818ff5d87e8",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 3. 아키텍처",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "**순환 방지 아키텍처 규칙:**\n1. **`registry`는 `mimic`과 `harness`를 직접 호출하지 않는다.** 시험 요청은 `revision_test_request` 레코드로 적재되며, `harness`가 비동기 폴링으로 작업을 인출하여 실행한 후 결과를 보고한다.\n2. **`registry`는 하위 모듈에 직접 푸시하지 않는다.** 갱신 사항은 각 기체가 능동적으로 폴링하며, 관측 데이터는 브로커 토픽 구독을 통해 비동기 수신한다. …",
+          "score": 0.0,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_c6212e521023",
+          "doc_title": "현장 배포 및 시운전(Commissioning) 운영 가이드",
+          "section_path": "현장 배포 및 시운전(Commissioning) 운영 가이드 > 3. 운영 중 동적 변경 관리 (Day-2 Operations)",
+          "source_uri": "picasso:commissioning.md",
+          "text": "## 3. 운영 중 동적 변경 관리 (Day-2 Operations)\n\n<picture>\n  <source media=\"(prefers-color-scheme: dark)\" srcset=\"diagrams/change-plan.dark.svg\">\n  <img alt=\"변경 계획 검증 흐름 다이어그램. 사전조건 검증(6개 항목) 및 변경 의도 4단계가 정의되어 있습니다.\" src=\"diagrams/change-plan.svg\">\n</picture>\n\n| 변경 대상 작업 | 호출 API 엔드포인트 | 라인 정지(Downtime) 수반 …",
+          "score": 0.03021353930031804,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:25.886793+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_7424987ac9f3",
+          "doc_title": "picasso — 표준 용어 사전 (Glossary)",
+          "section_path": "picasso — 표준 용어 사전 (Glossary) > 5. 운영 변경 및 거버넌스 (Operational Changes & Governance)",
+          "source_uri": "picasso:glossary.md",
+          "text": "## 5. 운영 변경 및 거버넌스 (Operational Changes & Governance)\n\n### 4대 독립 변경 축\n1. **계약 축 (`contracts/`)**: Protobuf 사양 (배포 시 SemVer 변경, 비가역).\n2. **프로파일 축 (`profile/`)**: 기종 능력 선언 문서 (런타임 개정판 활성화, 가역).\n3. **어댑터 축 (`adapter-*/`)**: 기종 연동 드라이버 바이너리 (버전 관리 및 재배포, 가역).\n4. …",
+          "score": 0.029857397504456328,
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:26.122128+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_910b13ea41a4",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 8. 레지스트리와 저장 체계 (`registry/`)",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "**핵심 데이터 모델링 결정 6가지:**\n1. **프로파일 개정판의 불변성**: `VALIDATED` 진입 이후 레코드는 절대 수정할 수 없다. 상태 전이는 `DRAFT → VALIDATED → TESTED → ACTIVE → SUPERSEDED / REVOKED` 흐름을 준수한다. 롤백은 과거 `SUPERSEDED` 개정판의 재활성화를 통해 수행된다.\n2. **원본 JSONB와 정규화 테이블의 공존**: 진실의 원천(Single Source of Truth)은 원본 `document`이며, 정규화 테이블은 인덱싱 및 빠른 조회를 …",
+          "score": 0.02797067901234568,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_d937482747a7",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 14. 아키텍처 결정 기록 (ADR · D-2)",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "## 14. 아키텍처 결정 기록 (ADR · D-2)\n\n| 번호 | 아키텍처 결정 내용 | 한계 및 후속 과제 |\n|---|---|---|\n| 1 | 계약은 Protobuf, 프로파일은 JSON Schema로 이원화하고 정합성은 게이트 4번으로 통제 | — |\n| 2 | 결함 처방 3분류를 계약에서 배제하고 잔여 역량 불리언 2종으로 객관화 | — |\n| 3 | 능력 동일성을 Major 버전으로 결정하는 규율 확립 | §15.1 |\n| 4 | 토픽 경로·헤더·페이로드의 관심사 분리 및 SemVer 병기 | §15.4 |\n| 5 | …",
+          "score": 0.024562989752863168,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_a6addbed4abe",
+          "doc_title": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계",
+          "section_path": "picasso — 이기종 로봇 표준 I/F 계약과 운영 변경 체계 > 9. 운영 변경 체계",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "text": "## 9. 운영 변경 체계\n\n변경 파급 범위를 사전 계산하여 운영 위험을 제어하는 결정론적 메커니즘을 정의한다.\n\n### 9.1 독립적인 4대 변경 축\n\n| 변경 축 | 대상 | 변경 메커니즘 | 롤백 정책 |\n|---|---|---|---|\n| **계약 축** | `contracts/` Protobuf | 신규 릴리스 배포 (SemVer) | **비가역 (소비자 코드 기생성)** |\n| **프로파일 축** | 기종별 능력 선언 사양서 | 개정판 발행 및 런타임 활성화 | `SUPERSEDED` 재활성화 |\n| **어댑터 축** …",
+          "score": 0.016129032258064516,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-18T00:29:00.999300+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        },
+        {
+          "chunk_rid": "chunk_ff8751cd1473",
+          "doc_title": "완료 기준 설계 사양 — 시스템 완결성 검증 체계 (Completion Criterion Specification)",
+          "section_path": "완료 기준 설계 사양 — 시스템 완결성 검증 체계 (Completion Criterion Specification) > 4. 3대 판정 분류 및 증명 형식",
+          "source_uri": "picasso:superpowers/specs/2026-09-10-completion-criterion-design.md",
+          "text": "## 4. 3대 판정 분류 및 증명 형식\n\n1. **뒷받침 (Proven)**: `docs/contract.md`의 담보 표 규격과 동일하게 구체적인 검증 테스트 케이스를 명시합니다 (형식: `` `모듈` · `테스트클래스` · `테스트메서드` ``). 런타임 구간을 경유하는 주장은 `docs/verification.md`의 검증 등급을 병기합니다.\n2. **미결 등록 (Open)**: `docs/limits.md`에 공식 등재된 고유 ID(`§15.34`, `C-3` 등)를 반드시 인용해야 합니다.\n3. …",
+          "score": 0.016129032258064516,
+          "doc_type": "spec",
+          "provenance_tier": "authored",
+          "provenance_mark": "",
+          "code_anchors": null,
+          "labels": [],
+          "synthetic": false,
+          "updated_at": "2026-09-17T20:19:28.572267+00:00",
+          "staleness": {
+            "age_days": 0,
+            "ttl_days": 365,
+            "stale": false
+          }
+        }
+      ],
+      "graph_findings": null,
+      "provenance": [
+        {
+          "doc_rid": "doc_b7dc64c911a6",
+          "source_uri": "picasso:superpowers/specs/2026-09-05-picasso-design.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_aea488677d5a",
+          "source_uri": "picasso:limits.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_49be2d827d8a",
+          "source_uri": "picasso:adr/0023-string-checks-over-ast.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_1e7cacc91f29",
+          "source_uri": "picasso:SOP-06-제어권-상실과-명령-덮어쓰기.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_96c0725a3589",
+          "source_uri": "picasso:README.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_a5bde753d9df",
+          "source_uri": "picasso:adr/0030-codegen-outside-buf.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_75a409ba3c32",
+          "source_uri": "picasso:adr/0029-shared-profile-model.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_294472e825e6",
+          "source_uri": "picasso:scenarios.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_f45e15ad22a6",
+          "source_uri": "picasso:commissioning.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_0faf7c35a2a5",
+          "source_uri": "picasso:glossary.md",
+          "source_version": "",
+          "approved_hash": ""
+        },
+        {
+          "doc_rid": "doc_a1a8d84e8dc8",
+          "source_uri": "picasso:superpowers/specs/2026-09-10-completion-criterion-design.md",
+          "source_version": "",
+          "approved_hash": ""
+        }
+      ],
+      "route_used": "hybrid_only",
+      "n_unknown_origin_time": null,
+      "timing_ms": {
+        "total_ms": 208,
+        "bm25_ms": 196,
+        "llm_ms": 8339
+      },
+      "citations": [],
+      "unverified_citations": 0,
+      "unverified_numbers": 0,
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "cost_usd": null,
+        "model": "claude-sonnet-4-6"
+      },
+      "n_stale": 0,
+      "abstained": false,
+      "abstain_reason": "",
+      "weak_evidence": true,
+      "degraded": [],
+      "llm_failed": false,
+      "llm_failure_reason": null,
+      "searched_tenants": [
+        "picasso"
+      ],
+      "evidence_tenants": {
+        "picasso": 29
+      }
+    },
+    "error": null,
+    "meta": {}
+  }
+}

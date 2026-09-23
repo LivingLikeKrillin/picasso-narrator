@@ -1,0 +1,76 @@
+{
+  "request": {
+    "path": "/search",
+    "body": {
+      "query": "깊이 상한",
+      "tenant": "merge2",
+      "top_k": 3
+    }
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "results": [
+        {
+          "rid": "chunk_d3ff4710735e",
+          "doc_rid": "doc_54228f52110b",
+          "doc_title": "한국어 검색 품질 — 자를 만들고, 그 자가 잡은 것들",
+          "section_path": "임베딩 비교 (nomic: Ollama / KURE-v1: 하니스 전용 이미지) > 6. 남은 미결",
+          "source_uri": "default:KOREAN_SEARCH_QUALITY.md",
+          "snippet": "## 6. 남은 미결\n\n| 항목 | 소유자 | 트리거 |\n|---|---|---|\n| ~~**1024차원 ANN 리콜 손실**~~ — **철회됨.** 그 손실은 존재하지 않았다(오염된 벡터를 읽은 측정, §3.5). ANN 델타는 ±0.000 이고 교체는 2026-08-05 에 완료됐다 | — | 없음 |\n| ~~**사이드카 동시성**~~ — **측정 완료**(2026-08-05, `reports/2026-08-05-sidecar-concurrency.md`): C=4 p95 528 ms(예산 통과) · C=8 1195 ms · …",
+          "score": 0.028850145288501453,
+          "bm25_rank": 5,
+          "vector_rank": 12,
+          "classification": "INTERNAL",
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "labels": [],
+          "synthetic": false
+        },
+        {
+          "rid": "chunk_7b8470f13834",
+          "doc_rid": "doc_54228f52110b",
+          "doc_title": "한국어 검색 품질 — 자를 만들고, 그 자가 잡은 것들",
+          "section_path": "임베딩 비교 (nomic: Ollama / KURE-v1: 하니스 전용 이미지) > 8. 답변 품질 — 처음 재봤더니 부러진 것은 답변이 아니었다 (2026-08-08)",
+          "source_uri": "default:KOREAN_SEARCH_QUALITY.md",
+          "snippet": "## 8. 답변 품질 — 처음 재봤더니 부러진 것은 답변이 아니었다 (2026-08-08)\n\n§0 부터 §7 까지는 전부 **검색**을 잰다. 답변은 한 번도 안 쟀다 — 있던 것은 결정론적 가드\n셋(인용 사후검증·숫자 근거검증·근거 신선도)뿐이고, 셋 다 답변이 근거를 **벗어났는지**를 보지 답이\n**맞는지**를 보지 않는다.\n\n### 8.1 자\n\n`scripts/ko_eval_answer_quality.py` — **LLM 심판 없이** 세 가지를 코드가 판정한다. …",
+          "score": 0.02804284323271665,
+          "bm25_rank": 4,
+          "vector_rank": 18,
+          "classification": "INTERNAL",
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "labels": [],
+          "synthetic": false
+        },
+        {
+          "rid": "chunk_08ab36f00049",
+          "doc_rid": "doc_6e4568c30d29",
+          "doc_title": "Nexus Slack Bot 설정 가이드",
+          "section_path": "채널 → 별칭. 매핑에 없는 채널은 기본 코퍼스로 간다. > 5. 응답 형태",
+          "source_uri": "default:SLACK_BOT.md",
+          "snippet": "## 5. 응답 형태\n\nSlack Block Kit으로 구성된 응답:\n\n```\n┌─────────────────────────────────────────────┐\n│ 결제 서비스는 payment.completed 토픽을       │\n│ Kafka로 발행합니다. [1][2]                   │  ← 답변 본문\n├─────────────────────────────────────────────┤\n│ [1] 결제 설계 문서 > 아키텍처 > 이벤트        │\n│     (score: 0.92) …",
+          "score": 0.016129032258064516,
+          "bm25_rank": 1,
+          "vector_rank": null,
+          "classification": "INTERNAL",
+          "doc_type": "markdown",
+          "provenance_tier": "authored",
+          "labels": [],
+          "synthetic": false
+        }
+      ],
+      "graph_findings": null,
+      "route_used": "hybrid_only",
+      "n_unknown_origin_time": null,
+      "timing_ms": {
+        "total_ms": 113,
+        "bm25_ms": 105
+      },
+      "degraded": []
+    },
+    "error": null,
+    "meta": {}
+  }
+}

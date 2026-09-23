@@ -1,0 +1,2019 @@
+{
+ "version": 8,
+ "truth": "handoff 에서 가져온 ground-truth.jsonl. 정답은 거기 있고 여기 없다.",
+ "entries": [
+  {
+   "id": "G1",
+   "kind": "incident",
+   "bundle": {
+    "incidentId": "incident-1",
+    "jobOrderId": "PATROL-1",
+    "executionId": "exec-2",
+    "robotId": "hum-02",
+    "unitId": "remedy-1-pick_place",
+    "at": "2026-09-06T00:00:02Z",
+    "wallClockAt": "2026-09-22T16:47:30.583823300Z",
+    "failureClass": "PAYLOAD_LOST",
+    "fault": {
+     "failureClass": "PAYLOAD_LOST",
+     "errorType": "PAYLOAD_LOST",
+     "vendorDetail": "",
+     "errorHint": "떨어뜨린 대상을 회수해 원위치에 놓고 재시도하십시오.",
+     "references": [
+      {
+       "key": "KEY_SKILL_ID",
+       "value": "pick_place"
+      },
+      {
+       "key": "KEY_TASK_ID",
+       "value": "PATROL-1#remedy-1-pick_place"
+      }
+     ],
+     "canContinueCurrentTask": false,
+     "canAcceptNewTask": false,
+     "activeUntilKind": "KIND_UNTIL_CLEARED",
+     "activeUntilTime": ""
+    },
+    "blockedBy": [
+     {
+      "failureClass": "PAYLOAD_LOST",
+      "errorType": "PAYLOAD_LOST",
+      "vendorDetail": "",
+      "errorHint": "떨어뜨린 대상을 회수해 원위치에 놓고 재시도하십시오.",
+      "references": [
+       {
+        "key": "KEY_SKILL_ID",
+        "value": "pick_place"
+       },
+       {
+        "key": "KEY_TASK_ID",
+        "value": "PATROL-1#remedy-1-pick_place"
+       }
+      ],
+      "canContinueCurrentTask": false,
+      "canAcceptNewTask": false,
+      "activeUntilKind": "KIND_UNTIL_CLEARED",
+      "activeUntilTime": ""
+     }
+    ],
+    "residualHold": {
+     "kind": "HOLD_KIND_EMPTY",
+     "objectRef": "",
+     "reason": ""
+    },
+    "unresolved": false,
+    "preconditionSubjects": [],
+    "evidenceWindow": [
+     {
+      "sequence": 5,
+      "occurredAt": "2026-09-06T00:00:01Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "PATROL-1#remedy-1-pick_place TASK_STATE_UNSPECIFIED->TASK_STATE_ACCEPTED rev=1 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 6,
+      "occurredAt": "2026-09-06T00:00:02Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "PATROL-1#remedy-1-pick_place TASK_STATE_ACCEPTED->TASK_STATE_RUNNING rev=1 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 7,
+      "occurredAt": "2026-09-06T00:00:02Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "PATROL-1#remedy-1-pick_place pick_place SKILL_STATE_READY->SKILL_STATE_RUNNING",
+      "local": false
+     },
+     {
+      "sequence": 8,
+      "occurredAt": "2026-09-06T00:00:02Z",
+      "kind": "FAULT_RAISED",
+      "detail": "PAYLOAD_LOST class=PAYLOAD_LOST can_accept_new_task=false",
+      "local": false
+     },
+     {
+      "sequence": 9,
+      "occurredAt": "2026-09-06T00:00:02Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "PATROL-1#remedy-1-pick_place pick_place SKILL_STATE_RUNNING->SKILL_STATE_HALTED",
+      "local": false
+     },
+     {
+      "sequence": 10,
+      "occurredAt": "2026-09-06T00:00:02Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "PATROL-1#remedy-1-pick_place pick_place SKILL_STATE_HALTED->SKILL_STATE_READY",
+      "local": false
+     },
+     {
+      "sequence": 11,
+      "occurredAt": "2026-09-06T00:00:02Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "PATROL-1#remedy-1-pick_place TASK_STATE_RUNNING->TASK_STATE_NEEDS_INTERVENTION rev=1 attempt=0",
+      "local": false
+     }
+    ],
+    "windowTruncated": false,
+    "expectedHold": "HOLD_KIND_HOLDING",
+    "observedHold": "HOLD_KIND_EMPTY",
+    "effectMismatch": "PAYLOAD_LOST",
+    "requiredEvidence": "E0",
+    "reachedEvidence": "E0",
+    "verification": "NOT_REQUESTED",
+    "step": {
+     "at": 1,
+     "plan": [
+      "remedy-1-pick_place",
+      "PUMP-01.travel",
+      "PUMP-01"
+     ],
+     "completed": []
+    },
+    "route": "ROBOT",
+    "intent": {
+     "workMasterId": "InspectAsset",
+     "orderVersion": 1,
+     "orderParameters": {},
+     "materials": [],
+     "equipment": [
+      {
+       "id": "PUMP-01",
+       "equipmentUse": "inspection_target",
+       "properties": {
+        "location": "PUMP-ROOM-1"
+       }
+      }
+     ],
+     "capabilityMaxEvidence": "E0",
+     "evidenceWindowBefore": "PT30S",
+     "evidenceWindowAfter": "PT15S",
+     "skillType": "pick_place",
+     "unitParameters": {
+      "destination": "RACK-204.S01",
+      "object_id": "SEQ-IN-02.BIN-A"
+     },
+     "source": null,
+     "destination": null,
+     "expectedIdentity": null
+    },
+    "observation": {
+     "linkBroken": false,
+     "lateEvents": [],
+     "progressObservable": true,
+     "progressStalled": false
+    },
+    "profileRevision": 1,
+    "contractSemver": "0.9.0",
+    "approvedBy": {
+     "id": "narrator-1",
+     "kind": "AGENT"
+    },
+    "review": null,
+    "resolution": null,
+    "digest": "d04ac2a20a63afc2ba147218bae871ef69746c990e3993deb00cfb4ddd262143"
+   },
+   "search": {
+    "searchId": "search-1",
+    "robotId": "hum-02",
+    "jobOrderId": "PATROL-1",
+    "at": "2026-09-06T00:00:01Z",
+    "wallClockAt": "2026-09-22T16:47:30.473263200Z",
+    "outcome": "FOUND",
+    "steps": [
+     {
+      "skillType": "pick_place",
+      "requires": [],
+      "expectedHold": "HOLD_KIND_EMPTY",
+      "onFailureHold": "HOLD_KIND_HOLDING"
+     }
+    ]
+   },
+   "searchWhy": "run-1 의 search-1. 실물 한 벌에서 사건과 짝이 되는 유일한 탐색 줄이다(2026-09-18)",
+   "procedure": {
+    "doc": "SOP-01 파지 실패와 잔여 파지 처리",
+    "section": "5",
+    "why": "SOP-01 §2 표가 PAYLOAD_LOST 를 ✅ 로 든다. 절차는 §5 (2026-09-20 코퍼스 실측)"
+   },
+   "mustNotClaim": [
+    "E2",
+    "독립 설비",
+    "설비 확인"
+   ],
+   "why": "required=E0·reached=E0 다. 독립 설비 확인이 요구된 적도 닿은 적도 없는데 그렇게 말하면 근거를 부풀리는 것이다",
+   "noLabelBecause": "1순위 원인이 번들에 이미 적혀 있다 — 분류가 붙었거나 벤더 코드가 뜻을 말한다. 되읽기만 해도 맞으므로 지표 1 에서 뺀다. 재는 것은 «어긋난 주장을 했나» 뿐이다."
+  },
+  {
+   "id": "G2",
+   "kind": "incident",
+   "bundle": {
+    "incidentId": "incident-2",
+    "jobOrderId": "SEQ-3",
+    "executionId": "exec-4",
+    "robotId": "hum-04",
+    "unitId": "RACK-204.S03",
+    "at": "2026-09-06T00:01:39Z",
+    "wallClockAt": "2026-09-22T16:47:35.163200200Z",
+    "failureClass": "GRASP_FAILED",
+    "fault": {
+     "failureClass": "GRASP_FAILED",
+     "errorType": "X_FIXTURE_GRIPPER_SLIP",
+     "vendorDetail": "X_FIXTURE_GRIPPER_SLIP",
+     "errorHint": "그리퍼 패드의 마모를 점검하고 대상 자세를 다시 잡으십시오.",
+     "references": [
+      {
+       "key": "KEY_SKILL_ID",
+       "value": "pick_place"
+      },
+      {
+       "key": "KEY_TASK_ID",
+       "value": "SEQ-3#RACK-204.S03"
+      }
+     ],
+     "canContinueCurrentTask": false,
+     "canAcceptNewTask": false,
+     "activeUntilKind": "KIND_UNTIL_CLEARED",
+     "activeUntilTime": ""
+    },
+    "blockedBy": [],
+    "residualHold": {
+     "kind": "HOLD_KIND_HOLDING",
+     "objectRef": "SEQ-IN-02.BIN-A",
+     "reason": ""
+    },
+    "unresolved": true,
+    "preconditionSubjects": [],
+    "evidenceWindow": [
+     {
+      "sequence": 5,
+      "occurredAt": "2026-09-06T00:01:38Z",
+      "kind": "RESYNC",
+      "detail": "snapshot: next sequence=5, faults=0, connection=CONNECTION_STATE_ONLINE",
+      "local": true
+     },
+     {
+      "sequence": 5,
+      "occurredAt": "2026-09-06T00:01:38Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-3#RACK-204.S03 TASK_STATE_UNSPECIFIED->TASK_STATE_ACCEPTED rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 6,
+      "occurredAt": "2026-09-06T00:01:39Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-3#RACK-204.S03 TASK_STATE_ACCEPTED->TASK_STATE_RUNNING rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 7,
+      "occurredAt": "2026-09-06T00:01:39Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-3#RACK-204.S03 pick_place SKILL_STATE_READY->SKILL_STATE_RUNNING",
+      "local": false
+     },
+     {
+      "sequence": 8,
+      "occurredAt": "2026-09-06T00:01:39Z",
+      "kind": "FAULT_RAISED",
+      "detail": "X_FIXTURE_GRIPPER_SLIP class=GRASP_FAILED can_accept_new_task=false",
+      "local": false
+     },
+     {
+      "sequence": 9,
+      "occurredAt": "2026-09-06T00:01:39Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-3#RACK-204.S03 pick_place SKILL_STATE_RUNNING->SKILL_STATE_HALTED",
+      "local": false
+     },
+     {
+      "sequence": 10,
+      "occurredAt": "2026-09-06T00:01:39Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-3#RACK-204.S03 pick_place SKILL_STATE_HALTED->SKILL_STATE_READY",
+      "local": false
+     },
+     {
+      "sequence": 11,
+      "occurredAt": "2026-09-06T00:01:39Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-3#RACK-204.S03 TASK_STATE_RUNNING->TASK_STATE_NEEDS_INTERVENTION rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 12,
+      "occurredAt": "2026-09-06T00:01:39Z",
+      "kind": "CELL_SIGNAL",
+      "detail": "RACK-204.S03: occupied=true identity=ENGINE-COVER-A at=(read now)",
+      "local": true
+     }
+    ],
+    "windowTruncated": false,
+    "expectedHold": "HOLD_KIND_HOLDING",
+    "observedHold": "HOLD_KIND_HOLDING",
+    "effectMismatch": null,
+    "requiredEvidence": "E2",
+    "reachedEvidence": "E0",
+    "verification": "MATCHED",
+    "step": {
+     "at": 1,
+     "plan": [
+      "RACK-204.S03"
+     ],
+     "completed": []
+    },
+    "route": "ROBOT",
+    "intent": {
+     "workMasterId": "PrepareSequencedRack",
+     "orderVersion": 17,
+     "orderParameters": {},
+     "materials": [
+      {
+       "materialDefinitionId": "ENGINE-COVER-A",
+       "quantity": 1
+      }
+     ],
+     "equipment": [
+      {
+       "id": "RACK-204.S03",
+       "equipmentUse": "destination",
+       "properties": {
+        "material": "ENGINE-COVER-A"
+       }
+      },
+      {
+       "id": "SEQ-IN-02.BIN-A",
+       "equipmentUse": "source",
+       "properties": {
+        "material": "ENGINE-COVER-A"
+       }
+      }
+     ],
+     "capabilityMaxEvidence": "E2",
+     "evidenceWindowBefore": "PT30S",
+     "evidenceWindowAfter": "PT15S",
+     "skillType": "pick_place",
+     "unitParameters": {
+      "destination": "RACK-204.S03",
+      "object_id": "SEQ-IN-02.BIN-A"
+     },
+     "source": "SEQ-IN-02.BIN-A",
+     "destination": "RACK-204.S03",
+     "expectedIdentity": "ENGINE-COVER-A"
+    },
+    "observation": {
+     "linkBroken": false,
+     "lateEvents": [],
+     "progressObservable": true,
+     "progressStalled": false
+    },
+    "profileRevision": 1,
+    "contractSemver": "0.9.0",
+    "approvedBy": null,
+    "review": null,
+    "resolution": null,
+    "digest": "af2b5726d50290366458080e071bc297b258668ffc7dac77d1fd7c66d46dac75"
+   },
+   "procedure": {
+    "doc": "SOP-01 파지 실패와 잔여 파지 처리",
+    "section": "5",
+    "why": "SOP-01 §2 표가 GRASP_FAILED 를 ✅ 로 든다. 절차는 §5.1"
+   },
+   "mustNotClaim": [
+    "떨어뜨",
+    "놓쳤",
+    "빈손",
+    "EMPTY"
+   ],
+   "why": "expectedHold·observedHold 가 둘 다 HOLDING 이고 effectMismatch 가 널이다. 쥐고 있는데 «떨어뜨렸다» 고 하면 관측과 반대다",
+   "noLabelBecause": "picasso 가 «골든이 아니다» 라고 적었다 — X_FIXTURE_GRIPPER_SLIP 은 어댑터가 매핑한 코드라 분류가 붙어 있고 이름이 뜻을 말한다. 매핑된 경우를 보여 주는 자리이지 재는 자리가 아니다."
+  },
+  {
+   "id": "G3",
+   "kind": "incident",
+   "bundle": {
+    "incidentId": "incident-3",
+    "jobOrderId": "PATROL-4",
+    "executionId": "exec-5",
+    "robotId": "hum-05",
+    "unitId": "PUMP-01.travel",
+    "at": "2026-09-06T00:01:40Z",
+    "wallClockAt": "2026-09-22T16:47:35.211836200Z",
+    "failureClass": "LOCALIZATION_LOST",
+    "fault": {
+     "failureClass": "LOCALIZATION_LOST",
+     "errorType": "LOCALIZATION_LOST",
+     "vendorDetail": "",
+     "errorHint": "로봇을 알려진 랜드마크 앞으로 옮기고 재측위를 실행하십시오.",
+     "references": [],
+     "canContinueCurrentTask": false,
+     "canAcceptNewTask": false,
+     "activeUntilKind": "KIND_UNTIL_CLEARED",
+     "activeUntilTime": ""
+    },
+    "blockedBy": [
+     {
+      "failureClass": "LOCALIZATION_LOST",
+      "errorType": "LOCALIZATION_LOST",
+      "vendorDetail": "",
+      "errorHint": "로봇을 알려진 랜드마크 앞으로 옮기고 재측위를 실행하십시오.",
+      "references": [],
+      "canContinueCurrentTask": false,
+      "canAcceptNewTask": false,
+      "activeUntilKind": "KIND_UNTIL_CLEARED",
+      "activeUntilTime": ""
+     }
+    ],
+    "residualHold": {
+     "kind": "HOLD_KIND_EMPTY",
+     "objectRef": "",
+     "reason": ""
+    },
+    "unresolved": false,
+    "preconditionSubjects": [],
+    "evidenceWindow": [
+     {
+      "sequence": 5,
+      "occurredAt": "2026-09-06T00:01:39Z",
+      "kind": "RESYNC",
+      "detail": "snapshot: next sequence=5, faults=0, connection=CONNECTION_STATE_ONLINE",
+      "local": true
+     },
+     {
+      "sequence": 5,
+      "occurredAt": "2026-09-06T00:01:39Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "PATROL-4#PUMP-01.travel TASK_STATE_UNSPECIFIED->TASK_STATE_ACCEPTED rev=1 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 6,
+      "occurredAt": "2026-09-06T00:01:40Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "PATROL-4#PUMP-01.travel TASK_STATE_ACCEPTED->TASK_STATE_RUNNING rev=1 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 7,
+      "occurredAt": "2026-09-06T00:01:40Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "PATROL-4#PUMP-01.travel navigate_to SKILL_STATE_READY->SKILL_STATE_RUNNING",
+      "local": false
+     },
+     {
+      "sequence": 8,
+      "occurredAt": "2026-09-06T00:01:40Z",
+      "kind": "FAULT_RAISED",
+      "detail": "LOCALIZATION_LOST class=LOCALIZATION_LOST can_accept_new_task=false",
+      "local": false
+     },
+     {
+      "sequence": 9,
+      "occurredAt": "2026-09-06T00:01:40Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "PATROL-4#PUMP-01.travel navigate_to SKILL_STATE_RUNNING->SKILL_STATE_HALTED",
+      "local": false
+     },
+     {
+      "sequence": 10,
+      "occurredAt": "2026-09-06T00:01:40Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "PATROL-4#PUMP-01.travel navigate_to SKILL_STATE_HALTED->SKILL_STATE_READY",
+      "local": false
+     },
+     {
+      "sequence": 11,
+      "occurredAt": "2026-09-06T00:01:40Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "PATROL-4#PUMP-01.travel TASK_STATE_RUNNING->TASK_STATE_NEEDS_INTERVENTION rev=1 attempt=0",
+      "local": false
+     }
+    ],
+    "windowTruncated": false,
+    "expectedHold": null,
+    "observedHold": "HOLD_KIND_EMPTY",
+    "effectMismatch": null,
+    "requiredEvidence": "E0",
+    "reachedEvidence": "E0",
+    "verification": "NOT_REQUESTED",
+    "step": {
+     "at": 1,
+     "plan": [
+      "PUMP-01.travel",
+      "PUMP-01"
+     ],
+     "completed": []
+    },
+    "route": "ROBOT",
+    "intent": {
+     "workMasterId": "InspectAsset",
+     "orderVersion": 1,
+     "orderParameters": {},
+     "materials": [],
+     "equipment": [
+      {
+       "id": "PUMP-01",
+       "equipmentUse": "inspection_target",
+       "properties": {
+        "location": "PUMP-ROOM-1"
+       }
+      }
+     ],
+     "capabilityMaxEvidence": "E0",
+     "evidenceWindowBefore": "PT30S",
+     "evidenceWindowAfter": "PT15S",
+     "skillType": "navigate_to",
+     "unitParameters": {
+      "location": "PUMP-ROOM-1"
+     },
+     "source": null,
+     "destination": "PUMP-ROOM-1",
+     "expectedIdentity": null
+    },
+    "observation": {
+     "linkBroken": false,
+     "lateEvents": [],
+     "progressObservable": true,
+     "progressStalled": false
+    },
+    "profileRevision": 1,
+    "contractSemver": "0.9.0",
+    "approvedBy": null,
+    "review": null,
+    "resolution": null,
+    "digest": "1b2afa127508ad837ab7599d00901e53c29ba50832c67b7928b42dfa1dde2b4a"
+   },
+   "procedure": {
+    "doc": "SOP-05 자기 위치 상실 복구",
+    "section": "4",
+    "why": "SOP-05 §2 표가 LOCALIZATION_LOST 를 ✅ 로 든다. observedHold 가 EMPTY 라 §3 표대로 바로 §4 절차다"
+   },
+   "mustNotClaim": [
+    "파지",
+    "그리퍼",
+    "집었",
+    "적재"
+   ],
+   "why": "navigate_to 이고 expectedHold 가 널이다. 파지 이야기를 꺼내면 이 단위가 하지 않은 일을 말하는 것이다",
+   "noLabelBecause": "1순위 원인이 번들에 이미 적혀 있다 — 분류가 붙었거나 벤더 코드가 뜻을 말한다. 되읽기만 해도 맞으므로 지표 1 에서 뺀다. 재는 것은 «어긋난 주장을 했나» 뿐이다."
+  },
+  {
+   "id": "G4",
+   "kind": "incident",
+   "bundle": {
+    "incidentId": "incident-4",
+    "jobOrderId": "SEQ-4",
+    "executionId": "exec-6",
+    "robotId": "hum-06",
+    "unitId": "RACK-204.S05",
+    "at": "2026-09-06T00:02:29Z",
+    "wallClockAt": "2026-09-22T16:47:37.512746900Z",
+    "failureClass": "UNCLASSIFIED",
+    "fault": {
+     "failureClass": "UNCLASSIFIED",
+     "errorType": "X_FIXTURE_E9001",
+     "vendorDetail": "X_FIXTURE_E9001",
+     "errorHint": "정지 코드를 벤더 문서에서 조회하십시오. 코드만으로 갈리지 않으면 현장 점검이 필요합니다.",
+     "references": [],
+     "canContinueCurrentTask": false,
+     "canAcceptNewTask": false,
+     "activeUntilKind": "KIND_UNTIL_CLEARED",
+     "activeUntilTime": ""
+    },
+    "blockedBy": [],
+    "residualHold": {
+     "kind": "HOLD_KIND_HOLDING",
+     "objectRef": "SEQ-IN-02.BIN-A",
+     "reason": ""
+    },
+    "unresolved": true,
+    "preconditionSubjects": [],
+    "evidenceWindow": [
+     {
+      "sequence": 9,
+      "occurredAt": "2026-09-06T00:02:29Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-4#RACK-204.S04 pick_place SKILL_STATE_RUNNING->SKILL_STATE_READY",
+      "local": false
+     },
+     {
+      "sequence": 10,
+      "occurredAt": "2026-09-06T00:02:29Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-4#RACK-204.S04 TASK_STATE_RUNNING->TASK_STATE_SUCCEEDED rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 11,
+      "occurredAt": "2026-09-06T00:02:29Z",
+      "kind": "CELL_SIGNAL",
+      "detail": "RACK-204.S04: occupied=true identity=ENGINE-COVER-A at=(read now)",
+      "local": true
+     },
+     {
+      "sequence": 11,
+      "occurredAt": "2026-09-06T00:02:29Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-4#RACK-204.S05 TASK_STATE_UNSPECIFIED->TASK_STATE_ACCEPTED rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 12,
+      "occurredAt": "2026-09-06T00:02:29Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-4#RACK-204.S05 TASK_STATE_ACCEPTED->TASK_STATE_RUNNING rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 13,
+      "occurredAt": "2026-09-06T00:02:29Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-4#RACK-204.S05 pick_place SKILL_STATE_READY->SKILL_STATE_RUNNING",
+      "local": false
+     },
+     {
+      "sequence": 14,
+      "occurredAt": "2026-09-06T00:02:29Z",
+      "kind": "FAULT_RAISED",
+      "detail": "X_FIXTURE_E9001 class=UNCLASSIFIED can_accept_new_task=false",
+      "local": false
+     },
+     {
+      "sequence": 15,
+      "occurredAt": "2026-09-06T00:02:29Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-4#RACK-204.S05 pick_place SKILL_STATE_RUNNING->SKILL_STATE_HALTED",
+      "local": false
+     },
+     {
+      "sequence": 16,
+      "occurredAt": "2026-09-06T00:02:29Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-4#RACK-204.S05 pick_place SKILL_STATE_HALTED->SKILL_STATE_READY",
+      "local": false
+     },
+     {
+      "sequence": 17,
+      "occurredAt": "2026-09-06T00:02:29Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-4#RACK-204.S05 TASK_STATE_RUNNING->TASK_STATE_NEEDS_INTERVENTION rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 18,
+      "occurredAt": "2026-09-06T00:02:29Z",
+      "kind": "CELL_SIGNAL",
+      "detail": "RACK-204.S05: occupied=true identity=ENGINE-COVER-A at=(read now)",
+      "local": true
+     }
+    ],
+    "windowTruncated": true,
+    "expectedHold": "HOLD_KIND_HOLDING",
+    "observedHold": "HOLD_KIND_HOLDING",
+    "effectMismatch": null,
+    "requiredEvidence": "E2",
+    "reachedEvidence": "E0",
+    "verification": "MATCHED",
+    "step": {
+     "at": 2,
+     "plan": [
+      "RACK-204.S04",
+      "RACK-204.S05"
+     ],
+     "completed": [
+      "RACK-204.S04"
+     ]
+    },
+    "route": "ROBOT",
+    "intent": {
+     "workMasterId": "PrepareSequencedRack",
+     "orderVersion": 17,
+     "orderParameters": {},
+     "materials": [
+      {
+       "materialDefinitionId": "ENGINE-COVER-A",
+       "quantity": 2
+      }
+     ],
+     "equipment": [
+      {
+       "id": "RACK-204.S04",
+       "equipmentUse": "destination",
+       "properties": {
+        "material": "ENGINE-COVER-A"
+       }
+      },
+      {
+       "id": "RACK-204.S05",
+       "equipmentUse": "destination",
+       "properties": {
+        "material": "ENGINE-COVER-A"
+       }
+      },
+      {
+       "id": "SEQ-IN-02.BIN-A",
+       "equipmentUse": "source",
+       "properties": {
+        "material": "ENGINE-COVER-A"
+       }
+      }
+     ],
+     "capabilityMaxEvidence": "E2",
+     "evidenceWindowBefore": "PT30S",
+     "evidenceWindowAfter": "PT15S",
+     "skillType": "pick_place",
+     "unitParameters": {
+      "destination": "RACK-204.S05",
+      "object_id": "SEQ-IN-02.BIN-A"
+     },
+     "source": "SEQ-IN-02.BIN-A",
+     "destination": "RACK-204.S05",
+     "expectedIdentity": "ENGINE-COVER-A"
+    },
+    "observation": {
+     "linkBroken": false,
+     "lateEvents": [],
+     "progressObservable": true,
+     "progressStalled": false
+    },
+    "profileRevision": 1,
+    "contractSemver": "0.9.0",
+    "approvedBy": null,
+    "review": null,
+    "resolution": null,
+    "digest": "510bb77136e44e58e1e495c606846e0d0481da309149fd7a12103813cd501502"
+   },
+   "procedure": {
+    "doc": "합성 기체(fixture)의 정지 코드 표면 — Synthetic Stop-Code Surface",
+    "section": "4",
+    "why": "SOP 여섯의 §2 표 어디에도 UNCLASSIFIED 는 없고 SOP-06 §2 가 ❌ 로 명시한다. 조치는 정지 코드 문서 §4"
+   },
+   "mustNotClaim": [
+    "원인을 특정",
+    "분류가 확정",
+    "확실"
+   ],
+   "why": "UNCLASSIFIED 다. 미들웨어가 못 가른 것을 이 층이 단정하면 판정을 침범한다. 후보 제시까지가 이 층의 일이다",
+   "journalLeaks": true,
+   "journalLeaksWhy": "설계 일지에 「안 좁혀」6 · 「좁혀지지 않」1 · 「가르지 않」4 (2026-09-19 실측)"
+  },
+  {
+   "id": "G5",
+   "kind": "incident",
+   "bundle": {
+    "incidentId": "incident-5",
+    "jobOrderId": "WT-781",
+    "executionId": "exec-7",
+    "robotId": "hum-03",
+    "unitId": "HU-1042",
+    "at": "2026-09-06T00:02:30Z",
+    "wallClockAt": "2026-09-22T16:47:37.557547500Z",
+    "failureClass": "SOURCE_CONTAINER_MISMATCH",
+    "fault": null,
+    "blockedBy": [],
+    "residualHold": {
+     "kind": "HOLD_KIND_EMPTY",
+     "objectRef": "",
+     "reason": ""
+    },
+    "unresolved": false,
+    "preconditionSubjects": [],
+    "evidenceWindow": [],
+    "windowTruncated": false,
+    "expectedHold": null,
+    "observedHold": "HOLD_KIND_EMPTY",
+    "effectMismatch": null,
+    "requiredEvidence": "E2",
+    "reachedEvidence": "E0",
+    "verification": "NOT_REQUESTED",
+    "step": {
+     "at": 1,
+     "plan": [
+      "HU-1042"
+     ],
+     "completed": []
+    },
+    "route": "FLEET",
+    "intent": {
+     "workMasterId": "DeliverContainer",
+     "orderVersion": 1,
+     "orderParameters": {},
+     "materials": [],
+     "equipment": [
+      {
+       "id": "OUT-07",
+       "equipmentUse": "source",
+       "properties": {
+        "container": "HU-1042"
+       }
+      },
+      {
+       "id": "SEQ-IN-02",
+       "equipmentUse": "destination",
+       "properties": {}
+      }
+     ],
+     "capabilityMaxEvidence": "E2",
+     "evidenceWindowBefore": "PT30S",
+     "evidenceWindowAfter": "PT15S",
+     "skillType": "transport",
+     "unitParameters": {
+      "container": "HU-1042",
+      "destination": "SEQ-IN-02",
+      "source": "OUT-07"
+     },
+     "source": "OUT-07",
+     "destination": "SEQ-IN-02",
+     "expectedIdentity": "HU-1042"
+    },
+    "observation": {
+     "linkBroken": false,
+     "lateEvents": [],
+     "progressObservable": null,
+     "progressStalled": false
+    },
+    "profileRevision": 1,
+    "contractSemver": "0.9.0",
+    "approvedBy": null,
+    "review": null,
+    "resolution": null,
+    "digest": "c5ffd423581ebff9d8dd5f529268e985e017294b9d2469849fdefb0f04e73cf6"
+   },
+   "noProcedureBecause": "SOP 여섯의 §2 표 어디에도 SOURCE_CONTAINER_MISMATCH 가 없다. 플릿이 접수 시점에 거절한 것이라 절차의 주인이 WMS 쪽이다(운영 시나리오 명세서 §3)",
+   "mustNotClaim": [
+    "그리퍼",
+    "파지 실패",
+    "어댑터 결함",
+    "로봇의 결함"
+   ],
+   "why": "route=FLEET 이고 fault 가 널이다. 플릿이 접수 시점에 거절해 로봇은 받은 적이 없다. 기체 탓으로 돌리면 책임 소재가 틀린다",
+   "noLabelBecause": "1순위 원인이 번들에 이미 적혀 있다 — 분류가 붙었거나 벤더 코드가 뜻을 말한다. 되읽기만 해도 맞으므로 지표 1 에서 뺀다. 재는 것은 «어긋난 주장을 했나» 뿐이다."
+  },
+  {
+   "id": "G6",
+   "kind": "incident",
+   "bundle": {
+    "incidentId": "incident-6",
+    "jobOrderId": "SEQ-6",
+    "executionId": "exec-8",
+    "robotId": "hum-07",
+    "unitId": "RACK-204.S06",
+    "at": "2026-09-06T00:02:31Z",
+    "wallClockAt": "2026-09-22T16:47:37.609775700Z",
+    "failureClass": "PAYLOAD_LOST",
+    "fault": {
+     "failureClass": "PAYLOAD_LOST",
+     "errorType": "PAYLOAD_LOST",
+     "vendorDetail": "",
+     "errorHint": "떨어뜨린 대상을 회수해 원위치에 놓고 재시도하십시오.",
+     "references": [
+      {
+       "key": "KEY_SKILL_ID",
+       "value": "pick_place"
+      },
+      {
+       "key": "KEY_TASK_ID",
+       "value": "SEQ-6#RACK-204.S06"
+      }
+     ],
+     "canContinueCurrentTask": false,
+     "canAcceptNewTask": false,
+     "activeUntilKind": "KIND_UNTIL_CLEARED",
+     "activeUntilTime": ""
+    },
+    "blockedBy": [],
+    "residualHold": {
+     "kind": "HOLD_KIND_EMPTY",
+     "objectRef": "",
+     "reason": ""
+    },
+    "unresolved": true,
+    "preconditionSubjects": [],
+    "evidenceWindow": [
+     {
+      "sequence": 6,
+      "occurredAt": "2026-09-06T00:02:30Z",
+      "kind": "RESYNC",
+      "detail": "snapshot: next sequence=6, faults=0, connection=CONNECTION_STATE_ONLINE",
+      "local": true
+     },
+     {
+      "sequence": 6,
+      "occurredAt": "2026-09-06T00:02:30Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-6#RACK-204.S06 TASK_STATE_UNSPECIFIED->TASK_STATE_ACCEPTED rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 7,
+      "occurredAt": "2026-09-06T00:02:31Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-6#RACK-204.S06 TASK_STATE_ACCEPTED->TASK_STATE_RUNNING rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 8,
+      "occurredAt": "2026-09-06T00:02:31Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-6#RACK-204.S06 pick_place SKILL_STATE_READY->SKILL_STATE_RUNNING",
+      "local": false
+     },
+     {
+      "sequence": 9,
+      "occurredAt": "2026-09-06T00:02:31Z",
+      "kind": "LINK_BROKEN",
+      "detail": "CONNECTION_STATE_CONNECTION_BROKEN while RACK-204.S06 is running — result unconfirmed",
+      "local": true
+     },
+     {
+      "sequence": 11,
+      "occurredAt": "2026-09-06T00:02:31Z",
+      "kind": "FAULT_RAISED",
+      "detail": "PAYLOAD_LOST class=PAYLOAD_LOST can_accept_new_task=false",
+      "local": false
+     },
+     {
+      "sequence": 12,
+      "occurredAt": "2026-09-06T00:02:31Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-6#RACK-204.S06 pick_place SKILL_STATE_RUNNING->SKILL_STATE_HALTED",
+      "local": false
+     },
+     {
+      "sequence": 13,
+      "occurredAt": "2026-09-06T00:02:31Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-6#RACK-204.S06 pick_place SKILL_STATE_HALTED->SKILL_STATE_READY",
+      "local": false
+     },
+     {
+      "sequence": 14,
+      "occurredAt": "2026-09-06T00:02:31Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-6#RACK-204.S06 TASK_STATE_RUNNING->TASK_STATE_NEEDS_INTERVENTION rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 15,
+      "occurredAt": "2026-09-06T00:02:31Z",
+      "kind": "CELL_SIGNAL",
+      "detail": "RACK-204.S06: occupied=true identity=ENGINE-COVER-A at=(read now)",
+      "local": true
+     }
+    ],
+    "windowTruncated": false,
+    "expectedHold": "HOLD_KIND_HOLDING",
+    "observedHold": "HOLD_KIND_EMPTY",
+    "effectMismatch": "PAYLOAD_LOST",
+    "requiredEvidence": "E2",
+    "reachedEvidence": "E0",
+    "verification": "MATCHED",
+    "step": {
+     "at": 1,
+     "plan": [
+      "RACK-204.S06"
+     ],
+     "completed": []
+    },
+    "route": "ROBOT",
+    "intent": {
+     "workMasterId": "PrepareSequencedRack",
+     "orderVersion": 17,
+     "orderParameters": {},
+     "materials": [
+      {
+       "materialDefinitionId": "ENGINE-COVER-A",
+       "quantity": 1
+      }
+     ],
+     "equipment": [
+      {
+       "id": "RACK-204.S06",
+       "equipmentUse": "destination",
+       "properties": {
+        "material": "ENGINE-COVER-A"
+       }
+      },
+      {
+       "id": "SEQ-IN-02.BIN-A",
+       "equipmentUse": "source",
+       "properties": {
+        "material": "ENGINE-COVER-A"
+       }
+      }
+     ],
+     "capabilityMaxEvidence": "E2",
+     "evidenceWindowBefore": "PT30S",
+     "evidenceWindowAfter": "PT15S",
+     "skillType": "pick_place",
+     "unitParameters": {
+      "destination": "RACK-204.S06",
+      "object_id": "SEQ-IN-02.BIN-A"
+     },
+     "source": "SEQ-IN-02.BIN-A",
+     "destination": "RACK-204.S06",
+     "expectedIdentity": "ENGINE-COVER-A"
+    },
+    "observation": {
+     "linkBroken": true,
+     "lateEvents": [],
+     "progressObservable": true,
+     "progressStalled": false
+    },
+    "profileRevision": 1,
+    "contractSemver": "0.9.0",
+    "approvedBy": null,
+    "review": null,
+    "resolution": null,
+    "digest": "7aebacbd7e2ed96eb1760ed27f8d2773a0126ff099ea1253751f2f68d1449869"
+   },
+   "procedure": {
+    "doc": "SOP-01 파지 실패와 잔여 파지 처리",
+    "section": "5",
+    "why": "SOP-01 §2 표가 PAYLOAD_LOST 를 ✅ 로 든다. linkBroken 은 SOP-06 의 대상이나 그 §2 표는 PAYLOAD_LOST 를 안 든다"
+   },
+   "mustNotClaim": [
+    "관측이 완전",
+    "모두 관측",
+    "끊김 없"
+   ],
+   "why": "linkBroken=true 다. 연결이 끊긴 뒤의 일은 못 봤는데 관측이 온전했다고 하면 침묵을 사실로 바꾼다",
+   "noLabelBecause": "1순위 원인이 번들에 이미 적혀 있다 — 분류가 붙었거나 벤더 코드가 뜻을 말한다. 되읽기만 해도 맞으므로 지표 1 에서 뺀다. 재는 것은 «어긋난 주장을 했나» 뿐이다."
+  },
+  {
+   "id": "G7",
+   "kind": "incident",
+   "bundle": {
+    "incidentId": "incident-7",
+    "jobOrderId": "SEQ-7",
+    "executionId": "exec-9",
+    "robotId": "hum-08",
+    "unitId": "RACK-204.S07",
+    "at": "2026-09-06T00:02:32Z",
+    "wallClockAt": "2026-09-22T16:47:37.655709100Z",
+    "failureClass": "UNCLASSIFIED",
+    "fault": {
+     "failureClass": "UNCLASSIFIED",
+     "errorType": "X_FIXTURE_E4412",
+     "vendorDetail": "X_FIXTURE_E4412",
+     "errorHint": "정지 코드를 벤더 문서에서 조회한 뒤 해당 절차를 따르십시오.",
+     "references": [],
+     "canContinueCurrentTask": false,
+     "canAcceptNewTask": false,
+     "activeUntilKind": "KIND_UNTIL_CLEARED",
+     "activeUntilTime": ""
+    },
+    "blockedBy": [],
+    "residualHold": {
+     "kind": "HOLD_KIND_HOLDING",
+     "objectRef": "SEQ-IN-02.BIN-A",
+     "reason": ""
+    },
+    "unresolved": true,
+    "preconditionSubjects": [],
+    "evidenceWindow": [
+     {
+      "sequence": 7,
+      "occurredAt": "2026-09-06T00:02:31Z",
+      "kind": "RESYNC",
+      "detail": "snapshot: next sequence=7, faults=0, connection=CONNECTION_STATE_ONLINE",
+      "local": true
+     },
+     {
+      "sequence": 7,
+      "occurredAt": "2026-09-06T00:02:31Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-7#RACK-204.S07 TASK_STATE_UNSPECIFIED->TASK_STATE_ACCEPTED rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 8,
+      "occurredAt": "2026-09-06T00:02:32Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-7#RACK-204.S07 TASK_STATE_ACCEPTED->TASK_STATE_RUNNING rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 9,
+      "occurredAt": "2026-09-06T00:02:32Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-7#RACK-204.S07 pick_place SKILL_STATE_READY->SKILL_STATE_RUNNING",
+      "local": false
+     },
+     {
+      "sequence": 10,
+      "occurredAt": "2026-09-06T00:02:32Z",
+      "kind": "FAULT_RAISED",
+      "detail": "X_FIXTURE_E4412 class=UNCLASSIFIED can_accept_new_task=false",
+      "local": false
+     },
+     {
+      "sequence": 11,
+      "occurredAt": "2026-09-06T00:02:32Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-7#RACK-204.S07 pick_place SKILL_STATE_RUNNING->SKILL_STATE_HALTED",
+      "local": false
+     },
+     {
+      "sequence": 12,
+      "occurredAt": "2026-09-06T00:02:32Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-7#RACK-204.S07 pick_place SKILL_STATE_HALTED->SKILL_STATE_READY",
+      "local": false
+     },
+     {
+      "sequence": 13,
+      "occurredAt": "2026-09-06T00:02:32Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-7#RACK-204.S07 TASK_STATE_RUNNING->TASK_STATE_NEEDS_INTERVENTION rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 14,
+      "occurredAt": "2026-09-06T00:02:32Z",
+      "kind": "CELL_SIGNAL",
+      "detail": "RACK-204.S07: occupied=true identity=ENGINE-COVER-A at=(read now)",
+      "local": true
+     }
+    ],
+    "windowTruncated": false,
+    "expectedHold": "HOLD_KIND_HOLDING",
+    "observedHold": "HOLD_KIND_HOLDING",
+    "effectMismatch": null,
+    "requiredEvidence": "E2",
+    "reachedEvidence": "E0",
+    "verification": "MATCHED",
+    "step": {
+     "at": 1,
+     "plan": [
+      "RACK-204.S07"
+     ],
+     "completed": []
+    },
+    "route": "ROBOT",
+    "intent": {
+     "workMasterId": "PrepareSequencedRack",
+     "orderVersion": 17,
+     "orderParameters": {},
+     "materials": [
+      {
+       "materialDefinitionId": "ENGINE-COVER-A",
+       "quantity": 1
+      }
+     ],
+     "equipment": [
+      {
+       "id": "RACK-204.S07",
+       "equipmentUse": "destination",
+       "properties": {
+        "material": "ENGINE-COVER-A"
+       }
+      },
+      {
+       "id": "SEQ-IN-02.BIN-A",
+       "equipmentUse": "source",
+       "properties": {
+        "material": "ENGINE-COVER-A"
+       }
+      }
+     ],
+     "capabilityMaxEvidence": "E2",
+     "evidenceWindowBefore": "PT30S",
+     "evidenceWindowAfter": "PT15S",
+     "skillType": "pick_place",
+     "unitParameters": {
+      "destination": "RACK-204.S07",
+      "object_id": "SEQ-IN-02.BIN-A"
+     },
+     "source": "SEQ-IN-02.BIN-A",
+     "destination": "RACK-204.S07",
+     "expectedIdentity": "ENGINE-COVER-A"
+    },
+    "observation": {
+     "linkBroken": false,
+     "lateEvents": [],
+     "progressObservable": true,
+     "progressStalled": false
+    },
+    "profileRevision": 1,
+    "contractSemver": "0.9.0",
+    "approvedBy": null,
+    "review": null,
+    "resolution": null,
+    "digest": "a67f01ae896df2ed3bcdb13dbcc8c0229ccdcba911e11c033925d6cf3d1b3dae"
+   },
+   "procedure": {
+    "doc": "합성 기체(fixture)의 정지 코드 표면 — Synthetic Stop-Code Surface",
+    "section": "3.1",
+    "why": "E4412 의 조치는 정지 코드 문서 §3.1"
+   },
+   "mustNotClaim": [
+    "통신 두절",
+    "연결이 끊",
+    "링크가 끊"
+   ],
+   "why": "linkBroken=false 이고 lateEvents 가 비어 있다. 통신이 끊겼다고 하면 관측과 반대다",
+   "journalLeaks": true,
+   "journalLeaksWhy": "설계 일지에 「관절 토크」2 · 「토크 한계」2 (2026-09-19 실측)"
+  },
+  {
+   "id": "G8",
+   "kind": "incident",
+   "bundle": {
+    "incidentId": "incident-8",
+    "jobOrderId": "SEQ-8",
+    "executionId": "exec-10",
+    "robotId": "hum-09",
+    "unitId": "RACK-204.S08",
+    "at": "2026-09-06T00:02:33Z",
+    "wallClockAt": "2026-09-22T16:47:37.701891900Z",
+    "failureClass": "UNCLASSIFIED",
+    "fault": {
+     "failureClass": "UNCLASSIFIED",
+     "errorType": "X_FIXTURE_E2075",
+     "vendorDetail": "X_FIXTURE_E2075",
+     "errorHint": "정지 코드를 기록하고 벤더 문서의 조치 절차를 따르십시오.",
+     "references": [],
+     "canContinueCurrentTask": false,
+     "canAcceptNewTask": false,
+     "activeUntilKind": "KIND_UNTIL_CLEARED",
+     "activeUntilTime": ""
+    },
+    "blockedBy": [],
+    "residualHold": {
+     "kind": "HOLD_KIND_HOLDING",
+     "objectRef": "SEQ-IN-02.BIN-A",
+     "reason": ""
+    },
+    "unresolved": true,
+    "preconditionSubjects": [],
+    "evidenceWindow": [
+     {
+      "sequence": 7,
+      "occurredAt": "2026-09-06T00:02:32Z",
+      "kind": "RESYNC",
+      "detail": "snapshot: next sequence=7, faults=0, connection=CONNECTION_STATE_ONLINE",
+      "local": true
+     },
+     {
+      "sequence": 7,
+      "occurredAt": "2026-09-06T00:02:32Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-8#RACK-204.S08 TASK_STATE_UNSPECIFIED->TASK_STATE_ACCEPTED rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 8,
+      "occurredAt": "2026-09-06T00:02:33Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-8#RACK-204.S08 TASK_STATE_ACCEPTED->TASK_STATE_RUNNING rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 9,
+      "occurredAt": "2026-09-06T00:02:33Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-8#RACK-204.S08 pick_place SKILL_STATE_READY->SKILL_STATE_RUNNING",
+      "local": false
+     },
+     {
+      "sequence": 10,
+      "occurredAt": "2026-09-06T00:02:33Z",
+      "kind": "FAULT_RAISED",
+      "detail": "X_FIXTURE_E2075 class=UNCLASSIFIED can_accept_new_task=false",
+      "local": false
+     },
+     {
+      "sequence": 11,
+      "occurredAt": "2026-09-06T00:02:33Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-8#RACK-204.S08 pick_place SKILL_STATE_RUNNING->SKILL_STATE_HALTED",
+      "local": false
+     },
+     {
+      "sequence": 12,
+      "occurredAt": "2026-09-06T00:02:33Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-8#RACK-204.S08 pick_place SKILL_STATE_HALTED->SKILL_STATE_READY",
+      "local": false
+     },
+     {
+      "sequence": 13,
+      "occurredAt": "2026-09-06T00:02:33Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-8#RACK-204.S08 TASK_STATE_RUNNING->TASK_STATE_NEEDS_INTERVENTION rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 14,
+      "occurredAt": "2026-09-06T00:02:33Z",
+      "kind": "CELL_SIGNAL",
+      "detail": "RACK-204.S08: occupied=true identity=ENGINE-COVER-A at=(read now)",
+      "local": true
+     }
+    ],
+    "windowTruncated": false,
+    "expectedHold": "HOLD_KIND_HOLDING",
+    "observedHold": "HOLD_KIND_HOLDING",
+    "effectMismatch": null,
+    "requiredEvidence": "E2",
+    "reachedEvidence": "E0",
+    "verification": "MATCHED",
+    "step": {
+     "at": 1,
+     "plan": [
+      "RACK-204.S08"
+     ],
+     "completed": []
+    },
+    "route": "ROBOT",
+    "intent": {
+     "workMasterId": "PrepareSequencedRack",
+     "orderVersion": 17,
+     "orderParameters": {},
+     "materials": [
+      {
+       "materialDefinitionId": "ENGINE-COVER-A",
+       "quantity": 1
+      }
+     ],
+     "equipment": [
+      {
+       "id": "RACK-204.S08",
+       "equipmentUse": "destination",
+       "properties": {
+        "material": "ENGINE-COVER-A"
+       }
+      },
+      {
+       "id": "SEQ-IN-02.BIN-A",
+       "equipmentUse": "source",
+       "properties": {
+        "material": "ENGINE-COVER-A"
+       }
+      }
+     ],
+     "capabilityMaxEvidence": "E2",
+     "evidenceWindowBefore": "PT30S",
+     "evidenceWindowAfter": "PT15S",
+     "skillType": "pick_place",
+     "unitParameters": {
+      "destination": "RACK-204.S08",
+      "object_id": "SEQ-IN-02.BIN-A"
+     },
+     "source": "SEQ-IN-02.BIN-A",
+     "destination": "RACK-204.S08",
+     "expectedIdentity": "ENGINE-COVER-A"
+    },
+    "observation": {
+     "linkBroken": false,
+     "lateEvents": [],
+     "progressObservable": true,
+     "progressStalled": false
+    },
+    "profileRevision": 1,
+    "contractSemver": "0.9.0",
+    "approvedBy": null,
+    "review": null,
+    "resolution": null,
+    "digest": "f3cbb5b6b3e5f61e09d8d7dbd99bb92f3359dc64c1f4e4f33235fca69975fe71"
+   },
+   "procedure": {
+    "doc": "합성 기체(fixture)의 정지 코드 표면 — Synthetic Stop-Code Surface",
+    "section": "3.2",
+    "why": "E2075 의 조치는 정지 코드 문서 §3.2"
+   },
+   "mustNotClaim": [
+    "떨어뜨",
+    "놓쳤",
+    "빈손"
+   ],
+   "why": "observedHold 가 HOLDING 이고 effectMismatch 가 널이다. 쥐고 있는데 놓쳤다고 하면 관측과 반대다",
+   "journalLeaks": false,
+   "journalLeaksWhy": "설계 일지에 「진공 압력」·「흡착」·「진공」이 0 회 — 거기서 얻을 수 있는 답이 아니다"
+  },
+  {
+   "id": "G9",
+   "kind": "incident",
+   "bundle": {
+    "incidentId": "incident-9",
+    "jobOrderId": "SEQ-9",
+    "executionId": "exec-11",
+    "robotId": "hum-10",
+    "unitId": "RACK-204.S09",
+    "at": "2026-09-06T00:02:34Z",
+    "wallClockAt": "2026-09-22T16:47:37.749204700Z",
+    "failureClass": "UNCLASSIFIED",
+    "fault": {
+     "failureClass": "UNCLASSIFIED",
+     "errorType": "X_FIXTURE_E6130",
+     "vendorDetail": "X_FIXTURE_E6130",
+     "errorHint": "정지 코드를 벤더 문서에서 조회하고 현장을 확인한 뒤 재개하십시오.",
+     "references": [],
+     "canContinueCurrentTask": false,
+     "canAcceptNewTask": false,
+     "activeUntilKind": "KIND_UNTIL_CLEARED",
+     "activeUntilTime": ""
+    },
+    "blockedBy": [],
+    "residualHold": {
+     "kind": "HOLD_KIND_HOLDING",
+     "objectRef": "SEQ-IN-02.BIN-A",
+     "reason": ""
+    },
+    "unresolved": true,
+    "preconditionSubjects": [],
+    "evidenceWindow": [
+     {
+      "sequence": 7,
+      "occurredAt": "2026-09-06T00:02:33Z",
+      "kind": "RESYNC",
+      "detail": "snapshot: next sequence=7, faults=0, connection=CONNECTION_STATE_ONLINE",
+      "local": true
+     },
+     {
+      "sequence": 7,
+      "occurredAt": "2026-09-06T00:02:33Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-9#RACK-204.S09 TASK_STATE_UNSPECIFIED->TASK_STATE_ACCEPTED rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 8,
+      "occurredAt": "2026-09-06T00:02:34Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-9#RACK-204.S09 TASK_STATE_ACCEPTED->TASK_STATE_RUNNING rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 9,
+      "occurredAt": "2026-09-06T00:02:34Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-9#RACK-204.S09 pick_place SKILL_STATE_READY->SKILL_STATE_RUNNING",
+      "local": false
+     },
+     {
+      "sequence": 10,
+      "occurredAt": "2026-09-06T00:02:34Z",
+      "kind": "FAULT_RAISED",
+      "detail": "X_FIXTURE_E6130 class=UNCLASSIFIED can_accept_new_task=false",
+      "local": false
+     },
+     {
+      "sequence": 11,
+      "occurredAt": "2026-09-06T00:02:34Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-9#RACK-204.S09 pick_place SKILL_STATE_RUNNING->SKILL_STATE_HALTED",
+      "local": false
+     },
+     {
+      "sequence": 12,
+      "occurredAt": "2026-09-06T00:02:34Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-9#RACK-204.S09 pick_place SKILL_STATE_HALTED->SKILL_STATE_READY",
+      "local": false
+     },
+     {
+      "sequence": 13,
+      "occurredAt": "2026-09-06T00:02:34Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-9#RACK-204.S09 TASK_STATE_RUNNING->TASK_STATE_NEEDS_INTERVENTION rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 14,
+      "occurredAt": "2026-09-06T00:02:34Z",
+      "kind": "CELL_SIGNAL",
+      "detail": "RACK-204.S09: occupied=true identity=ENGINE-COVER-A at=(read now)",
+      "local": true
+     }
+    ],
+    "windowTruncated": false,
+    "expectedHold": "HOLD_KIND_HOLDING",
+    "observedHold": "HOLD_KIND_HOLDING",
+    "effectMismatch": null,
+    "requiredEvidence": "E2",
+    "reachedEvidence": "E0",
+    "verification": "MATCHED",
+    "step": {
+     "at": 1,
+     "plan": [
+      "RACK-204.S09"
+     ],
+     "completed": []
+    },
+    "route": "ROBOT",
+    "intent": {
+     "workMasterId": "PrepareSequencedRack",
+     "orderVersion": 17,
+     "orderParameters": {},
+     "materials": [
+      {
+       "materialDefinitionId": "ENGINE-COVER-A",
+       "quantity": 1
+      }
+     ],
+     "equipment": [
+      {
+       "id": "RACK-204.S09",
+       "equipmentUse": "destination",
+       "properties": {
+        "material": "ENGINE-COVER-A"
+       }
+      },
+      {
+       "id": "SEQ-IN-02.BIN-A",
+       "equipmentUse": "source",
+       "properties": {
+        "material": "ENGINE-COVER-A"
+       }
+      }
+     ],
+     "capabilityMaxEvidence": "E2",
+     "evidenceWindowBefore": "PT30S",
+     "evidenceWindowAfter": "PT15S",
+     "skillType": "pick_place",
+     "unitParameters": {
+      "destination": "RACK-204.S09",
+      "object_id": "SEQ-IN-02.BIN-A"
+     },
+     "source": "SEQ-IN-02.BIN-A",
+     "destination": "RACK-204.S09",
+     "expectedIdentity": "ENGINE-COVER-A"
+    },
+    "observation": {
+     "linkBroken": false,
+     "lateEvents": [],
+     "progressObservable": true,
+     "progressStalled": false
+    },
+    "profileRevision": 1,
+    "contractSemver": "0.9.0",
+    "approvedBy": null,
+    "review": null,
+    "resolution": null,
+    "digest": "a920a52519d946038da042ae03dd72ca5ac9355542da196be588592eb724f47c"
+   },
+   "procedure": {
+    "doc": "합성 기체(fixture)의 정지 코드 표면 — Synthetic Stop-Code Surface",
+    "section": "3.3",
+    "why": "E6130 의 조치는 정지 코드 문서 §3.3"
+   },
+   "mustNotClaim": [
+    "이벤트 유실",
+    "늦게 도착",
+    "이벤트가 누락"
+   ],
+   "why": "lateEvents 가 비어 있고 windowTruncated 가 거짓이다. 이벤트를 놓쳤다고 하면 없는 결함을 만든다",
+   "journalLeaks": true,
+   "journalLeaksWhy": "설계 일지에 「인터록」4 (2026-09-19 실측). 「안전 울타리」는 0"
+  },
+  {
+   "id": "G10",
+   "kind": "incident",
+   "bundle": {
+    "incidentId": "incident-1",
+    "jobOrderId": "SEQ-1",
+    "executionId": "exec-1",
+    "robotId": "hum-02",
+    "unitId": "RACK-204.S01",
+    "at": "2026-09-06T00:00:01Z",
+    "wallClockAt": "2026-09-22T16:47:45.467446200Z",
+    "failureClass": "GRASP_FAILED",
+    "fault": {
+     "failureClass": "GRASP_FAILED",
+     "errorType": "SKILL_EXECUTION_FAILED",
+     "vendorDetail": "",
+     "errorHint": "",
+     "references": [
+      {
+       "key": "KEY_SKILL_ID",
+       "value": "pick_place"
+      },
+      {
+       "key": "KEY_TASK_ID",
+       "value": "SEQ-1#RACK-204.S01"
+      }
+     ],
+     "canContinueCurrentTask": false,
+     "canAcceptNewTask": true,
+     "activeUntilKind": "KIND_UNTIL_NEW_TASK",
+     "activeUntilTime": ""
+    },
+    "blockedBy": [],
+    "residualHold": {
+     "kind": "HOLD_KIND_HOLDING",
+     "objectRef": "SEQ-IN-02.BIN-A",
+     "reason": ""
+    },
+    "unresolved": true,
+    "preconditionSubjects": [],
+    "evidenceWindow": [
+     {
+      "sequence": 1,
+      "occurredAt": "2026-09-06T00:00:00Z",
+      "kind": "RESYNC",
+      "detail": "snapshot: next sequence=1, faults=0, connection=CONNECTION_STATE_ONLINE",
+      "local": true
+     },
+     {
+      "sequence": 1,
+      "occurredAt": "2026-09-06T00:00:00Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-1#RACK-204.S01 TASK_STATE_UNSPECIFIED->TASK_STATE_ACCEPTED rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 2,
+      "occurredAt": "2026-09-06T00:00:01Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-1#RACK-204.S01 TASK_STATE_ACCEPTED->TASK_STATE_RUNNING rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 3,
+      "occurredAt": "2026-09-06T00:00:01Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-1#RACK-204.S01 pick_place SKILL_STATE_READY->SKILL_STATE_RUNNING",
+      "local": false
+     },
+     {
+      "sequence": 5,
+      "occurredAt": "2026-09-06T00:00:01Z",
+      "kind": "FAULT_RAISED",
+      "detail": "SKILL_EXECUTION_FAILED class=GRASP_FAILED can_accept_new_task=true",
+      "local": false
+     },
+     {
+      "sequence": 6,
+      "occurredAt": "2026-09-06T00:00:01Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-1#RACK-204.S01 pick_place SKILL_STATE_RUNNING->SKILL_STATE_HALTED",
+      "local": false
+     },
+     {
+      "sequence": 7,
+      "occurredAt": "2026-09-06T00:00:01Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-1#RACK-204.S01 pick_place SKILL_STATE_HALTED->SKILL_STATE_READY",
+      "local": false
+     },
+     {
+      "sequence": 8,
+      "occurredAt": "2026-09-06T00:00:01Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-1#RACK-204.S01 TASK_STATE_RUNNING->TASK_STATE_RETRIABLE rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 9,
+      "occurredAt": "2026-09-06T00:00:01Z",
+      "kind": "CELL_SIGNAL",
+      "detail": "RACK-204.S01: occupied=true identity=ENGINE-COVER-A at=(read now)",
+      "local": true
+     }
+    ],
+    "windowTruncated": false,
+    "expectedHold": "HOLD_KIND_HOLDING",
+    "observedHold": "HOLD_KIND_HOLDING",
+    "effectMismatch": null,
+    "requiredEvidence": "E2",
+    "reachedEvidence": "E0",
+    "verification": "MATCHED",
+    "step": {
+     "at": 1,
+     "plan": [
+      "RACK-204.S01"
+     ],
+     "completed": []
+    },
+    "route": "ROBOT",
+    "intent": {
+     "workMasterId": "PrepareSequencedRack",
+     "orderVersion": 17,
+     "orderParameters": {},
+     "materials": [
+      {
+       "materialDefinitionId": "ENGINE-COVER-A",
+       "quantity": 1
+      }
+     ],
+     "equipment": [
+      {
+       "id": "RACK-204.S01",
+       "equipmentUse": "destination",
+       "properties": {
+        "material": "ENGINE-COVER-A"
+       }
+      },
+      {
+       "id": "SEQ-IN-02.BIN-A",
+       "equipmentUse": "source",
+       "properties": {
+        "material": "ENGINE-COVER-A"
+       }
+      }
+     ],
+     "capabilityMaxEvidence": "E2",
+     "evidenceWindowBefore": "PT30S",
+     "evidenceWindowAfter": "PT15S",
+     "skillType": "pick_place",
+     "unitParameters": {
+      "destination": "RACK-204.S01",
+      "object_id": "SEQ-IN-02.BIN-A"
+     },
+     "source": "SEQ-IN-02.BIN-A",
+     "destination": "RACK-204.S01",
+     "expectedIdentity": "ENGINE-COVER-A"
+    },
+    "observation": {
+     "linkBroken": false,
+     "lateEvents": [],
+     "progressObservable": true,
+     "progressStalled": false
+    },
+    "profileRevision": 1,
+    "contractSemver": "0.9.0",
+    "approvedBy": null,
+    "review": null,
+    "resolution": {
+     "decision": "REWORK",
+     "at": "2026-09-06T00:00:04Z",
+     "wallClockAt": "2026-09-22T16:47:45.606355100Z"
+    },
+    "digest": "4825e9e2e616f284bff1b81aee4780ce349ff51512cd51a30efcec2f58de01b8"
+   },
+   "search": {
+    "searchId": "search-1",
+    "robotId": "hum-02",
+    "jobOrderId": "PATROL-AFTER-1",
+    "at": "2026-09-06T00:00:05Z",
+    "wallClockAt": "2026-09-22T16:47:45.654726400Z",
+    "outcome": "FOUND",
+    "steps": [
+     {
+      "skillType": "pick_place",
+      "requires": [],
+      "expectedHold": "HOLD_KIND_EMPTY",
+      "onFailureHold": "HOLD_KIND_HOLDING"
+     }
+    ]
+   },
+   "searchWhy": "run-4 의 search-1. 사건 뒤에 탐색이 선 첫 실물 짝이다(2026-09-22). 길은 사건 → 사람의 재작업 → 탐색이고 자동 회복이 아니다 — picasso 가 §15.150 을 열지 않고 시나리오 순서만 바꿨다. 짝은 시각이 아니라 기체(hum-02)로 잡는다. 판 5(2026-09-23)부터 그 걸음이 번들의 resolution 에 있다 — REWORK 00:00:04, 사건(00:00:01)과 탐색(00:00:05) 사이. 질의가 결정과 가상 시각을 싣고, 재는 것은 판독 «사람의 걸음을 말했나 · 자동 회복이라 말했나» 다",
+   "procedure": {
+    "doc": "SOP-01 파지 실패와 잔여 파지 처리",
+    "section": "5",
+    "why": "SOP-01 §2 표가 GRASP_FAILED 를 ✅ 로 든다. 절차는 §5.1 (G2 와 같은 분류)"
+   },
+   "mustNotClaim": [
+    "떨어뜨",
+    "놓쳤"
+   ],
+   "why": "expectedHold·observedHold 가 둘 다 HOLDING 이고 residualHold 도 HOLDING(SEQ-IN-02.BIN-A)이다. 쥐고 있는데 «떨어뜨렸다» 고 하면 관측과 반대다. «빈손» 과 «EMPTY» 는 금칙어에 안 둔다 — 질의에 실린 탐색 줄이 expectedHold=HOLD_KIND_EMPTY 를 들고 있어 제안된 조치의 전제를 사실과 대조하는 자리에 정당하게 나온다. 답을 보고 정한 것이 아니라 질의의 칸에서 온 판단이다",
+   "noLabelBecause": "분류(GRASP_FAILED)가 번들에 있고 이 벌에는 정답표가 없다. 재는 것은 절차 적중과 제안된 조치의 전제 대조(판독), 그리고 판 5 부터 사람의 걸음을 말했나(판독)다"
+  },
+  {
+   "id": "G11",
+   "kind": "incident",
+   "bundle": {
+    "incidentId": "incident-2",
+    "jobOrderId": "SEQ-2",
+    "executionId": "exec-2",
+    "robotId": "hum-04",
+    "unitId": "RACK-204.S02",
+    "at": "2026-09-06T00:00:06Z",
+    "wallClockAt": "2026-09-22T16:47:45.702913Z",
+    "failureClass": "GRASP_FAILED",
+    "fault": {
+     "failureClass": "GRASP_FAILED",
+     "errorType": "SKILL_EXECUTION_FAILED",
+     "vendorDetail": "",
+     "errorHint": "",
+     "references": [
+      {
+       "key": "KEY_SKILL_ID",
+       "value": "pick_place"
+      },
+      {
+       "key": "KEY_TASK_ID",
+       "value": "SEQ-2#RACK-204.S02"
+      }
+     ],
+     "canContinueCurrentTask": false,
+     "canAcceptNewTask": true,
+     "activeUntilKind": "KIND_UNTIL_NEW_TASK",
+     "activeUntilTime": ""
+    },
+    "blockedBy": [],
+    "residualHold": {
+     "kind": "HOLD_KIND_HOLDING",
+     "objectRef": "SEQ-IN-02.BIN-A",
+     "reason": ""
+    },
+    "unresolved": true,
+    "preconditionSubjects": [],
+    "evidenceWindow": [
+     {
+      "sequence": 2,
+      "occurredAt": "2026-09-06T00:00:05Z",
+      "kind": "RESYNC",
+      "detail": "snapshot: next sequence=2, faults=0, connection=CONNECTION_STATE_ONLINE",
+      "local": true
+     },
+     {
+      "sequence": 2,
+      "occurredAt": "2026-09-06T00:00:05Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-2#RACK-204.S02 TASK_STATE_UNSPECIFIED->TASK_STATE_ACCEPTED rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 3,
+      "occurredAt": "2026-09-06T00:00:06Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-2#RACK-204.S02 TASK_STATE_ACCEPTED->TASK_STATE_RUNNING rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 4,
+      "occurredAt": "2026-09-06T00:00:06Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-2#RACK-204.S02 pick_place SKILL_STATE_READY->SKILL_STATE_RUNNING",
+      "local": false
+     },
+     {
+      "sequence": 5,
+      "occurredAt": "2026-09-06T00:00:06Z",
+      "kind": "FAULT_RAISED",
+      "detail": "SKILL_EXECUTION_FAILED class=GRASP_FAILED can_accept_new_task=true",
+      "local": false
+     },
+     {
+      "sequence": 6,
+      "occurredAt": "2026-09-06T00:00:06Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-2#RACK-204.S02 pick_place SKILL_STATE_RUNNING->SKILL_STATE_HALTED",
+      "local": false
+     },
+     {
+      "sequence": 7,
+      "occurredAt": "2026-09-06T00:00:06Z",
+      "kind": "SKILL_TRANSITION",
+      "detail": "SEQ-2#RACK-204.S02 pick_place SKILL_STATE_HALTED->SKILL_STATE_READY",
+      "local": false
+     },
+     {
+      "sequence": 8,
+      "occurredAt": "2026-09-06T00:00:06Z",
+      "kind": "TASK_TRANSITION",
+      "detail": "SEQ-2#RACK-204.S02 TASK_STATE_RUNNING->TASK_STATE_RETRIABLE rev=17 attempt=0",
+      "local": false
+     },
+     {
+      "sequence": 9,
+      "occurredAt": "2026-09-06T00:00:06Z",
+      "kind": "CELL_SIGNAL",
+      "detail": "RACK-204.S02: occupied=true identity=ENGINE-COVER-A at=(read now)",
+      "local": true
+     }
+    ],
+    "windowTruncated": false,
+    "expectedHold": "HOLD_KIND_HOLDING",
+    "observedHold": "HOLD_KIND_HOLDING",
+    "effectMismatch": null,
+    "requiredEvidence": "E2",
+    "reachedEvidence": "E0",
+    "verification": "MATCHED",
+    "step": {
+     "at": 1,
+     "plan": [
+      "RACK-204.S02"
+     ],
+     "completed": []
+    },
+    "route": "ROBOT",
+    "intent": {
+     "workMasterId": "PrepareSequencedRack",
+     "orderVersion": 17,
+     "orderParameters": {},
+     "materials": [
+      {
+       "materialDefinitionId": "ENGINE-COVER-A",
+       "quantity": 1
+      }
+     ],
+     "equipment": [
+      {
+       "id": "RACK-204.S02",
+       "equipmentUse": "destination",
+       "properties": {
+        "material": "ENGINE-COVER-A"
+       }
+      },
+      {
+       "id": "SEQ-IN-02.BIN-A",
+       "equipmentUse": "source",
+       "properties": {
+        "material": "ENGINE-COVER-A"
+       }
+      }
+     ],
+     "capabilityMaxEvidence": "E2",
+     "evidenceWindowBefore": "PT30S",
+     "evidenceWindowAfter": "PT15S",
+     "skillType": "pick_place",
+     "unitParameters": {
+      "destination": "RACK-204.S02",
+      "object_id": "SEQ-IN-02.BIN-A"
+     },
+     "source": "SEQ-IN-02.BIN-A",
+     "destination": "RACK-204.S02",
+     "expectedIdentity": "ENGINE-COVER-A"
+    },
+    "observation": {
+     "linkBroken": false,
+     "lateEvents": [],
+     "progressObservable": true,
+     "progressStalled": false
+    },
+    "profileRevision": 1,
+    "contractSemver": "0.9.0",
+    "approvedBy": null,
+    "review": null,
+    "resolution": {
+     "decision": "REWORK",
+     "at": "2026-09-06T00:00:09Z",
+     "wallClockAt": "2026-09-22T16:47:45.840155200Z"
+    },
+    "digest": "6dc37836b8b89151f2ea468f48d74eb236a74150230c80bd2009be135e4050f6"
+   },
+   "search": {
+    "searchId": "search-2",
+    "robotId": "hum-04",
+    "jobOrderId": "PATROL-AFTER-2",
+    "at": "2026-09-06T00:00:10Z",
+    "wallClockAt": "2026-09-22T16:47:45.887779900Z",
+    "outcome": "WITHHELD"
+   },
+   "searchWhy": "run-4 의 search-2. 사건 뒤에 선 탐색이 가려진 짝이다(WITHHELD, steps 키 없음). «답이 섰다» 와 «가렸다» 가 사건 옆에서도 갈려야 한다 — picasso. 그리고 hum-04 GRASP_FAILED 는 run-3 에 셋이 앞서 있어 recurrenceSeen 이 처음으로 0 이 아니다(sameRobotSameClass 3 · sameUnitSameClass 1). 판 5 부터 resolution 이 REWORK 00:00:09 로 사건(00:00:06)과 탐색(00:00:10) 사이에 선다 — 가려진 짝에도 사람은 있었다",
+   "procedure": {
+    "doc": "SOP-01 파지 실패와 잔여 파지 처리",
+    "section": "5",
+    "why": "SOP-01 §2 표가 GRASP_FAILED 를 ✅ 로 든다. 절차는 §5.1 (G2 와 같은 분류)"
+   },
+   "mustNotClaim": [
+    "떨어뜨",
+    "놓쳤",
+    "빈손",
+    "EMPTY"
+   ],
+   "why": "expectedHold·observedHold 가 둘 다 HOLDING 이고 residualHold 도 HOLDING 이다. 쥐고 있는데 «떨어뜨렸다» 고 하면 관측과 반대다. 가려진 탐색 줄에는 steps 가 없어 EMPTY 가 질의에 안 실린다 — G2 와 같은 금칙어다",
+   "noLabelBecause": "분류(GRASP_FAILED)가 번들에 있고 이 벌에는 정답표가 없다. 재는 것은 절차 적중과, 가려진 제안을 «대안 없음» 으로 위장하지 않는지의 판독이다"
+  },
+  {
+   "id": "S1",
+   "kind": "search",
+   "search": {
+    "searchId": "search-4",
+    "robotId": "hum-03",
+    "jobOrderId": "SEQ-RELOCATE",
+    "at": "2026-09-06T00:02:34Z",
+    "wallClockAt": "2026-09-22T16:47:37.751685200Z",
+    "outcome": "SOURCE_MISSING",
+    "material": "ENGINE-COVER-B",
+    "source": "SEQ-IN-03.BIN-A",
+    "observed": null,
+    "alternatives": [
+     "SEQ-IN-03.BIN-B"
+    ]
+   },
+   "searchWhy": "run-1 의 search-4. picasso 가 점유 축으로 계산한 출발 결품의 대안 자리를 대장에 실은 줄이다(적재 규약 판 4, 2026-09-20). 설명층이 요청해 받은 것이고 재는 자리가 여기뿐이다",
+   "procedure": {
+    "doc": "SOP-03 자재 결품과 대체 슬롯 운용",
+    "section": "4",
+    "why": "이 줄이 alternatives 를 싣고, 대체 슬롯을 쓸 조건을 적은 곳은 코퍼스에서 SOP-03 §4 하나뿐이다 — 품번 동일·로트 제약 없음·대체 슬롯 선언됨 셋이 모두 성립해야 하고 하나라도 불확실하면 사람에게 올린다. 적재된 색인에서 그 조건 문단이 SOP-03 §4 조각에만 있는 것을 확인했다(2026-09-20). SOP-03 §2 적용 범위 표와 §6 결과 갈래 표에는 SOURCE_MISSING 이 없다"
+   }
+  },
+  {
+   "id": "Q1",
+   "kind": "query",
+   "query": "오늘 부산 날씨 알려줘",
+   "expectNoEvidence": true,
+   "why": "이 코퍼스의 범위 밖이다"
+  },
+  {
+   "id": "Q2",
+   "kind": "query",
+   "query": "zzqqxx 존재하지않는토큰 9x8y7z",
+   "expectNoEvidence": true,
+   "why": "벡터 경로가 최근접을 돌려주므로 스니펫은 오지만 인용은 0 이어야 한다"
+  },
+  {
+   "id": "Q3",
+   "kind": "query",
+   "query": "이 창고의 지난달 전기요금 명세를 알려줘",
+   "expectNoEvidence": true,
+   "why": "설비 낱말이 섞여 검색은 걸리지만 근거는 없다. 가장 어려운 쪽이다"
+  }
+ ]
+}
