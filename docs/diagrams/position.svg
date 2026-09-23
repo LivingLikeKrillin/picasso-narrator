@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="840" viewBox="0 0 840 840" font-family="Malgun Gothic,Apple SD Gothic Neo,Noto Sans KR,Segoe UI,-apple-system,Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="am" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#57606a"/></marker>
+    <marker id="ab" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#0969da"/></marker>
+  </defs>
+  <rect x="6" y="6" width="828" height="828" rx="14" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="32" y="46" font-size="17" font-weight="600" fill="#1f2328">판정의 옆에 선 설명 층 (Explanation beside Judgment)</text>
+  <text x="32" y="70" font-size="12.5" fill="#57606a">picasso 는 이 층을 부르지 않는다 — 파일 한 벌을 읽어 사건당 한 번 묻고, 설명을 사건 처리의 옆에 붙인다</text>
+
+  <!-- lanes -->
+  <rect x="32" y="96" width="232" height="660" rx="10" fill="#fbfcfd" stroke="#e6e9ee"/>
+  <text x="48" y="116" font-size="11" font-weight="700" fill="#8b95a1" letter-spacing="1">PICASSO — 사건 처리 경로</text>
+  <rect x="296" y="96" width="256" height="660" rx="10" fill="#eef5ff" stroke="#cfe0f5"/>
+  <text x="312" y="116" font-size="11" font-weight="700" fill="#0969da" letter-spacing="1">PICASSO-NARRATOR — 이 저장소</text>
+  <rect x="584" y="96" width="224" height="660" rx="10" fill="#fbfcfd" stroke="#e6e9ee"/>
+  <text x="600" y="116" font-size="11" font-weight="700" fill="#8b95a1" letter-spacing="1">KHALA/NEXUS — 검색 · 인용 검증</text>
+
+  <!-- picasso lane -->
+  <rect x="48" y="134" width="200" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="148" y="158" font-size="12.5" fill="#1f2328" text-anchor="middle">picasso — 판정 · 대안 탐색</text>
+  <text x="148" y="176" font-size="11" fill="#57606a" text-anchor="middle">LLM 없음 · 이 층을 모른다</text>
+
+  <rect x="48" y="232" width="200" height="72" rx="6" fill="#eaf3ea" stroke="#1a7f37"/>
+  <text x="148" y="256" font-size="12.5" font-weight="600" fill="#1f2328" text-anchor="middle">파일 한 벌 — 이음매</text>
+  <text x="148" y="274" font-size="11" fill="#57606a" text-anchor="middle">사건 · 탐색 대장 + manifest.json</text>
+  <text x="148" y="290" font-size="11" fill="#1a7f37" text-anchor="middle">이 층의 유일한 입력 · import 없음</text>
+
+  <rect x="48" y="344" width="200" height="72" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="148" y="368" font-size="12.5" fill="#1f2328" text-anchor="middle">승인 창구 ApprovalHost</text>
+  <text x="148" y="386" font-size="11" fill="#57606a" text-anchor="middle">이 층의 승인 시도를 받는다</text>
+  <text x="148" y="402" font-size="11" fill="#57606a" text-anchor="middle">자격 판정 — 신원 × 선언 목록</text>
+
+  <rect x="48" y="556" width="200" height="72" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="148" y="580" font-size="12.5" fill="#1f2328" text-anchor="middle">운영자</text>
+  <text x="148" y="598" font-size="11" fill="#57606a" text-anchor="middle">설명 없이도 사건을 알고 승인한다</text>
+  <text x="148" y="614" font-size="11" fill="#57606a" text-anchor="middle">설명은 나중에 옆에 붙는다</text>
+
+  <!-- narrator lane -->
+  <rect x="312" y="134" width="224" height="44" rx="6" fill="#ffffff" stroke="#cfe0f5"/>
+  <text x="424" y="152" font-size="11" fill="#57606a" text-anchor="middle">한 바퀴 = python -m receiver &lt;한 벌&gt;</text>
+  <text x="424" y="168" font-size="11" fill="#57606a" text-anchor="middle">승인 시도는 --approve 로만 켜진다</text>
+
+  <rect x="312" y="232" width="224" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="424" y="256" font-size="12.5" fill="#1f2328" text-anchor="middle">receiver — 수신기</text>
+  <text x="424" y="274" font-size="11" fill="#57606a" text-anchor="middle">스캔 · 멱등 · 재시도 · 실패 기록</text>
+
+  <rect x="312" y="344" width="224" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="424" y="368" font-size="12.5" fill="#1f2328" text-anchor="middle">composer — 질의 구성</text>
+  <text x="424" y="386" font-size="11" fill="#57606a" text-anchor="middle">번들의 사실만 · 지어 넣지 않는다</text>
+
+  <rect x="312" y="444" width="224" height="72" rx="6" fill="#ddf4ff" stroke="#0969da"/>
+  <text x="424" y="468" font-size="12.5" font-weight="600" fill="#1f2328" text-anchor="middle">explainer — 설명 생성</text>
+  <text x="424" y="486" font-size="11" fill="#0969da" text-anchor="middle">LLM 이 닿는 유일한 조각</text>
+  <text x="424" y="502" font-size="11" fill="#57606a" text-anchor="middle">사건당 한 번 · 자율 루프 아님</text>
+
+  <rect x="312" y="556" width="224" height="72" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="424" y="580" font-size="12.5" fill="#1f2328" text-anchor="middle">recorder — 기록</text>
+  <text x="424" y="598" font-size="11" fill="#57606a" text-anchor="middle">네 갈래 — 설명·인용 / 인용 없는 답</text>
+  <text x="424" y="614" font-size="11" fill="#57606a" text-anchor="middle">근거 없음 / 생성 실패 · 운영자 카드</text>
+
+  <rect x="312" y="672" width="224" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="424" y="696" font-size="12.5" fill="#1f2328" text-anchor="middle">corpus — 환류 내보내기</text>
+  <text x="424" y="714" font-size="11" fill="#57606a" text-anchor="middle">적재 입력 모양 · 출처 machine_written</text>
+
+  <!-- khala lane -->
+  <rect x="596" y="134" width="200" height="44" rx="6" fill="#ffffff" stroke="#e6e9ee"/>
+  <text x="696" y="152" font-size="11" fill="#57606a" text-anchor="middle">Bearer 인증 · 테넌트별 읽기 자격</text>
+  <text x="696" y="168" font-size="11" fill="#57606a" text-anchor="middle">사건 바퀴는 읽기 전용 신원으로 돈다</text>
+
+  <path d="M596,232 a100,9 0 0 1 200,0 l0,58 a100,9 0 0 1 -200,0 Z" fill="#f6f8fa" stroke="#d0d7de"/>
+  <path d="M596,232 a100,9 0 0 0 200,0" fill="none" stroke="#d0d7de"/>
+  <text x="696" y="258" font-size="12.5" fill="#1f2328" text-anchor="middle">테넌트 picasso</text>
+  <text x="696" y="276" font-size="11" fill="#57606a" text-anchor="middle">picasso 문서 + 합성 SOP 여섯</text>
+
+  <rect x="596" y="444" width="200" height="72" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="696" y="468" font-size="12.5" fill="#1f2328" text-anchor="middle">Nexus — 검색 · 인용 검증</text>
+  <text x="696" y="486" font-size="11" fill="#57606a" text-anchor="middle">POST /search/answer</text>
+  <text x="696" y="502" font-size="11" fill="#57606a" text-anchor="middle">사건당 한 번 · 인용의 코드 검증</text>
+
+  <path d="M596,672 a100,9 0 0 1 200,0 l0,58 a100,9 0 0 1 -200,0 Z" fill="#f6f8fa" stroke="#d0d7de"/>
+  <path d="M596,672 a100,9 0 0 0 200,0" fill="none" stroke="#d0d7de"/>
+  <text x="696" y="698" font-size="12.5" fill="#1f2328" text-anchor="middle">테넌트 narrator</text>
+  <text x="696" y="716" font-size="11" fill="#57606a" text-anchor="middle">설명 기록 · 운영자 질의의 근거</text>
+
+  <!-- edges: picasso side -->
+  <polyline points="148,192 148,232" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <text x="156" y="216" font-size="11" fill="#57606a">파일로 내보낸다</text>
+  <polyline points="248,268 312,268" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <polyline points="48,163 40,163 40,592 48,592" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <text x="48" y="478" font-size="11" fill="#57606a">통지와 승인은 여기서 돈다</text>
+  <text x="48" y="494" font-size="11" fill="#57606a">설명을 기다리지 않는다</text>
+
+  <!-- edges: narrator chain -->
+  <polyline points="424,290 424,344" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <text x="432" y="321" font-size="11" fill="#57606a">번들의 사실</text>
+  <polyline points="424,402 424,444" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <text x="432" y="427" font-size="11" fill="#57606a">고정 형식 질의</text>
+  <polyline points="424,516 424,556" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <text x="432" y="540" font-size="11" fill="#57606a">답 · 인용 · 계측값</text>
+  <polyline points="424,628 424,672" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <text x="432" y="654" font-size="11" fill="#57606a">explanations.jsonl</text>
+
+  <!-- approval attempt (control) -->
+  <polyline points="312,282 280,282 280,380 248,380" fill="none" stroke="#0969da" stroke-width="1.6" marker-end="url(#ab)"/>
+
+  <!-- explanation attaches beside (passive) -->
+  <polyline points="312,592 248,592" fill="none" stroke="#57606a" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#am)"/>
+
+  <!-- nexus side -->
+  <polyline points="536,480 596,480" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <polyline points="696,299 696,444" fill="none" stroke="#57606a" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#am)"/>
+  <text x="702" y="376" font-size="11" fill="#57606a">사건 바퀴의 근거</text>
+  <polyline points="696,663 696,516" fill="none" stroke="#57606a" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#am)"/>
+  <text x="702" y="594" font-size="11" fill="#57606a">운영자 질의만</text>
+  <polyline points="536,701 596,701" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+
+  <!-- footer -->
+  <rect x="32" y="770" width="776" height="48" rx="6" fill="#fbfcfd" stroke="#e6e9ee"/>
+  <text x="44" y="790" font-size="11" fill="#57606a">LLM 이 닿는 것은 explainer 하나 · 판정과 자격은 picasso 에 남는다 · 설명이 없어도 사건은 처리된다</text>
+  <text x="44" y="808" font-size="10" fill="#8b95a1">회색 실선은 데이터 흐름, 파란 실선은 승인 시도, 점선은 읽기와 옆에 붙음 · 여섯 운영 경로의 시퀀스는 SEQUENCES.md 에 있다</text>
+</svg>
