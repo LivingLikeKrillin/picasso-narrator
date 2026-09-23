@@ -13,3 +13,7 @@ scripts/hooks/*  text eol=lf
 
 # 인계 안내문. 저쪽 것을 바이트 그대로 복사해 대조하므로 줄끝이 기계마다 갈리면 대조가 갈린다
 *.txt        text eol=lf
+
+# README 의 그림. make-dark.mjs 가 밝은 판을 읽어 다크 판을 쓰므로 줄끝이 갈리면 두 판의 diff 가 통째로 뜬다
+*.svg        text eol=lf
+*.mjs        text eol=lf

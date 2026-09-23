@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="788" viewBox="0 0 840 788" font-family="Malgun Gothic,Apple SD Gothic Neo,Noto Sans KR,Segoe UI,-apple-system,Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="am" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#57606a"/></marker>
+    <marker id="ab" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#0969da"/></marker>
+    <marker id="aw" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9a6700"/></marker>
+  </defs>
+  <rect x="6" y="6" width="828" height="776" rx="14" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="32" y="46" font-size="17" font-weight="600" fill="#1f2328">구성 — 네 조각, LLM 은 하나 (Composition)</text>
+  <text x="32" y="70" font-size="12.5" fill="#57606a">바퀴는 파일 한 벌을 읽어 기록을 남기고, LLM 이 닿는 곳은 explainer 하나다</text>
+  <text x="32" y="90" font-size="12.5" fill="#57606a">채점은 바퀴 밖의 순수 함수라 실행 기록만 있으면 스택 없이 다시 센다 · 골든셋과 정답표의 변경은 훅이 알리거나 막는다</text>
+
+  <!-- zone A: the wheel -->
+  <rect x="32" y="116" width="776" height="210" rx="10" fill="#eef5ff" stroke="#cfe0f5"/>
+  <text x="48" y="136" font-size="11" font-weight="700" fill="#0969da" letter-spacing="1">바퀴 — python -m receiver &lt;한 벌&gt; --out &lt;기록&gt; · 네 조각을 잇는 것은 receiver/pipeline.py</text>
+
+  <rect x="48" y="150" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="132" y="174" font-size="12.5" fill="#1f2328" text-anchor="middle">한 벌 (picasso 인계)</text>
+  <text x="132" y="192" font-size="11" fill="#57606a" text-anchor="middle">두 대장 + manifest.json</text>
+
+  <rect x="240" y="150" width="168" height="44" rx="6" fill="#ffffff" stroke="#cfe0f5"/>
+  <text x="324" y="168" font-size="11" fill="#57606a" text-anchor="middle">멱등 열쇠 (runId, digest)</text>
+  <text x="324" y="184" font-size="11" fill="#57606a" text-anchor="middle">두 번 집어도 설명은 한 건</text>
+
+  <rect x="432" y="150" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="516" y="174" font-size="12.5" fill="#1f2328" text-anchor="middle">Nexus (khala) — 밖</text>
+  <text x="516" y="192" font-size="11" fill="#57606a" text-anchor="middle">사건당 한 번 · 인용 검증</text>
+
+  <rect x="624" y="150" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="708" y="174" font-size="12.5" fill="#1f2328" text-anchor="middle">corpus/export.py</text>
+  <text x="708" y="192" font-size="11" fill="#57606a" text-anchor="middle">설명 기록의 환류 (khala)</text>
+
+  <rect x="48" y="252" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="132" y="276" font-size="12.5" fill="#1f2328" text-anchor="middle">receiver — 수신기</text>
+  <text x="132" y="294" font-size="11" fill="#57606a" text-anchor="middle">스캔 · 멱등 · 재시도</text>
+
+  <rect x="240" y="252" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="324" y="276" font-size="12.5" fill="#1f2328" text-anchor="middle">composer — 질의 구성</text>
+  <text x="324" y="294" font-size="11" fill="#57606a" text-anchor="middle">번들의 사실만 싣는다</text>
+
+  <rect x="432" y="252" width="168" height="58" rx="6" fill="#ddf4ff" stroke="#0969da"/>
+  <text x="516" y="276" font-size="12.5" font-weight="600" fill="#1f2328" text-anchor="middle">explainer — 설명 생성</text>
+  <text x="516" y="294" font-size="11" fill="#0969da" text-anchor="middle">LLM 이 닿는 유일한 조각</text>
+
+  <rect x="624" y="252" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="708" y="276" font-size="12.5" fill="#1f2328" text-anchor="middle">recorder — 기록</text>
+  <text x="708" y="294" font-size="11" fill="#57606a" text-anchor="middle">네 갈래로 가른다</text>
+
+  <polyline points="132,208 132,252" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <text x="140" y="234" font-size="11" fill="#57606a">한 벌 읽기</text>
+  <polyline points="216,281 240,281" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <polyline points="408,281 432,281" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <polyline points="600,281 624,281" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <polyline points="516,252 516,208" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <text x="522" y="234" font-size="11" fill="#57606a">사건당 한 번</text>
+  <polyline points="708,252 708,208" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <text x="714" y="234" font-size="11" fill="#57606a">설명 기록</text>
+
+  <!-- zone C: evaluation -->
+  <rect x="32" y="360" width="776" height="204" rx="10" fill="#fbfcfd" stroke="#e6e9ee"/>
+  <text x="48" y="380" font-size="11" font-weight="700" fill="#8b95a1" letter-spacing="1">평가 — 채점은 순수 함수</text>
+  <text x="792" y="380" font-size="11" fill="#8b95a1" text-anchor="end">골든셋 15 건 = 사건 11 · 탐색 줄 1 · 도메인 밖 질의 3</text>
+
+  <rect x="48" y="394" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="132" y="418" font-size="12.5" fill="#1f2328" text-anchor="middle">eval/goldenset.json</text>
+  <text x="132" y="436" font-size="11" fill="#57606a" text-anchor="middle">15 건 · 금칙어 · 절차 정답</text>
+
+  <rect x="240" y="394" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="324" y="418" font-size="12.5" fill="#1f2328" text-anchor="middle">eval/measure.py</text>
+  <text x="324" y="436" font-size="11" fill="#57606a" text-anchor="middle">실물 스택에 한 판 · 20~40 분</text>
+
+  <rect x="432" y="394" width="168" height="58" rx="6" fill="#eaf3ea" stroke="#1a7f37"/>
+  <text x="516" y="418" font-size="12.5" font-weight="600" fill="#1f2328" text-anchor="middle">eval/score.py</text>
+  <text x="516" y="436" font-size="11" fill="#1a7f37" text-anchor="middle">순수 함수 · 지표 다섯</text>
+
+  <rect x="624" y="394" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="708" y="418" font-size="12.5" fill="#1f2328" text-anchor="middle">eval/RESULTS.md</text>
+  <text x="708" y="436" font-size="11" fill="#57606a" text-anchor="middle">수치 · 오탐 장부 · 정정 기록</text>
+
+  <path d="M240,494 a84,9 0 0 1 168,0 l0,44 a84,9 0 0 1 -168,0 Z" fill="#f6f8fa" stroke="#d0d7de"/>
+  <path d="M240,494 a84,9 0 0 0 168,0" fill="none" stroke="#d0d7de"/>
+  <text x="324" y="515" font-size="12.5" fill="#1f2328" text-anchor="middle">last-answers.json</text>
+  <text x="324" y="531" font-size="11" fill="#57606a" text-anchor="middle">마지막 판의 실행 기록</text>
+
+  <rect x="432" y="494" width="168" height="44" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="516" y="512" font-size="12.5" fill="#1f2328" text-anchor="middle">replay.py · rescore.py</text>
+  <text x="516" y="530" font-size="11" fill="#57606a" text-anchor="middle">스택 없이 되감기 · 재채점</text>
+
+  <rect x="624" y="494" width="168" height="44" rx="6" fill="#f6f8fa" stroke="#9a6700"/>
+  <text x="708" y="512" font-size="12.5" fill="#1f2328" text-anchor="middle">ground-truth.jsonl</text>
+  <text x="708" y="530" font-size="11" fill="#9a6700" text-anchor="middle">picasso 정답표 · 편집 차단</text>
+
+  <polyline points="216,423 240,423" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <polyline points="408,423 432,423" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <polyline points="600,423 624,423" fill="none" stroke="#57606a" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#am)"/>
+  <polyline points="324,452 324,485" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <text x="330" y="473" font-size="11" fill="#57606a">기록</text>
+  <polyline points="408,516 432,516" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <polyline points="516,494 516,452" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+  <text x="522" y="478" font-size="11" fill="#57606a">다시 센다</text>
+  <polyline points="624,516 612,516 612,438 600,438" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
+
+  <!-- measure drives the same pipeline (control) -->
+  <polyline points="300,394 300,344 200,344 200,310" fill="none" stroke="#0969da" stroke-width="1.6" marker-end="url(#ab)"/>
+  <text x="212" y="340" font-size="11" fill="#0969da">같은 길로 돈다</text>
+
+  <!-- zone D: discipline and records -->
+  <rect x="32" y="598" width="776" height="108" rx="10" fill="#fbfcfd" stroke="#e6e9ee"/>
+
+  <rect x="48" y="632" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="132" y="656" font-size="12.5" fill="#1f2328" text-anchor="middle">.claude/hooks/</text>
+  <text x="132" y="674" font-size="11" fill="#57606a" text-anchor="middle">경계 · 골든셋 · 커밋 규약</text>
+
+  <rect x="240" y="632" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="324" y="656" font-size="12.5" fill="#1f2328" text-anchor="middle">scripts/hooks/</text>
+  <text x="324" y="674" font-size="11" fill="#57606a" text-anchor="middle">커밋 전 시험 234 · 메시지 규약</text>
+
+  <rect x="432" y="632" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="516" y="656" font-size="12.5" fill="#1f2328" text-anchor="middle">correspondence/</text>
+  <text x="516" y="674" font-size="11" fill="#57606a" text-anchor="middle">편지 서른 통 · 결함 27 건</text>
+
+  <rect x="624" y="632" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="708" y="656" font-size="12.5" fill="#1f2328" text-anchor="middle">adr/ · plans/</text>
+  <text x="708" y="674" font-size="11" fill="#57606a" text-anchor="middle">결정 기록 둘 · 계획서 여섯</text>
+
+  <polyline points="132,632 132,452" fill="none" stroke="#9a6700" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#aw)"/>
+  <text x="138" y="560" font-size="11" fill="#9a6700">변경 알림</text>
+  <g><rect x="125" y="606" width="14" height="16" fill="#fbfcfd"/>
+     <text x="48" y="618" font-size="11" font-weight="700" fill="#8b95a1" letter-spacing="1">규율과 기록 — 훅이 강제하고 편지가 남긴다</text></g>
+
+  <!-- footer -->
+  <rect x="32" y="722" width="776" height="48" rx="6" fill="#fbfcfd" stroke="#e6e9ee"/>
+  <text x="44" y="742" font-size="11" fill="#57606a">LLM 을 부르는 조각은 explainer 뿐이고(tests/test_explainer_once.py), score.py 는 recorder 만 읽는 순수 함수라 실물 스택 없이 다시 센다</text>
+  <text x="44" y="760" font-size="10" fill="#8b95a1">간선은 모듈 import 에서 옮겼다 · 조각의 규칙은 BOUNDARY.md §1.5, 지표의 정의는 eval/README.md · 주황 테두리는 이 층이 읽기만 하는 picasso 의 것</text>
+</svg>

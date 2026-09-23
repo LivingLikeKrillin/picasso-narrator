@@ -51,6 +51,8 @@ PYTHONIOENCODING=utf-8 python -m pytest -q
 - `.claude/hooks/check_commit_format.py` 가 `git commit` 을 가로채 검사하고, 같은 검사가
   `scripts/hooks/commit-msg` 로 git 자체에도 걸린다. 설치: `git config core.hooksPath scripts/hooks`. 자가 시험: `python .claude/hooks/selftest.py`(16 사례)
 - 문서와 코드 주석은 평서체이고 실측은 `⛔ **… (실측 날짜)**` 로 연다. 줄끝은 LF 다(`.gitattributes`)
+- README 의 그림은 `docs/diagrams/*.svg` 다. **밝은 판만 고치고** `node docs/diagrams/make-dark.mjs <밝은 판>` 을
+  다시 돌려 다크 판을 만든다 — 둘을 손으로 유지하면 어긋난다. 너비는 840 (GitHub README 칸에 1:1), 글자는 11px 아래로 안 내린다
 
 ## 5. 계획과 실행
 

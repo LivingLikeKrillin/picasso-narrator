@@ -11,7 +11,7 @@
 ## 서 있는 것
 
 ```
-234 시험 초록 · 커밋 201개 · 조각 넷(receiver · composer · explainer · recorder)
+234 시험 초록 · 커밋 202개 · 조각 넷(receiver · composer · explainer · recorder)
 LLM 이 닿는 곳은 explainer 하나. 사건당 한 번 묻는다
 한 바퀴는 python -m receiver 로 돈다. 승인 시도는 --approve 로 켜고 기본은 끔이다
 ```

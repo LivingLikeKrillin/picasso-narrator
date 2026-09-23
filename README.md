@@ -8,9 +8,21 @@
 2. **경계는 문서가 아니라 코드 배치로 증명한다.** `picasso`의 LLM 의존성은 0이며 본 저장소의 존재를 알지 못합니다. 본 저장소의 어떤 코드도 `picasso`를 수정하지 않으며, 형제 저장소로의 쓰기는 훅(`.claude/hooks/boundary_guard.py`)이 차단합니다.
 3. **자격은 선언으로만 생긴다.** 본 계층은 자동 승인을 *시도*할 뿐 자격을 판단하지 않습니다. 허락 여부는 `picasso`가 호출자 신원과 선언 목록을 대조하여 판정합니다.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/position.dark.svg">
+  <img alt="판정은 picasso 가 하고 설명은 그 옆에 붙습니다. picasso 는 이 층을 호출하지 않고 파일 한 벌(사건 대장 · 탐색 대장 · manifest)을 내보내며, 이 층의 네 조각(receiver · composer · explainer · recorder)이 그것을 읽어 Nexus 에 사건당 한 번 묻고 설명을 기록합니다. LLM 이 닿는 조각은 explainer 하나이고, 승인 시도는 picasso 의 승인 창구가 신원과 선언 목록으로 판정하며, 운영자는 설명 없이도 사건을 알고 승인합니다. 설명 기록은 khala 테넌트 narrator 로 환류되어 운영자 질의의 근거가 됩니다." src="docs/diagrams/position.svg">
+</picture>
+
+**설명은 사건 처리의 앞이 아니라 옆에 섭니다.** `picasso`는 판정과 대안 탐색을 마치고 파일 한 벌을 내보낼 뿐 본 계층을 호출하지 않으며, 운영자 통지와 승인은 설명을 기다리지 않습니다. 본 계층은 그 파일을 읽어 사건당 한 번 Nexus 에 묻고, 결과를 설명·인용 / 인용 없는 답 / 근거 없음 / 생성 실패 넷으로 갈라 기록합니다. `picasso`로 되돌려 보내는 것은 승인 *시도* 하나이며 자격은 `picasso`가 판정합니다. 여섯 운영 경로의 시퀀스는 [`SEQUENCES.md`](SEQUENCES.md)에 있습니다.
+
 > **설계 정본:** 규칙의 정본은 [`BOUNDARY.md`](BOUNDARY.md)이며, 코드보다 먼저 작성되었습니다. 본 README는 입문 개요이며 상충하는 내용이 있을 경우 `BOUNDARY.md`를 우선합니다. 현재 상태는 [`STATE.md`](STATE.md), 측정 결과는 [`eval/RESULTS.md`](eval/RESULTS.md)에 있습니다.
 
 ## 시스템 모듈 구성
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/components.dark.svg">
+  <img alt="저장소를 세 영역으로 나눈 구성도입니다. 바퀴 영역에는 receiver · composer · explainer · recorder 네 조각이 한 줄로 이어지고 LLM 이 닿는 explainer 만 강조되어 있으며, 입력은 picasso 인계 파일 한 벌이고 바깥은 Nexus 와 corpus 환류입니다. 평가 영역에서는 골든셋 15 건이 measure.py 를 거쳐 바퀴와 같은 파이프라인으로 돌고, 순수 함수 score.py 가 picasso 의 정답표와 대조하여 RESULTS.md 의 수치를 내며, replay.py 와 rescore.py 가 마지막 판의 기록을 스택 없이 다시 셉니다. 규율 영역에는 훅 둘과 편지 서른 통, 결정 기록과 계획서가 있습니다." src="docs/diagrams/components.svg">
+</picture>
 
 ```
 receiver/                 한 벌(incidents.jsonl · remedy-searches.jsonl · manifest.json)을 읽고 미처리분을 고른다.
@@ -24,6 +36,7 @@ tests/                    시험 234 · picasso 인계 픽스처 네 벌 · 실�
 adr/                      결정 기록 둘 — LLM 층을 별도 저장소로 · 자격은 선언으로만
 correspondence/           형제 저장소 둘에 보낸 요청 서른 통과 그것이 드러낸 결함의 대장
 docs/superpowers/plans/   계획서 여섯 — 실행 결과와 계획이 놓친 것을 본문에 함께 적음
+docs/diagrams/            README 의 그림 둘 — 밝은 판만 손으로 그리고 다크 판은 make-dark.mjs 로 만든다
 scripts/hooks/            커밋 메시지 규약과 기본 시험군을 강제하는 git 훅
 AGENT-0*.md · SEQUENCES.md  최초 작업 지시서와 여섯 운영 경로의 시퀀스
 ```
