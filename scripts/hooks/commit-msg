@@ -1,0 +1,14 @@
+#!/bin/sh
+# 커밋 메시지의 형식을 검사한다. Claude Code 훅(.claude/hooks/check_commit_format.py)과 같은
+# 검사를 git 자체에 건다. 편집기로 쓰든 다른 도구가 쓰든 같은 문이 닫힌다.
+#
+# 규약은 CLAUDE.md 4절. 제목은 type(scope): 명사구, 본문은 합니다체, 마지막 줄은 고정 트레일러.
+#
+# 설치: git config core.hooksPath scripts/hooks
+# 우회는 `git commit --no-verify`. 막지 않는다.
+
+PYTHONIOENCODING=utf-8 python .claude/hooks/check_commit_format.py --file "$1" || {
+    echo ""
+    echo "커밋을 멈춘다. 메시지를 규약에 맞게 고쳐 다시 커밋한다(CLAUDE.md 4절)."
+    exit 1
+}

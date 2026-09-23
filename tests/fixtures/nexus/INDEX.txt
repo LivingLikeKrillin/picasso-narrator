@@ -1,0 +1,12 @@
+실물 스택에서 뜬 응답 전문 (2026-09-18, 테넌트 picasso)
+최상위 봉투는 {success, data, error, meta} — data 를 한 겹 벗겨야 한다.
+
+01-search-hit                    200  results=5 unknown_time=None
+02-search-synthetic-marked       200  results=5 unknown_time=None
+03-search-out-of-scope-tenant    200  results=3 unknown_time=None
+04-search-time-window            200  results=3 unknown_time=3
+05-answer-with-citations         200  citations=7 abstained=False weak=False
+06-answer-no-evidence            200  citations=0 abstained=False weak=True
+07-answer-nonsense               200  citations=0 abstained=False weak=True
+08-error-unknown-route           400  
+09-error-unauthorized            401  

@@ -1,0 +1,15 @@
+*.py         text eol=lf
+*.md         text eol=lf
+*.toml       text eol=lf
+
+# 적재면의 형식이다. picasso 가 내보내고 이 층이 읽으며, 한 줄에 한 기록이라는
+# 규약이 줄끝에 걸려 있다. CRLF 로 체크아웃되면 픽스처와 실물이 갈리고,
+# 나중에 커서를 바이트 오프셋으로 두는 순간 조용히 어긋난다.
+*.jsonl      text eol=lf
+*.json       text eol=lf
+
+# git 훅은 sh 스크립트다. CRLF 로 체크아웃되면 Git Bash 가 셔뱅 줄을 못 읽는다
+scripts/hooks/*  text eol=lf
+
+# 인계 안내문. 저쪽 것을 바이트 그대로 복사해 대조하므로 줄끝이 기계마다 갈리면 대조가 갈린다
+*.txt        text eol=lf

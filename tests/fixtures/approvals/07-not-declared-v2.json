@@ -1,0 +1,1 @@
+{"request": {"approverId": "narrator-2", "approverKind": "AGENT", "jobOrderId": "PATROL-OUT-OF-SCOPE", "robotId": "hum-05", "sawSkillTypes": ["pick_place"]}, "response": {"contractSemver": "0.9.0", "outcome": "REFUSED", "reason": "자동 승인 자격이 선언돼 있지 않다: narrator-2", "refusal": "NOT_DECLARED", "schemaVersion": "2"}, "status": 200}

@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+*.egg-info/
+
+# 임시 진단 산출물 — 스크래치패드에 쓸 것이 저장소 뿌리에 떨어진 적이 있다
+flags.json
+
+# Claude Code 가 세션마다 만드는 것. 훅과 세션 설정은 추적한다(.claude/settings.json, .claude/hooks/)
+.claude/worktrees/
+.claude/settings.local.json
+
+# 설명 기록 내보내기 산출물. 적재 입력이지 기록이 아니다 — 기록은 explanations.jsonl 이다
+corpus/out/
+
+# 한 바퀴의 산출물 (python -m receiver --out out). 두 대장은 남기되 추적하지 않는다
+out/
+
+# 토큰 값. 저장소에 안 올린다. khala 에는 sha256 만 간다
+.secrets/

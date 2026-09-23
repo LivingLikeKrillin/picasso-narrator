@@ -1,0 +1,17 @@
+#!/bin/sh
+# 커밋 전에 기본 시험군을 돌린다. 빨가면 커밋을 멈춘다.
+#
+# 기본 시험군은 픽스처로 돌고 실물 스택이 필요한 것은 `-m live` 로 비켜 있다(pyproject.toml 의
+# addopts). 그래서 이 훅은 스택 없이 돌고 1~2초 걸린다.
+#
+# khala 의 같은 훅이 2026-09-03 에 배운 것: 파이프라인의 종료 코드는 마지막 명령의 것이라
+# `pytest | tail` 은 항상 0 이다. 그래서 파이프를 쓰지 않는다.
+#
+# 설치: git config core.hooksPath scripts/hooks
+# 우회는 `git commit --no-verify`. 막지 않는다. 훅은 실수를 막는 층이지 사람을 막는 층이 아니다.
+
+PYTHONIOENCODING=utf-8 python -m pytest -q -p no:cacheprovider || {
+    echo ""
+    echo "커밋을 멈춘다. 시험이 빨갛다. 초록으로 만들고 다시 커밋한다(CLAUDE.md 1절)."
+    exit 1
+}

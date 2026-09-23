@@ -1,0 +1,1 @@
+{"request":{"approverId":"narrator-1","approverKind":"AGENT","robotId":"hum-05","jobOrderId":"PATROL-OUT-OF-SCOPE","sawSkillTypes":["pick_place"]},"status":200,"response":{"schemaVersion":"1","contractSemver":"0.9.0","outcome":"REFUSED","refusal":"ROBOT_OUT_OF_SCOPE","reason":"자동 승인 자격의 범위 밖 기체다: hum-05"}}
