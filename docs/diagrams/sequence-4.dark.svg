@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="784" viewBox="0 0 840 784" font-family="Malgun Gothic,Apple SD Gothic Neo,Noto Sans KR,Segoe UI,-apple-system,Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="am" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#8b949e"/></marker>
+    <marker id="ab" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#58a6ff"/></marker>
+    <marker id="ax" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto"><path d="M1.5,1.5 L7.5,7.5 M7.5,1.5 L1.5,7.5" stroke="#f85149" stroke-width="1.6" fill="none"/></marker>
+  </defs>
+  <rect x="6" y="6" width="828" height="772" rx="14" fill="#0d1117" stroke="#30363d"/>
+  <text x="32" y="46" font-size="17" font-weight="600" fill="#c9d1d9">경로 4 — 설명이 늦거나 실패해도 사건은 처리된다 (Sequence)</text>
+  <text x="32" y="70" font-size="12.5" fill="#8b949e">승인은 설명 칸이 비어 있을 때 이미 났고, 설명 경로의 실패는 기록 한 줄로 끝난다</text>
+  <text x="32" y="90" font-size="12.5" fill="#8b949e">이 순서가 뒤집혀 설명을 기다려야 화면이 채워지면, 그 순간 LLM 이 운영 경로에 들어간 것이다</text>
+
+  <!-- participants -->
+  <rect x="40" y="110" width="120" height="44" rx="6" fill="#1c2128" stroke="#30363d"/>
+  <text x="100" y="128" font-size="12.5" fill="#c9d1d9" text-anchor="middle">운영자</text>
+  <text x="100" y="146" font-size="11" fill="#8b949e" text-anchor="middle">사람</text>
+  <rect x="168" y="110" width="120" height="44" rx="6" fill="#1c2128" stroke="#30363d"/>
+  <text x="228" y="128" font-size="12.5" fill="#c9d1d9" text-anchor="middle">picasso</text>
+  <text x="228" y="146" font-size="11" fill="#8b949e" text-anchor="middle">판정 · 내보내기</text>
+  <rect x="296" y="110" width="120" height="44" rx="6" fill="#0f2f1a" stroke="#3fb950"/>
+  <text x="356" y="128" font-size="12.5" font-weight="600" fill="#c9d1d9" text-anchor="middle">파일 한 벌</text>
+  <text x="356" y="146" font-size="11" fill="#3fb950" text-anchor="middle">이음매 · 읽기만</text>
+  <rect x="424" y="110" width="120" height="44" rx="6" fill="#1c2128" stroke="#30363d"/>
+  <text x="484" y="128" font-size="12.5" fill="#c9d1d9" text-anchor="middle">receiver</text>
+  <text x="484" y="146" font-size="11" fill="#8b949e" text-anchor="middle">수신기 · 재시도</text>
+  <rect x="552" y="110" width="120" height="44" rx="6" fill="#121d2f" stroke="#58a6ff"/>
+  <text x="612" y="128" font-size="12.5" font-weight="600" fill="#c9d1d9" text-anchor="middle">explainer</text>
+  <text x="612" y="146" font-size="11" fill="#58a6ff" text-anchor="middle">설명 생성</text>
+  <rect x="680" y="110" width="120" height="44" rx="6" fill="#1c2128" stroke="#30363d"/>
+  <text x="740" y="128" font-size="12.5" fill="#c9d1d9" text-anchor="middle">Nexus</text>
+  <text x="740" y="146" font-size="11" fill="#8b949e" text-anchor="middle">검색 · 인용 검증</text>
+
+  <!-- bands -->
+  <rect x="32" y="172" width="776" height="204" rx="10" fill="#161b22" stroke="#21262d"/>
+  <rect x="32" y="404" width="776" height="300" rx="10" fill="#101a28" stroke="#22334d"/>
+
+  <!-- lifelines -->
+  <rect x="99" y="154" width="2" height="550" rx="10" fill="#30363d"/>
+  <rect x="227" y="154" width="2" height="550" rx="10" fill="#30363d"/>
+  <rect x="355" y="154" width="2" height="550" rx="10" fill="#30363d"/>
+  <rect x="483" y="154" width="2" height="550" rx="10" fill="#30363d"/>
+  <rect x="611" y="154" width="2" height="550" rx="10" fill="#30363d"/>
+  <rect x="739" y="154" width="2" height="550" rx="10" fill="#30363d"/>
+
+  <!-- band headers and divider, on chips so the lifelines break under the letters -->
+  <g><rect x="44" y="181" width="220" height="16" fill="#161b22"/>
+     <text x="48" y="192" font-size="11" font-weight="700" fill="#8b949e" letter-spacing="1">사건 처리 경로 — 설명 없이 끝난다</text></g>
+  <g><rect x="44" y="413" width="276" height="16" fill="#101a28"/>
+     <text x="48" y="424" font-size="11" font-weight="700" fill="#58a6ff" letter-spacing="1">설명 경로 — 뒤늦게 돌고, 실패는 기록 한 줄이다</text></g>
+  <g><rect x="252" y="381" width="336" height="16" fill="#0d1117"/>
+     <text x="420" y="392" font-size="11" fill="#8b949e" text-anchor="middle">사건은 여기서 끝났다 — 아래는 옆에서 뒤늦게 도는 설명 경로다</text></g>
+
+  <!-- incident path: done without any explanation -->
+  <polyline points="229,224 355,224" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#am)"/>
+  <text x="292" y="218" font-size="11" fill="#8b949e" text-anchor="middle">번들 + 제안 적재</text>
+  <polyline points="227,258 101,258" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#am)"/>
+  <text x="164" y="252" font-size="11" fill="#8b949e" text-anchor="middle">차단 통지 · 승인 필요</text>
+  <rect x="44" y="274" width="240" height="38" rx="4" fill="#1c2128" stroke="#30363d"/>
+  <text x="164" y="290" font-size="11" fill="#c9d1d9" text-anchor="middle">운영자는 이미 사건을 안다</text>
+  <text x="164" y="306" font-size="11" fill="#8b949e" text-anchor="middle">설명 칸은 비어 있다</text>
+  <polyline points="101,332 227,332" fill="none" stroke="#58a6ff" stroke-width="1.6" marker-end="url(#ab)"/>
+  <text x="164" y="326" font-size="11" fill="#58a6ff" text-anchor="middle">승인 — 설명 없이</text>
+  <polyline points="229,362 355,362" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#am)"/>
+  <text x="292" y="356" font-size="11" fill="#8b949e" text-anchor="middle">실행 결과 적재</text>
+
+  <!-- explanation path: late, and its failure is one record -->
+  <polyline points="483,456 357,456" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#am)"/>
+  <text x="420" y="450" font-size="11" fill="#8b949e" text-anchor="middle">번들 조회 — 뒤늦게</text>
+  <polyline points="357,478 483,478" fill="none" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#am)"/>
+  <text x="420" y="472" font-size="11" fill="#8b949e" text-anchor="middle">번들 전문</text>
+
+  <rect x="440" y="496" width="352" height="136" rx="10" fill="none" stroke="#8b949e" stroke-dasharray="5 3"/>
+  <g><rect x="448" y="503" width="220" height="16" fill="#101a28"/>
+     <text x="452" y="514" font-size="11" font-weight="700" fill="#8b949e">loop 재시도 — 상한 3 · 기다리지 않는다</text></g>
+  <polyline points="485,540 611,540" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#am)"/>
+  <text x="548" y="534" font-size="11" fill="#8b949e" text-anchor="middle">설명 요청</text>
+  <polyline points="613,566 739,566" fill="none" stroke="#8b949e" stroke-width="1.6" marker-end="url(#am)"/>
+  <text x="676" y="560" font-size="11" fill="#8b949e" text-anchor="middle">POST /search/answer</text>
+  <polyline points="739,592 613,592" fill="none" stroke="#f85149" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#ax)"/>
+  <text x="676" y="586" font-size="11" fill="#f85149" text-anchor="middle">타임아웃 / 오류</text>
+  <polyline points="611,618 485,618" fill="none" stroke="#8b949e" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#am)"/>
+  <text x="548" y="612" font-size="11" fill="#8b949e" text-anchor="middle">NexusUnavailable</text>
+
+  <rect x="428" y="652" width="240" height="38" rx="4" fill="#1c2128" stroke="#30363d"/>
+  <text x="548" y="668" font-size="11" fill="#c9d1d9" text-anchor="middle">생성 실패 기록 — 재시도 3/3</text>
+  <text x="548" y="684" font-size="11" fill="#8b949e" text-anchor="middle">(runId, digest) 멱등 · 설명은 한 건</text>
+
+  <!-- footer -->
+  <rect x="32" y="720" width="776" height="48" rx="6" fill="#161b22" stroke="#21262d"/>
+  <text x="44" y="740" font-size="11" fill="#8b949e">운영자가 나중에 보는 것은 「아직인가 · 실패인가 · 근거가 없는가 · 인용을 못 댔는가」 넷 중 하나이고, 넷은 다음 할 일이 다르다</text>
+  <text x="44" y="758" font-size="10" fill="#8b949e">회색 실선 데이터, 파란 실선 승인, 회색 점선 회신, 빨간 점선 끊김 · 재시도 상한은 receiver 가 든다(retry.py) · 정본은 SEQUENCES.md §4 와 BOUNDARY.md §3.4</text>
+</svg>

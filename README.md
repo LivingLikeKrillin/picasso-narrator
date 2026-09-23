@@ -56,6 +56,15 @@ AGENT-0*.md · SEQUENCES.md  최초 작업 지시서와 여섯 운영 경로의 
 - **승인 시도 (Approval Attempt)**: 탐색기가 낸 제안에 대해 `picasso`의 승인 창구를 호출하고 허락·거절을 대장에 남깁니다. 승인 요청에 자격 주장을 싣지 않으며, 거절은 오류가 아닌 정상 응답으로 갈래별로 기록합니다. 기본값은 끔이고 `--approve`로만 켜집니다.
 - **설명 기록의 환류 (Feedback to Corpus)**: 설명 기록을 khala 테넌트 `narrator`로 내보내 다음 운영자 질의의 근거가 되게 합니다. 사건 바퀴는 이 테넌트를 읽지 못하는 **읽기 전용 신원**으로 돌므로 LLM 산출이 LLM 근거가 되는 순환이 없으며, 기계가 쓴 근거에는 출처 등급 `machine_written`과 렌더된 표시가 붙습니다.
 
+여섯 운영 경로 가운데 본 계층의 비대칭을 가장 잘 보이는 것은 **경로 4 「설명이 늦거나 실패」**입니다.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/sequence-4.dark.svg">
+  <img alt="경로 4 의 시퀀스입니다. 위쪽 띠에서 picasso 가 번들과 제안을 파일로 내보내고 운영자에게 차단 통지를 보내면, 운영자는 설명 칸이 비어 있는 채로 승인하고 picasso 가 실행 결과를 적재하여 사건 처리가 설명 없이 끝납니다. 아래쪽 띠에서 receiver 가 뒤늦게 번들을 조회하여 explainer 에 설명을 요청하고, explainer 가 Nexus 에 POST /search/answer 를 보내지만 타임아웃으로 끊겨 NexusUnavailable 이 돌아오며, 이것이 재시도 상한 3 까지 반복된 뒤 생성 실패가 재시도 3/3 과 함께 (runId, digest) 멱등 열쇠로 한 건 기록됩니다." src="docs/diagrams/sequence-4.svg">
+</picture>
+
+운영자의 승인은 설명 칸이 비어 있을 때 이미 났고, 설명 경로는 뒤늦게 돌아 실패하면 「생성 실패 — 재시도 3/3」 한 줄을 남깁니다. 재시도 상한은 `explainer`가 아니라 `receiver`가 들고 있어 「사건당 한 번」이 의도가 아닌 규율로 남으며, 운영자는 그 기록으로 「아직인가 · 실패인가 · 근거가 없는가 · 인용을 못 댔는가」를 구별합니다. 이 순서가 뒤집혀 설명을 기다려야 화면이 채워지면 그 순간 LLM 이 운영 경로에 들어간 것이며, 나머지 다섯 경로는 [`SEQUENCES.md`](SEQUENCES.md)에 있습니다.
+
 ## 평가 체계와 검증 현황
 
 | # | 지표 | 정의 및 측정 지점 |
