@@ -19,3 +19,6 @@ out/
 
 # 토큰 값. 저장소에 안 올린다. khala 에는 sha256 만 간다
 .secrets/
+
+# 진단 워커의 첫 결과 저장소(SQLite 와 그 일지 파일). 기록이지만 호스트의 것이다
+diagnose-first-result.sqlite3*

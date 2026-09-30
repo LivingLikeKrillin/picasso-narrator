@@ -6,10 +6,14 @@ Claude Code 의 `PostToolUse` 훅이다. `Edit`·`Write` 가 `eval/goldenset.jso
 `decision: block` 으로 사유를 돌려준다. 편집은 이미 됐다. 되돌리는 것이 아니라 알리는 것이다.
 정말 바꿔야 하면 근거를 커밋 본문에 적는다(`CLAUDE.md` 3절).
 
+권고 측정의 사례 파일(`eval/goldenset-recommend.json`)도 같은 식으로 본다 — 사례마다의 채점 칸과 파일 머리의 판독
+기준(`criteria`). 이 훅은 편집 도구로 쓸 때만 도므로, 그 파일의 진짜 문은 해시를 박은 시험이다.
+
 새 사건을 더하거나 없던 열쇠(`procedure` 를 처음 적을 때)를 더하는 것은 통과다. 막는 것은
 있던 값을 답에 맞춰 고치는 것이다(`STATE.md` 함정 1. 답을 보고 채점 규칙을 넓힌다).
 
-`--check 경로` 는 같은 대조를 그 파일에 돌리고 사유를 stdout 에 낸다. 자가 시험이 쓴다.
+`--check 경로 [대상]` 은 같은 대조를 그 파일에 돌리고 사유를 stdout 에 낸다. 대상은 지키는 파일의 저장소 안
+경로이고 없으면 `eval/goldenset.json` 이다. 자가 시험이 쓴다.
 판단에 실패하면 통과다(fail-open).
 """
 from __future__ import annotations
@@ -21,25 +25,35 @@ import subprocess
 import sys
 
 TARGET = "eval/goldenset.json"
-WATCHED = ("mustNotClaim", "procedure")
+#: 지키는 파일마다 `(항목 목록의 열쇠, 항목에서 볼 열쇠, 파일 머리에서 볼 열쇠)`.
+TARGETS = {
+    TARGET: ("entries", ("mustNotClaim", "procedure"), ()),
+    #: 권고 측정의 사례(`docs/superpowers/specs/2026-09-30-권고-측정.md` §0) — 채점 칸과 판독 기준. 이 훅은 편집 도구로 쓸 때만
+    #: 돌므로 스크립트로 쓴 것은 못 본다. 진짜 문은 해시를 박은 시험이다(`tests/test_eval_recommend_cases.py`).
+    "eval/goldenset-recommend.json": ("cases", ("tier", "request", "requestSha256", "expect", "mustNotPick", "reading",
+                                                "removed", "procedureDocs", "repeatOf", "seen"), ("criteria",)),
+}
 TOOLS = {"Edit", "Write", "MultiEdit"}
 
 
-def entries(doc) -> dict:
-    items = doc.get("entries", []) if isinstance(doc, dict) else doc
+def entries(doc, key="entries") -> dict:
+    items = doc.get(key, []) if isinstance(doc, dict) else doc
     return {e["id"]: e for e in items if isinstance(e, dict) and "id" in e}
 
 
-def drift(before, after) -> list[str]:
-    """HEAD 에 있던 사건의 감시 열쇠가 바뀐 자리. 더한 것은 세지 않는다."""
-    old, new = entries(before), entries(after)
-    out: list[str] = []
+def drift(before, after, target=TARGET) -> list[str]:
+    """HEAD 에 있던 항목의 감시 열쇠가 바뀐 자리. 더한 것은 세지 않는다."""
+    key, watched, head_keys = TARGETS[target]
+    old, new = entries(before, key), entries(after, key)
+    out: list[str] = [f"{k}: 바뀜" for k in head_keys
+                      if isinstance(before, dict) and k in before and (not isinstance(after, dict)
+                                                                       or after.get(k) != before[k])]
     for id_, was in old.items():
         now = new.get(id_)
         if now is None:
             out.append(f"{id_}: 사건이 사라짐")
             continue
-        for key in WATCHED:
+        for key in watched:
             if key not in was:
                 continue
             if key not in now:
@@ -52,19 +66,19 @@ def drift(before, after) -> list[str]:
     return out
 
 
-def head_version(root: pathlib.Path):
-    done = subprocess.run(["git", "show", f"HEAD:{TARGET}"], cwd=str(root), capture_output=True)
+def head_version(root: pathlib.Path, target: str = TARGET):
+    done = subprocess.run(["git", "show", f"HEAD:{target}"], cwd=str(root), capture_output=True)
     if done.returncode != 0:
         return None
     return json.loads(done.stdout.decode("utf-8"))
 
 
-def reason_for(path: pathlib.Path, root: pathlib.Path) -> str | None:
-    before = head_version(root)
+def reason_for(path: pathlib.Path, root: pathlib.Path, target: str = TARGET) -> str | None:
+    before = head_version(root, target)
     if before is None:
         return None
     after = json.loads(path.read_text(encoding="utf-8"))
-    changes = drift(before, after)
+    changes = drift(before, after, target)
     if not changes:
         return None
     return (
@@ -81,8 +95,8 @@ def main(argv: list[str]) -> int:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     root = pathlib.Path(os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd())
     try:
-        if len(argv) == 3 and argv[1] == "--check":
-            reason = reason_for(pathlib.Path(argv[2]), root)
+        if len(argv) in (3, 4) and argv[1] == "--check":
+            reason = reason_for(pathlib.Path(argv[2]), root, argv[3] if len(argv) == 4 else TARGET)
             if reason:
                 print(reason)
             return 0
@@ -100,9 +114,9 @@ def main(argv: list[str]) -> int:
             rel = _canon(target).relative_to(_canon(root)).as_posix()
         except ValueError:
             return 0
-        if rel != TARGET:
+        if rel not in TARGETS:
             return 0
-        reason = reason_for(target, root)
+        reason = reason_for(target, root, rel)
     except Exception:
         return 0
     if reason is None:

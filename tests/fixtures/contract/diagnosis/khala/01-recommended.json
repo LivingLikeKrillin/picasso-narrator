@@ -1,0 +1,35 @@
+{
+  "answer": "권고: A\n이유: 파지 실패 단위는 원 위치에 자재가 있으면 같은 위치로 한 번 다시 하는 것이 절차다 [출처: SOP-01 파지 실패와 잔여 파지 처리, §5.1].\n절차: 원 위치에 자재가 있는지 육안으로 먼저 확인한다 [출처: SOP-01 파지 실패와 잔여 파지 처리, §5.1].\n먼저: 근거 없음.\n금지: 재시도도 실패하면 재시도를 반복하지 않는다 [출처: SOP-01 파지 실패와 잔여 파지 처리, §5.1].\n갈림: 근거 없음.\n근거 세기: 로봇 자체 보고 하나다.\n\n---\n\n## 원인 후보\n후보 ① — 파지물 낙하. 로봇이 보고한 실패 분류가 PAYLOAD_LOST 다.",
+  "citations": [
+    {
+      "title": "SOP-01 파지 실패와 잔여 파지 처리",
+      "section": "§5.1",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+    }
+  ],
+  "abstained": false,
+  "weak_evidence": false,
+  "llm_failed": false,
+  "llm_failure_reason": null,
+  "unverified_citations": 0,
+  "unverified_numbers": 0,
+  "numbers": [
+    {
+      "value": "5.1",
+      "grounded": true,
+      "found_in": [
+        "evidence"
+      ]
+    }
+  ],
+  "prompt_version": "73536dc7c9c0",
+  "corpus_version": "d462b22017d6",
+  "search_fingerprint": "b071397c854c",
+  "usage": {
+    "model": "claude-sonnet-5"
+  },
+  "timing_ms": {},
+  "evidence_snippets": []
+}

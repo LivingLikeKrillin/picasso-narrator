@@ -57,12 +57,15 @@ INCIDENT_EXCLUDED = ("spec", "design_doc")
 
 
 def nexus_client(base_url, token, tenant, transport, top_k=ANSWER_TOP_K,
-                 exclude_doc_types=(), identifier_channel=False):
+                 exclude_doc_types=(), identifier_channel=False, answer_context=None):
     """`ask_once` 에 넘길 `search` 를 만든다. `(status, body)` 를 돌려준다.
 
     **테넌트를 부르는 쪽이 명시한다.** 서버가 토큰으로 범위를 정하고 범위 밖을
     부르면 조용히 좁혀지므로(2026-09-18 실측) 이것이 보안 장치는 아니다 —
     **아무 데나 묻지 않는다는 규율**이고, 넓히려면 선언을 고친다.
+
+    **자료 칸(`answer_context`)은 진단 경로만 준다** — 검색에 쓰지 않는 칸이고
+    khala 가 받기 전에는 422 다.
     """
 
     def search(query):
@@ -79,7 +82,10 @@ def nexus_client(base_url, token, tenant, transport, top_k=ANSWER_TOP_K,
              **({"exclude_doc_types": list(exclude_doc_types)} if exclude_doc_types else {}),
              # ⛔ **기본이 꺼짐이어야 측정이 선다** (khala 사전 등록 T2). 안 물었으면
              # 키를 안 보낸다 — 거짓을 보내면 이 층이 물은 것으로 저쪽 기록에 남는다.
-             **({"identifier_channel": True} if identifier_channel else {})},
+             **({"identifier_channel": True} if identifier_channel else {}),
+             # **진단 경로만 싣는다** (진단 계약 0.6 §3.5). 검색에 안 쓰이고 답변 프롬프트에만 들어간다.
+             # `None` 이면 키를 안 보낸다 — 설명 경로의 요청은 한 바이트도 안 바뀐다.
+             **({"answer_context": answer_context} if answer_context is not None else {})},
         )
 
     return search

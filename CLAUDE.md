@@ -49,7 +49,7 @@ PYTHONIOENCODING=utf-8 python -m pytest -q
   `Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>` — 이력이 전부 이 트레일러라
   **실행 모델과 무관하게 고정**한다
 - `.claude/hooks/check_commit_format.py` 가 `git commit` 을 가로채 검사하고, 같은 검사가
-  `scripts/hooks/commit-msg` 로 git 자체에도 걸린다. 설치: `git config core.hooksPath scripts/hooks`. 자가 시험: `python .claude/hooks/selftest.py`(16 사례)
+  `scripts/hooks/commit-msg` 로 git 자체에도 걸린다. 설치: `git config core.hooksPath scripts/hooks`. 자가 시험: `python .claude/hooks/selftest.py`(18 사례)
 - 문서와 코드 주석은 평서체이고 실측은 `⛔ **… (실측 날짜)**` 로 연다. 줄끝은 LF 다(`.gitattributes`)
 - README 의 그림은 `docs/diagrams/*.svg` 다. **밝은 판만 고치고** `node docs/diagrams/make-dark.mjs <밝은 판>` 을
   다시 돌려 다크 판을 만든다 — 둘을 손으로 유지하면 어긋난다. 너비는 840 (GitHub README 칸에 1:1), 글자는 11px 아래로 안 내린다
@@ -61,8 +61,8 @@ PYTHONIOENCODING=utf-8 python -m pytest -q
 - 단계는 순서대로다 — **실패하는 시험을 먼저 보고** 구현한다. 기대 수치와 다르면 채점기와
   시험을 고치기 전에 다른 쪽을 먼저 의심하고, 다르면 다른 채로 적는다
 - 계획서를 실행하는 동안에는 `tests/` 에 계획에 없는 시험을 넣지 않는다 — 단계마다 박힌 기대
-  시험 수가 어긋난다. **계획서 여섯(2026-09-20 하나 · 09-22 셋 · 09-23 둘)은 전부 끝났다**(`docs/superpowers/plans/`). 지금 기준은
-  234 이고, 새 시험을 더하면 그 수를 여기서 함께 고친다. 기존 시험을 늘리는 것은 수가 안 바뀐다
+  시험 수가 어긋난다. **계획서 여섯(2026-09-20 하나 · 09-22 셋 · 09-23 둘)은 전부 끝났고 일곱째(09-27 진단 워커) · 여덟째(09-30 머리 줄의 제목 꾸밈) · 아홉째(09-30 진단 응답 고정 예제) · 열째(09-30 판 칸의 빈 글자) · 열한째(09-30 권고 측정) · 열두째(10-01 검색 고장 칸)도 끝났다**(`docs/superpowers/plans/`). 지금 기준은
+  319 이고(`temporalio` 가 없으면 `313 passed, 1 skipped`), 새 시험을 더하면 그 수를 여기서 함께 고친다. 기존 시험을 늘리는 것은 수가 안 바뀐다
 
 ## 6. 실물 스택
 

@@ -95,3 +95,17 @@ docker exec nexus-reingest sh -c 'for w in "관절 토크" "토크 한계" "진�
 
 **시험이 이걸 못 잡는다.** 시험은 코퍼스 없이 돌아야 하고 그게 맞다 — 대신 여기 적어
 둔다. 코퍼스가 크게 바뀌면 다시 센다.
+
+## 권고 측정 (진단 계약 §7)
+
+설명과 따로 잰다 — 분모를 섞지 않는다. 설계는
+[`docs/superpowers/specs/2026-09-30-권고-측정.md`](../docs/superpowers/specs/2026-09-30-권고-측정.md) 다. 사례 스물둘
+(`goldenset-recommend.json`)과 요청 사본(`recommend-requests/`, koshei 투영의 바이트 사본)은 **답을 보기 전에 얼렸고**, 채점 칸의
+해시를 `tests/test_eval_recommend_cases.py` 가 박는다. 측정은 `python -m eval.recommend`(실물 khala, 얼린 것이 커밋되지 않았거나
+고쳐진 트리에서 안 돈다), 재채점은 `python -m eval.recommend_score` 다. 기대의 거의 전부가 ESCALATE 라 늘 ESCALATE 만 고르는
+기준선을 모든 표에 곁들이고, 가르는 힘은 금지 후보 · 근거 있는 넘김 · 후보 밖 · 인용 없음에 있다.
+
+두 판이 돌았다(2026-10-01) — 기록은 `last-recommendations.json`(첫 판 스물둘) · `last-recommendations-repeat.json`(둘째 판 열),
+판독은 `recommend-readings.json`, 결과는 `RESULTS.md` 의 「권고 측정」 절이다. 다음 판은 기록의 `degraded` 가 빈
+목록이 아닌 줄을 가려 다시 돈다 — 첫 판의 첫 호출에서 벡터 경로가 죽었고, 따뜻해도 여유가 1초 안팎이라 예열만으로는 모자라다(설계서
+§6 의 실측 주).

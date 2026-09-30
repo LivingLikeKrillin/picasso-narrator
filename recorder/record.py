@@ -69,6 +69,13 @@ def _diagnostics(data):
         # 「가장 가까운 것이 딱 붙어 있었다」로 읽힌다.
         "top_distance": data.get("top_distance"),
         "top_bm25": data.get("top_bm25"),
+        # ⛔ **검색이 온전했나를 버리고 있었다 (2026-10-01 실측).** 권고 측정 첫 판의 첫 호출에서 임베딩
+        # 사이드카가 시간을 넘겨 벡터 경로가 죽었는데(khala 로그 `vector_leg_degraded`), 저쪽이 실은
+        # `degraded: ["vector"]` 를 안 담아 같은 질의의 근거 묶음이 왜 갈렸는지 기록으로 못 갈랐다 — 남은 것은
+        # 위 `top_distance` 의 `None` 하나였다. 보강의 실패(`enrichment_failed`)도 같은 갈래다. 빈 목록은
+        # 「온전했다」, `None` 은 「모른다」(칸이 없던 판 · 모르는 모양)다.
+        "degraded": _names(data.get("degraded")),
+        "enrichment_failed": _names(data.get("enrichment_failed")),
         # **저쪽이 코드로 판정한 둘.** 인용 쪽은 내 셈(`citations[].verified`)과 겹치는데,
         # 겹치는 것이 요점이다 — **갈리면 내 대표 수치가 틀린 것**이고 안 담으면 갈렸다는
         # 사실조차 안 보인다. 숫자 쪽은 내가 세는 것이 아예 없다: 답의 유의미한 숫자가
@@ -77,9 +84,25 @@ def _diagnostics(data):
         # 주장이 사실상 없고 숫자는 거의 전부 **인용의 절 번호**다(§15.148 · §3.2).
         # 걸리는 것은 대개 **안 본 절을 짚은 것**이고, 작지만 다른 축이다. 어느 숫자가
         # 걸렸는지는 못 본다 — 저쪽이 개수만 내보낸다.
+        # (틀렸다 — 항목은 `numbers` 로 온다, 2026-09-27)
         "unverified_citations": data.get("unverified_citations"),
         "unverified_numbers": data.get("unverified_numbers"),
+        # ⛔ **숫자 항목을 버리고 있었다 (khala 회신 16, 2026-09-27).** 개수만 담아 어느 수가 걸렸는지
+        # 못 봤다 — 위 주석의 「저쪽이 개수만 내보낸다」는 틀렸다. 진단 계약의 `unverifiedClaims` 가 여기서
+        # 나온다. 없거나 항목 하나라도 객체가 아니면 `None` — 모르는 모양을 추려 담으면 걸린 수가 빠져
+        # 깨끗해 보인다. `None` 이면 진단은 개수(`unverified_numbers`)로 물러선다.
+        "numbers": ([dict(n) for n in numbers] if isinstance(numbers := data.get("numbers"), list)
+                    and all(isinstance(n, dict) for n in numbers) else None),
+        # **판 칸 셋** (진단 계약 §4). khala 가 싣기 시작하면 받는다 — 지금은 `None` 이다.
+        "prompt_version": data.get("prompt_version"),
+        "corpus_version": data.get("corpus_version"),
+        "search_fingerprint": data.get("search_fingerprint"),
     }
+
+
+def _names(value):
+    """글자 목록이면 베껴 담고, 아니면 `None` — 모르는 모양을 추려 담으면 걸린 것이 빠져 온전해 보인다."""
+    return list(value) if isinstance(value, list) and all(isinstance(x, str) for x in value) else None
 
 
 def from_failure(key, attempts, limit, reason="", elapsed=0.0, subject=None):

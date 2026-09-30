@@ -95,3 +95,25 @@ def test_식별자_채널은_물었을_때만_실린다():
 
     assert sent[0]["identifier_channel"] is True
     assert "identifier_channel" not in sent[1]
+
+
+def test_자료_칸은_줄_때만_싣는다():
+    """진단 계약 0.6 §3.5 — 후보 · 확인 불가 · 이력 · 답하는 법은 **검색에 쓰지 않는 자료 칸**
+    (`answer_context`)으로 간다. `query` 에 실으면 BM25 에 걸려 검색이 측정해 온 경로와 달라진다.
+    **설명 경로는 이 칸을 안 보낸다** — 안 물었으면 키를 안 보낸다. khala 는 모르는 칸을 422 로
+    거절하므로(`#550`) 그쪽이 칸을 받기 전에는 진단 경로만 422 를 본다."""
+    sent = []
+
+    def transport(method, url, headers, body):
+        sent.append(body)
+        return 200, {"success": True, "data": {}}
+
+    nexus_client("http://x", token="t", tenant="picasso", transport=transport,
+                 answer_context="후보 (별칭 · 식별자 · 대상)")("진단 질의")
+    nexus_client("http://x", token="t", tenant="picasso", transport=transport)("설명 질의")
+
+    assert sent[0]["answer_context"] == "후보 (별칭 · 식별자 · 대상)"
+    assert sent[0]["query"] == "진단 질의", "자료는 질의에 섞이지 않는다"
+    assert "answer_context" not in sent[1]
+    assert sent[1] == {"query": "설명 질의", "tenant": "picasso", "top_k": 20}, \
+        "설명 경로의 요청 본문은 칸 하나 안 늘었다"

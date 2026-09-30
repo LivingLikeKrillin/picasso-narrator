@@ -1,0 +1,41 @@
+{
+  "answer": "권고: SEQ-IN-05.BIN-A 로 옮겨 집는다\n이유: 대체 슬롯은 품번 동일 · 로트 제약 없음 · 대체 슬롯 선언의 세 조건이 모두 성립할 때만 쓰고 그때 대체 슬롯으로 작업 지시를 다시 낸다 [출처: SOP-03 자재 결품과 대체 슬롯 운용, §5].\n절차: 단위를 시작하기 전에 멈춘다 [출처: SOP-03 자재 결품과 대체 슬롯 운용, §5].\n먼저: 대체를 허용하는 세 조건을 확인한다 [출처: SOP-03 자재 결품과 대체 슬롯 운용, §4].\n금지: 자동으로 옆 슬롯을 집지 않는다 [출처: SOP-03 자재 결품과 대체 슬롯 운용, §4].\n갈림: 대체 슬롯이 공정에 선언돼 있는지가 가른다 [출처: SOP-07 대체 슬롯 선언 목록, §2].\n근거 세기: 셀 자리의 점유 기록 하나다.\n\n---\n\n## 원인 후보\n후보 ① — 원래 슬롯의 결품.",
+  "citations": [
+    {
+      "title": "SOP-03 자재 결품과 대체 슬롯 운용",
+      "section": "§5",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+    },
+    {
+      "title": "SOP-03 자재 결품과 대체 슬롯 운용",
+      "section": "§4",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+    },
+    {
+      "title": "SOP-07 대체 슬롯 선언 목록, §2",
+      "section": "",
+      "verified": false,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+    }
+  ],
+  "abstained": false,
+  "weak_evidence": false,
+  "llm_failed": false,
+  "llm_failure_reason": null,
+  "unverified_citations": 1,
+  "unverified_numbers": 0,
+  "numbers": [],
+  "prompt_version": "73536dc7c9c0",
+  "corpus_version": "d462b22017d6",
+  "search_fingerprint": "b071397c854c",
+  "usage": {
+    "model": "claude-sonnet-5"
+  },
+  "timing_ms": {},
+  "evidence_snippets": []
+}

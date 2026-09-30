@@ -233,3 +233,55 @@ def test_갈래를_가른_점수_둘도_같이_담는다():
     assert record.diagnostics["top_bm25"] == 0.9
     # 그 판에 그 칸이 없었던 응답은 `None` 으로 남는다. 0 으로 접지 않는다.
     assert from_answer(KEY, silent).diagnostics["top_distance"] is None
+
+
+def test_숫자_항목과_판_칸을_버리지_않는다():
+    """khala 는 답의 유의미한 숫자를 항목으로 싣는다 — `numbers: [{value, grounded}]`(회신 16, 2026-09-27).
+    이 층은 개수(`unverified_numbers`)만 적고 항목을 버리고 있었다. 진단 계약의 `unverifiedClaims` 가 그
+    항목에서 나온다. 판 칸 셋(`prompt_version` · `corpus_version` · `search_fingerprint`)은 khala 가 싣기
+    시작하면 받는다. **없으면 `None`** — 「그 판에는 이 칸이 없었다」이지 빈 목록이 아니다."""
+    data = {
+        "citations": [],
+        "numbers": [{"value": "30", "grounded": True}, {"value": "15,", "grounded": False}],
+        "prompt_version": "p-1",
+    }
+
+    record = from_answer(KEY, data)
+
+    assert record.diagnostics["numbers"] == [{"value": "30", "grounded": True},
+                                             {"value": "15,", "grounded": False}]
+    assert record.diagnostics["prompt_version"] == "p-1"
+    assert record.diagnostics["corpus_version"] is None
+    assert record.diagnostics["search_fingerprint"] is None
+    assert from_answer(KEY, {"citations": []}).diagnostics["numbers"] is None
+    assert from_answer(KEY, {"citations": [], "numbers": ["30"]}).diagnostics["numbers"] is None, \
+        "항목이 객체가 아니면 모르는 모양이다 — 추려 담지 않는다"
+    assert from_answer(KEY, {"citations": [], "numbers": []}).diagnostics["numbers"] == [], \
+        "빈 목록은 「숫자가 없었다」다 — 「칸이 없었다」(None)와 가른다. 진단은 None 일 때만 개수로 물러선다"
+    assert record.diagnostics["numbers"][0] is not data["numbers"][0], "항목은 베껴 담는다"
+
+
+def test_검색이_온전했나를_버리지_않는다():
+    """⛔ **khala 가 싣는 검색 고장 칸 둘을 안 담고 있었다** (2026-10-01 실측).
+
+    권고 측정 첫 판의 첫 호출에서 임베딩 사이드카가 시간을 넘겨 벡터 경로가 죽었고(khala 로그
+    `vector_leg_degraded`), 답은 BM25 와 식별자 채널로만 근거를 받았다. 저쪽은 `degraded: ["vector"]` 를
+    실었는데 이 층이 버려, 같은 질의의 근거 묶음이 왜 갈렸는지 기록으로 못 갈랐다 — 남은 것은
+    `top_distance` 의 `None` 하나였고, 그 값은 「벡터가 못 냈다」와 「그 판에 칸이 없었다」를 가르지 않는다.
+    보강의 실패(`enrichment_failed` — 절 채우기 따위)도 같은 갈래다. **빈 목록은 「온전했다」이고 `None` 은
+    「모른다」다** — 칸이 없던 판이거나 글자 목록이 아닌 모양이다.
+    """
+    data = {"citations": [], "degraded": ["vector"], "enrichment_failed": ["section_fill"]}
+
+    record = from_answer(KEY, data)
+
+    assert record.diagnostics["degraded"] == ["vector"]
+    assert record.diagnostics["enrichment_failed"] == ["section_fill"]
+    assert record.diagnostics["degraded"] is not data["degraded"], "목록은 베껴 담는다"
+    whole = from_answer(KEY, {"citations": [], "degraded": [], "enrichment_failed": []})
+    assert whole.diagnostics["degraded"] == [] and whole.diagnostics["enrichment_failed"] == []
+    old = from_answer(KEY, {"citations": []})
+    assert old.diagnostics["degraded"] is None and old.diagnostics["enrichment_failed"] is None
+    odd = from_answer(KEY, {"citations": [], "degraded": "vector", "enrichment_failed": [1]})
+    assert odd.diagnostics["degraded"] is None and odd.diagnostics["enrichment_failed"] is None, \
+        "모르는 모양은 추려 담지 않는다 — 글자 하나를 목록으로 풀면 「v」 「e」 … 가 된다"

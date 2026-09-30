@@ -63,8 +63,8 @@ def heredoc(message: str) -> str:
     return f"git commit -F - <<'EOF'\n{message}\nEOF"
 
 
-def head_goldenset() -> dict:
-    done = subprocess.run(["git", "show", "HEAD:eval/goldenset.json"], cwd=str(ROOT), capture_output=True, check=True)
+def head_goldenset(target: str = "eval/goldenset.json") -> dict:
+    done = subprocess.run(["git", "show", f"HEAD:{target}"], cwd=str(ROOT), capture_output=True, check=True)
     return json.loads(done.stdout.decode("utf-8"))
 
 
@@ -79,6 +79,14 @@ def main() -> int:
         first["mustNotClaim"] = list(first["mustNotClaim"]) + ["답을 보고 더한 항목"]
         altered = tmp / "altered.json"
         altered.write_text(json.dumps(altered_doc, ensure_ascii=False), encoding="utf-8")
+        recommend = "eval/goldenset-recommend.json"
+        same_rec = tmp / "same-recommend.json"
+        same_rec.write_text(json.dumps(head_goldenset(recommend), ensure_ascii=False), encoding="utf-8")
+        widened = head_goldenset(recommend)
+        case = next(c for c in widened["cases"] if c["expect"] and c["mustNotPick"])
+        case["expect"] = case["expect"] + case["mustNotPick"][:1]
+        widened_rec = tmp / "widened-recommend.json"
+        widened_rec.write_text(json.dumps(widened, ensure_ascii=False), encoding="utf-8")
         good_file = tmp / "good.txt"
         good_file.write_text(f"{GOOD_TITLE}\n\n{GOOD_BODY}\n\n{TRAILER}\n# git 이 붙이는 주석 줄\n#\n", encoding="utf-8")
         noscope_file = tmp / "noscope.txt"
@@ -99,6 +107,8 @@ def main() -> int:
             ("골든셋 조용함. HEAD 와 같음", lambda: run(GOLDENSET, args=("--check", str(same)))[1].strip() == ""),
             ("골든셋 경고. mustNotClaim 넓힘", lambda: "함정 1" in run(GOLDENSET, args=("--check", str(altered)))[1]),
             ("골든셋 조용함. 훅 모드, 다른 파일", lambda: run(GOLDENSET, {"tool_name": "Edit", "tool_input": {"file_path": str(ROOT / "README.md")}})[1] == ""),
+            ("권고 사례 조용함. HEAD 와 같음", lambda: run(GOLDENSET, args=("--check", str(same_rec), recommend))[1].strip() == ""),
+            ("권고 사례 경고. expect 넓힘", lambda: "함정 1" in run(GOLDENSET, args=("--check", str(widened_rec), recommend))[1]),
             ("git 훅 통과. --file", lambda: run(COMMIT, args=("--file", str(good_file)))[0] == 0),
             ("git 훅 거부. --file scope 없음", lambda: run(COMMIT, args=("--file", str(noscope_file)))[0] == 1),
         ]

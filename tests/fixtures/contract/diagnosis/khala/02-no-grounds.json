@@ -1,0 +1,19 @@
+{
+  "answer": "이 질문에 대한 내용은 검색된 문서에 없는 것으로 보입니다.\n권고: ESCALATE\n이유: 탐색이 조치를 찾지 못했고 근거에 이 경우의 다음 걸음을 정한 절차가 없다.\n절차: 근거 없음.\n먼저: 근거 없음.\n금지: 근거 없음.\n갈림: 근거 없음.\n근거 세기: 근거 없음.\n\n---\n\n관련이 있어 보이는 문서: SOP-03 자재 결품과 대체 슬롯 운용.",
+  "citations": [],
+  "abstained": false,
+  "weak_evidence": true,
+  "llm_failed": false,
+  "llm_failure_reason": null,
+  "unverified_citations": 0,
+  "unverified_numbers": 0,
+  "numbers": [],
+  "prompt_version": "73536dc7c9c0",
+  "corpus_version": "d462b22017d6",
+  "search_fingerprint": "b071397c854c",
+  "usage": {
+    "model": "claude-sonnet-5"
+  },
+  "timing_ms": {},
+  "evidence_snippets": []
+}
