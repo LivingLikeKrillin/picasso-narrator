@@ -344,8 +344,10 @@ def test_출발_결품의_전제가_질의에_실린다(export_dir):
     assert facts["remedyMaterial"] == "ENGINE-COVER-B"
     assert facts["remedySource"] == "SEQ-IN-03.BIN-A"
     assert facts["remedyAlternatives"] == ["SEQ-IN-03.BIN-B"]
-    # **널은 싣지 않는다.** 관측이 널인 것은 「못 봤다」이지 「없었다」가 아니다.
-    assert "remedyObserved" not in facts
+    # ⛔ **관측의 널은 「빈 자리」다 (2026-10-01 바로잡음).** picasso 설계 명세가 「`observed` 도 같다 — 널이 빈 자리이고
+    # 값이 있으면 거기 있던 다른 신원이다」라고 적는다. 「못 봤다」로 읽어 빼면 출발 자리가 비었다는 관측이 사라진다.
+    assert "remedyObserved" not in facts, "신원 칸에 글자를 지어 넣지 않는다"
+    assert facts["remedySourceVacant"] is True
     # 승인 대상이 아니라는 것은 키 부재가 말한다(picasso 가 표면에서 집행한다).
     assert "remedySteps" not in facts
 
@@ -358,3 +360,19 @@ def test_능력_없음의_못_채운_선행조건이_질의에_실린다(export_
     assert facts["remedyCause"] == "NO_CAPABILITY"
     assert facts["remedyUnmet"][0]["required"] == "HOLD_KIND_EMPTY"
     assert facts["remedyUnmet"][0]["observed"] == "HOLD_KIND_HOLDING"
+
+
+def test_결품_관측의_널은_빈_자리이고_짝_길에도_같다():
+    """출발 결품 줄의 `observed` — 널은 빈 자리(`remedySourceVacant`), 값은 거기 있던 다른 신원(`remedyObserved`), 키
+    부재는 아무것도 안 싣는다. **결품 줄이 아니면 널을 빈 자리로 읽지 않는다** — picasso 가 뜻을 정한 것은 결품 줄의
+    `observed` 뿐이다. 사건과 짝지은 탐색(`compose`)도 탐색 줄 단독(`compose_search`)과 같은 규칙이다."""
+    missing = {"outcome": "SOURCE_MISSING", "material": "M", "source": "S", "observed": None, "alternatives": []}
+    other = dict(missing, observed="OTHER-PART")
+    absent = {k: v for k, v in missing.items() if k != "observed"}
+    elsewhere = {"outcome": "NONE", "observed": None}
+
+    for build in (lambda s: compose_search(s).facts, lambda s: compose({}, search=s).facts):
+        assert build(missing)["remedySourceVacant"] is True and "remedyObserved" not in build(missing)
+        assert build(other)["remedyObserved"] == "OTHER-PART" and "remedySourceVacant" not in build(other)
+        assert "remedySourceVacant" not in build(absent) and "remedyObserved" not in build(absent)
+        assert "remedySourceVacant" not in build(elsewhere) and "remedyObserved" not in build(elsewhere)

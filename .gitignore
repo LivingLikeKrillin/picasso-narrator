@@ -22,3 +22,8 @@ out/
 
 # 진단 워커의 첫 결과 저장소(SQLite 와 그 일지 파일). 기록이지만 호스트의 것이다
 diagnose-first-result.sqlite3*
+
+# picasso 인계 지점의 산문(안내문). picasso 가 공개 대상이 아니라며 제 저장소에서도 추적을 뺐다 — 이 층도 사본을 추적하지
+# 않고 기계가 읽는 한 벌만 들인다(2026-10-01, correspondence 「인계본 안내문의 한 구절」)
+tests/fixtures/picasso/INDEX.txt
+tests/fixtures/picasso/TO-NARRATOR-*.txt

@@ -8,6 +8,10 @@ Nexus 쪽 봉투에서 이미 겪었다.
 
 **정본은 picasso 저장소의 `handoff/narrator/` 다.** 내는 쪽은 자기 저장소만 건드리고
 받는 쪽이 무엇을 들일지 정한다 — 그래야 두 층이 다른 저장소에 있다는 증명이 안 깨진다.
+**기계가 읽는 한 벌만 들인다** — `run-*/` 의 두 대장과 `manifest.json`, `entitlements.json`, `ground-truth.jsonl`.
+인계 지점의 산문(안내문 `INDEX.txt` · 회신 `TO-NARRATOR-*.txt`)은 들이지 않는다. picasso 가 공개 대상이 아니라며 제
+저장소에서도 추적을 뺐고, 이 층도 2026-10-01 에 사본을 추적에서 뺐다(`correspondence/` 「인계본 안내문의 한 구절」).
+읽을 일이 있으면 저쪽 원본을 읽는다.
 저쪽 `HandoffFixtureTest` 가 수록본과 현재 인코더의 **칸 집합**을 대조하므로,
 인코더가 칸을 늘리거나 줄이면 저쪽이 먼저 빨개진다. 그때 여기를 다시 복사한다.
 (값이 아니라 칸만 대조하는 이유는 `runId` 와 `wallClockAt` 이 구동마다 다른 것이 설계라서다.)

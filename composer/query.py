@@ -148,13 +148,38 @@ CARRIED_SEARCH = {
     "steps": "remedySteps",
     # `NONE` 이 왜 없는지. `cause` 하나로는 손댈 자리가 안 보인다.
     "unmet": "remedyUnmet",
-    # `SOURCE_MISSING` 의 전제 넷. `observed` 가 널이면 안 싣는다 — 「못 봤다」이지
-    # 「없었다」가 아니고, 그 구별은 `read_field` 가 지킨다.
+    # `SOURCE_MISSING` 의 전제 넷. ⛔ `observed` 의 널은 「빈 자리」다 (2026-10-01 바로잡음) —
+    # 신원 칸에 글자를 지어 넣지 않고 `VACANT` 로 싣는다(`_search_facts`).
     "material": "remedyMaterial",
     "source": "remedySource",
     "observed": "remedyObserved",
     "alternatives": "remedyAlternatives",
 }
+
+#: 출발 결품 줄의 `observed` 가 널일 때 싣는 칸 — 출발 자리가 비어 있었다는 관측이다. 이름에 `Empty` 를 안 쓰는
+#: 것은 설명 골든셋 한 항목의 금칙어가 `EMPTY` 라서다.
+VACANT = "remedySourceVacant"
+
+
+def _search_facts(search):
+    """탐색 줄의 칸을 질의 이름으로 옮긴다. 널과 키 부재는 안 싣는다 — 하나만 빼고.
+
+    ⛔ **출발 결품 줄의 `observed` 널은 「빈 자리」다 (2026-10-01 바로잡음).** picasso 설계 명세가 「`observed` 도 같다 —
+    널이 빈 자리이고 값이 있으면 거기 있던 다른 신원이다」라고 적는다. 적재 규약의 일반 규칙(널은 「값이 없다」)대로 빼면
+    출발 자리가 비었다는 관측이 질의에서 사라진다(권고 측정 R06 · R09). picasso 의 널을 뜻대로 옮긴 것이지 이 층이 보태는
+    사실이 아니다. **결품 줄이 아니면 널을 그렇게 읽지 않는다** — 뜻이 정해진 것은 결품 줄의 `observed` 뿐이다.
+    """
+    facts = {}
+    for key, name in CARRIED_SEARCH.items():
+        value = read_field(search, key)
+        if value is ABSENT:
+            continue
+        if value is None:
+            if key == "observed" and read_field(search, "outcome") == "SOURCE_MISSING":
+                facts[VACANT] = True
+            continue
+        facts[name] = value
+    return facts
 
 
 #: 불투명한 벤더 정지 코드를 들고 있을 때 **앞에 세우는 고정 문장.**
@@ -261,7 +286,8 @@ def compose(bundle, search=None, recurrence=None):
 
     **널과 키 부재는 둘 다 안 싣는다.** 앞은 그 자리가 판정하지 못한 것이고 뒤는
     이 판이 그 칸을 안 내는 것인데, 어느 쪽이든 **말할 수 있는 사실이 아니다.**
-    실어 보내면 설명이 「어긋남 없음」처럼 없는 판정을 지어낸다.
+    실어 보내면 설명이 「어긋남 없음」처럼 없는 판정을 지어낸다. 예외는 하나 — 출발 결품
+    줄의 `observed` 널은 picasso 가 「빈 자리」로 뜻을 정해 두었다(`_search_facts`).
 
     사람의 걸음(`resolution`)은 있을 때만, 결정과 가상 시각만 싣는다 — 결정도 시각도
     없는 걸음은 빈 사실이라 안 싣는다.
@@ -280,11 +306,7 @@ def compose(bundle, search=None, recurrence=None):
         if step:  # 결정도 시각도 없는 걸음은 빈 사실이다 — 안 싣는다
             facts["resolution"] = step
 
-    for key, name in CARRIED_SEARCH.items():
-        value = read_field(search or {}, key)
-        if value is ABSENT or value is None:
-            continue
-        facts[name] = value
+    facts.update(_search_facts(search or {}))
 
     # **이 층이 보태는 유일한 사실.** 안 주어지면 안 싣는다 — 0 으로 지어내지 않는다.
     # 주어지면 0 도 싣는다: 「이 층이 본 것 중 없다」도 사실이다(`receiver/history.py`).
@@ -328,8 +350,5 @@ def compose_search(record):
         value = read_field(record, key)
         if value is not ABSENT and value is not None:
             facts[key] = value
-    for key, name in CARRIED_SEARCH.items():
-        value = read_field(record, key)
-        if value is not ABSENT and value is not None:
-            facts[name] = value
+    facts.update(_search_facts(record))
     return Query(facts=facts)
