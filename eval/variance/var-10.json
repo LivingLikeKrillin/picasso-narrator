@@ -1,0 +1,519 @@
+{
+ "env": {
+  "at": "2026-10-01T02:46:52+00:00",
+  "pass": "var-10",
+  "only": [
+   "R01",
+   "R03"
+  ],
+  "narratorCommit": "ea52e3d262b0a252e5e41c9867a31abb19534344",
+  "frozen": true,
+  "cases": {
+   "path": "eval/goldenset-recommend.json",
+   "version": 1,
+   "blob": "d25d50cfa1e2f0616089e044dcd5373ecfb23af2",
+   "scoringHash": "d0421418d8f9d711aac6936a2652e50761a26937bbfc7c9389b43e7da7422176"
+  },
+  "requests": {
+   "path": "eval/recommend-requests",
+   "tree": "27cec41d7ab54b2b7e8770dec93ca6eb93e49a1d"
+  },
+  "scorer": "5de24e3e8e6c6ca3eac5b7ba2030d77d7728e77f",
+  "measurer": "093e7b26a31902976d03f3b31a1f9f28f83df9ec",
+  "koshei": {
+   "repo": "koshei-episode-core",
+   "commit": "2d47f03",
+   "path": "episode/src/test/resources/contract/diagnosis/measurement/"
+  },
+  "nexus": "http://localhost:8000",
+  "tenant": "picasso",
+  "topK": 20,
+  "excludeDocTypes": [
+   "spec",
+   "design_doc",
+   "case"
+  ],
+  "identifierChannel": true,
+  "clientTimeout": 510.0,
+  "auth": "subscription",
+  "retry": {
+   "maxAttempts": 2,
+   "retryOn": [
+    "rate_limit",
+    "timeout",
+    "unavailable"
+   ],
+   "abortOn": [
+    "quota",
+    "auth"
+   ],
+   "abortAfterStraight": 2,
+   "rerunAtEnd": 1
+  },
+  "concurrency": 1
+ },
+ "complete": true,
+ "rows": [
+  {
+   "id": "R01",
+   "tier": "core",
+   "requestSha256": "b2a6f8323002127ef26299e35e7f31cec5b8d91dbefc0f5bf268827e15eae218",
+   "candidatesVersion": "sha256:fd1ea1118d55a5e076e6b2c9a176cf525ecd97d100c9a7a90ab44b192149fef2",
+   "querySha256": "35bb1e978c66254d18af3a3818b79bb797e5fcd075aa8d5ca97e264cc5daa16e",
+   "contextSha256": "8d6af3f6d223cf78f351cbad647519bf2f3cdd2dcc5db0aaedf5d68e0276baad",
+   "aliases": {
+    "A": "APPROVE_REMEDY:hum-02:PATROL-1:pick_place",
+    "ESCALATE": "ESCALATE"
+   },
+   "kinds": {
+    "APPROVE_REMEDY:hum-02:PATROL-1:pick_place": "APPROVE_REMEDY",
+    "ESCALATE": "ESCALATE"
+   },
+   "attempts": [
+    {
+     "at": 1790822812.8358195,
+     "elapsed": 354.4,
+     "reason": null,
+     "n": 1
+    }
+   ],
+   "failed": null,
+   "response": {
+    "contractVersion": "0.6",
+    "episodeId": "ep:measure-R01",
+    "attempt": 1,
+    "outcome": "RECOMMENDED",
+    "candidateId": "ESCALATE",
+    "picked": null,
+    "sawCandidatesVersion": "sha256:fd1ea1118d55a5e076e6b2c9a176cf525ecd97d100c9a7a90ab44b192149fef2",
+    "rationale": "이 실패 단위(PATROL-1#remedy-1-pick_place)에 제시된 pick_place 교정을 다시 승인하면 같은 걸음 열이 같은 기체에서 거듭 승인되는 경우이고, 그 문턱(두 번)을 넘으면 양식으로 다뤄야 한다[출처: picasso — 표준 용어 사전 (Glossary), 2. 인터페이스 계약 및 데이터 모델 (Contracts & Data Models)]. 승인은 제안 수립 시점이 아니라 승인 시점에 관측을 다시 확인해야 하는데, 주어진 사실에는 재승인의 물리적 전제(대상이 원위치에 있다는 관측)가 없어 사람에게 위임해야 한다[출처: 오케스트레이션 — 세 층과 자원 소유, 7. 승인면의 모양 (ADR 44)].",
+    "card": [
+     {
+      "label": "절차",
+      "text": "PAYLOAD_LOST는 SOP-01이 담당한다고 색인되어 있을 뿐, 그 절차 본문(첫 걸음)은 근거에 없다[출처: 합성 SOP 6종 — 코퍼스 안내, 무엇을 덮고 무엇을 비웠나]."
+     },
+     {
+      "label": "먼저",
+      "text": "승인 전에는 제안 수립 시점이 아니라 승인 시점의 관측을 다시 확인해야 한다[출처: 오케스트레이션 — 세 층과 자원 소유, 7. 승인면의 모양 (ADR 44)]."
+     },
+     {
+      "label": "금지",
+      "text": "재실행은 자동으로 나가지 않으며 사람이 명시적으로 내야 한다[출처: picasso — 표준 용어 사전 (Glossary), 7. 실패의 되풀이와 사람의 걸음 (Recurrence & Operator Steps)]."
+     },
+     {
+      "label": "갈림",
+      "text": "두 후보를 가르는 관측은 같은 pick_place 걸음 열이 같은 기체(hum-02)에서 이미 몇 번 승인됐는가이며, 그 문턱은 두 번이다[출처: picasso — 표준 용어 사전 (Glossary), 2. 인터페이스 계약 및 데이터 모델 (Contracts & Data Models)]."
+     },
+     {
+      "label": "근거 세기",
+      "text": "요구 근거 등급과 도달 근거 등급이 모두 E0(로봇 자체 보고)로 같고 검증은 요청되지 않아, 설비 등 독립 확인 없이 로봇 자기보고만으로 판정이 서 있다[출처: 운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의, 2. 3계층 완료 모델 및 4단계 근거 등급 체계]."
+     }
+    ],
+    "cause": "후보 순위와 근거의 성격을 나누면 다음과 같다.\n\n1순위 ESCALATE — 직접 뒷받침. 두 가지 조문이 이 상황에 그대로 들어맞는다. 첫째, \"반복 승인 지표\"는 같은 걸음 열이 같은 기체에서 거듭 승인된 사실을 두 번째부터 양식으로 다루라고 정하며, 이번 승인이 바로 그 두 번째에 해당한다[출처: picasso — 표준 용어 사전 (Glossary), 2. 인터페이스 계약 및 데이터 모델 (Contracts & Data Models)]. 그 횟수는 사건·탐색 대장(incidents.jsonl·remedy-searches.jsonl)의 줄로 쌓이고, 같은 기체·같은 분류(또는 같은 자리·같은 분류) 두 축으로 센다[출처: 오케스트레이션 — 세 층과 자원 소유, 6. 사건 조회면의 모양]. 둘째, 승인 절차 자체가 \"관측은 승인 시점에 다시 확인한다\"고 정하는데, 사실에는 재시도의 물리적 전제(떨어진 대상이 실제로 원위치에 있다는 관측)가 들어 있지 않다[출처: 오케스트레이션 — 세 층과 자원 소유, 7. 승인면의 모양 (ADR 44)].\n\n2순위 A(APPROVE_REMEDY) — 인과가 미확정이다. remedySteps가 요구하는 선행조건(expectedHold=HOLD_KIND_EMPTY)은 사실의 observedHold=HOLD_KIND_EMPTY와 일치하므로 그 한 조건만 보면 승인 자체가 형식적으로 막히지는 않는다[출처: 오케스트레이션 — 세 층과 자원 소유, 7. 승인면의 모양 (ADR 44)]. 그러나 \"손이 비었다\"는 관측이 \"대상이 다시 집을 수 있는 자리에 있다\"는 것을 보증하지는 않으며, 그 전제를 확인하는 조문은 근거에 없다. 즉 \"승인하면 해결된다\"는 인과는 근거로 확정되지 않는다.\n\n먼저·금지 두 표지에 쓴 조문(ADR 44 §7.2, Glossary §7)은 pick_place나 PAYLOAD_LOST에 한정된 절차가 아니라 모든 승인 시도와 모든 재작업에 적용되는 일반 규칙이며, PAYLOAD_LOST 전용 SOP(SOP-01)의 첫 걸음을 대신하지 않는다 — 그 본문 자체는 근거에 없다.\n\n이 답은 전부 설계·정책 문서(ADR, 용어 사전, 오케스트레이션 명세)를 사건 기록의 스키마(오케스트레이션 §6)에 대 본 것이며, 별도의 관측(OTel) 데이터와 비교한 것이 아니므로 doc_only·observed_only·conflict 같은 설계-관측 불일치 플래그는 근거에서 나타나지 않았다.",
+    "citations": [
+     {
+      "title": "picasso — 표준 용어 사전 (Glossary)",
+      "section": "2. 인터페이스 계약 및 데이터 모델 (Contracts & Data Models)",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "오케스트레이션 — 세 층과 자원 소유",
+      "section": "7. 승인면의 모양 (ADR 44)",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "합성 SOP 6종 — 코퍼스 안내",
+      "section": "무엇을 덮고 무엇을 비웠나",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "오케스트레이션 — 세 층과 자원 소유",
+      "section": "7. 승인면의 모양 (ADR 44)",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "picasso — 표준 용어 사전 (Glossary)",
+      "section": "7. 실패의 되풀이와 사람의 걸음 (Recurrence & Operator Steps)",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "picasso — 표준 용어 사전 (Glossary)",
+      "section": "2. 인터페이스 계약 및 데이터 모델 (Contracts & Data Models)",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+      "section": "2. 3계층 완료 모델 및 4단계 근거 등급 체계",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "picasso — 표준 용어 사전 (Glossary)",
+      "section": "2. 인터페이스 계약 및 데이터 모델 (Contracts & Data Models)",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "오케스트레이션 — 세 층과 자원 소유",
+      "section": "6. 사건 조회면의 모양",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "오케스트레이션 — 세 층과 자원 소유",
+      "section": "7. 승인면의 모양 (ADR 44)",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "오케스트레이션 — 세 층과 자원 소유",
+      "section": "7. 승인면의 모양 (ADR 44)",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     }
+    ],
+    "unverifiedClaims": [],
+    "uncitedSentences": [],
+    "versions": {
+     "modelId": "claude-sonnet-5",
+     "promptVersion": "73536dc7c9c0",
+     "corpusVersion": "07871dfef95e",
+     "searchFingerprint": "b071397c854c",
+     "narratorCommit": "ea52e3d"
+    },
+    "elapsedSeconds": 354.4
+   },
+   "rawPick": "ESCALATE",
+   "resolved": "ESCALATE",
+   "recordOutcome": "GIVEN",
+   "answer": "권고: ESCALATE\n이유: 이 실패 단위(PATROL-1#remedy-1-pick_place)에 제시된 pick_place 교정을 다시 승인하면 같은 걸음 열이 같은 기체에서 거듭 승인되는 경우이고, 그 문턱(두 번)을 넘으면 양식으로 다뤄야 한다[출처: picasso — 표준 용어 사전 (Glossary), 2. 인터페이스 계약 및 데이터 모델 (Contracts & Data Models)]. 승인은 제안 수립 시점이 아니라 승인 시점에 관측을 다시 확인해야 하는데, 주어진 사실에는 재승인의 물리적 전제(대상이 원위치에 있다는 관측)가 없어 사람에게 위임해야 한다[출처: 오케스트레이션 — 세 층과 자원 소유, 7. 승인면의 모양 (ADR 44)].\n절차: PAYLOAD_LOST는 SOP-01이 담당한다고 색인되어 있을 뿐, 그 절차 본문(첫 걸음)은 근거에 없다[출처: 합성 SOP 6종 — 코퍼스 안내, 무엇을 덮고 무엇을 비웠나].\n먼저: 승인 전에는 제안 수립 시점이 아니라 승인 시점의 관측을 다시 확인해야 한다[출처: 오케스트레이션 — 세 층과 자원 소유, 7. 승인면의 모양 (ADR 44)].\n금지: 재실행은 자동으로 나가지 않으며 사람이 명시적으로 내야 한다[출처: picasso — 표준 용어 사전 (Glossary), 7. 실패의 되풀이와 사람의 걸음 (Recurrence & Operator Steps)].\n갈림: 두 후보를 가르는 관측은 같은 pick_place 걸음 열이 같은 기체(hum-02)에서 이미 몇 번 승인됐는가이며, 그 문턱은 두 번이다[출처: picasso — 표준 용어 사전 (Glossary), 2. 인터페이스 계약 및 데이터 모델 (Contracts & Data Models)].\n근거 세기: 요구 근거 등급과 도달 근거 등급이 모두 E0(로봇 자체 보고)로 같고 검증은 요청되지 않아, 설비 등 독립 확인 없이 로봇 자기보고만으로 판정이 서 있다[출처: 운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의, 2. 3계층 완료 모델 및 4단계 근거 등급 체계].\n\n후보 순위와 근거의 성격을 나누면 다음과 같다.\n\n1순위 ESCALATE — 직접 뒷받침. 두 가지 조문이 이 상황에 그대로 들어맞는다. 첫째, \"반복 승인 지표\"는 같은 걸음 열이 같은 기체에서 거듭 승인된 사실을 두 번째부터 양식으로 다루라고 정하며, 이번 승인이 바로 그 두 번째에 해당한다[출처: picasso — 표준 용어 사전 (Glossary), 2. 인터페이스 계약 및 데이터 모델 (Contracts & Data Models)]. 그 횟수는 사건·탐색 대장(incidents.jsonl·remedy-searches.jsonl)의 줄로 쌓이고, 같은 기체·같은 분류(또는 같은 자리·같은 분류) 두 축으로 센다[출처: 오케스트레이션 — 세 층과 자원 소유, 6. 사건 조회면의 모양]. 둘째, 승인 절차 자체가 \"관측은 승인 시점에 다시 확인한다\"고 정하는데, 사실에는 재시도의 물리적 전제(떨어진 대상이 실제로 원위치에 있다는 관측)가 들어 있지 않다[출처: 오케스트레이션 — 세 층과 자원 소유, 7. 승인면의 모양 (ADR 44)].\n\n2순위 A(APPROVE_REMEDY) — 인과가 미확정이다. remedySteps가 요구하는 선행조건(expectedHold=HOLD_KIND_EMPTY)은 사실의 observedHold=HOLD_KIND_EMPTY와 일치하므로 그 한 조건만 보면 승인 자체가 형식적으로 막히지는 않는다[출처: 오케스트레이션 — 세 층과 자원 소유, 7. 승인면의 모양 (ADR 44)]. 그러나 \"손이 비었다\"는 관측이 \"대상이 다시 집을 수 있는 자리에 있다\"는 것을 보증하지는 않으며, 그 전제를 확인하는 조문은 근거에 없다. 즉 \"승인하면 해결된다\"는 인과는 근거로 확정되지 않는다.\n\n먼저·금지 두 표지에 쓴 조문(ADR 44 §7.2, Glossary §7)은 pick_place나 PAYLOAD_LOST에 한정된 절차가 아니라 모든 승인 시도와 모든 재작업에 적용되는 일반 규칙이며, PAYLOAD_LOST 전용 SOP(SOP-01)의 첫 걸음을 대신하지 않는다 — 그 본문 자체는 근거에 없다.\n\n이 답은 전부 설계·정책 문서(ADR, 용어 사전, 오케스트레이션 명세)를 사건 기록의 스키마(오케스트레이션 §6)에 대 본 것이며, 별도의 관측(OTel) 데이터와 비교한 것이 아니므로 doc_only·observed_only·conflict 같은 설계-관측 불일치 플래그는 근거에서 나타나지 않았다.",
+   "diagnostics": {
+    "timing": {
+     "total_ms": 11926,
+     "bm25_ms": 11899,
+     "llm_ms": 340364
+    },
+    "evidence": 36,
+    "identifierChannel": [
+     "PAYLOAD_LOST",
+     "KEY_SKILL_ID",
+     "KEY_TASK_ID",
+     "KIND_UNTIL_CLEARED",
+     "HOLD_KIND_EMPTY",
+     "HOLD_KIND_HOLDING",
+     "NOT_REQUESTED"
+    ],
+    "identifierChannelAsked": true,
+    "evidenceDocs": [
+     "Boston Dynamics Orbit — 벤더 API 사양 분석 및 측정 노트 (Vendor Measurement Note)",
+     "Middleware.kt 접합부 분리 구현 계획서",
+     "SOP-03 자재 결품과 대체 슬롯 운용",
+     "SOP-04 이동 경로 차단 대응",
+     "SOP-06 제어권 상실과 명령 덮어쓰기",
+     "picasso — 표준 용어 사전 (Glossary)",
+     "시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt)",
+     "오케스트레이션 — 세 층과 자원 소유",
+     "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+     "합성 SOP 6종 — 코퍼스 안내",
+     "현장 배포 및 시운전(Commissioning) 운영 가이드"
+    ],
+    "usage": {
+     "input_tokens": null,
+     "output_tokens": null,
+     "cost_usd": null,
+     "model": "claude-sonnet-5"
+    },
+    "weak_evidence": false,
+    "top_distance": 0.31164304544668997,
+    "top_bm25": 1.7079554796218872,
+    "degraded": [],
+    "enrichment_failed": [],
+    "unverified_citations": 0,
+    "unverified_numbers": 0,
+    "numbers": [
+     {
+      "value": "44",
+      "grounded": true,
+      "found_in": [
+       "evidence"
+      ]
+     },
+     {
+      "value": "7.2",
+      "grounded": true,
+      "found_in": [
+       "evidence"
+      ]
+     }
+    ],
+    "prompt_version": "73536dc7c9c0",
+    "corpus_version": "07871dfef95e",
+    "search_fingerprint": "b071397c854c"
+   }
+  },
+  {
+   "id": "R03",
+   "tier": "core",
+   "requestSha256": "587a40d8928e710cdaa3c79566a3404cc846be0ae0ae8b0ba21d60ecf93bdbd1",
+   "candidatesVersion": "sha256:fd1ea1118d55a5e076e6b2c9a176cf525ecd97d100c9a7a90ab44b192149fef2",
+   "querySha256": "dc3182af2b2ef1e0ddf4136502243442f235d3ef6d43e80f5bc96e8ef60af02a",
+   "contextSha256": "8d6af3f6d223cf78f351cbad647519bf2f3cdd2dcc5db0aaedf5d68e0276baad",
+   "aliases": {
+    "A": "APPROVE_REMEDY:hum-02:PATROL-1:pick_place",
+    "ESCALATE": "ESCALATE"
+   },
+   "kinds": {
+    "APPROVE_REMEDY:hum-02:PATROL-1:pick_place": "APPROVE_REMEDY",
+    "ESCALATE": "ESCALATE"
+   },
+   "attempts": [
+    {
+     "at": 1790823167.2315443,
+     "elapsed": 256.2,
+     "reason": null,
+     "n": 1
+    }
+   ],
+   "failed": null,
+   "response": {
+    "contractVersion": "0.6",
+    "episodeId": "ep:measure-R03",
+    "attempt": 1,
+    "outcome": "RECOMMENDED",
+    "candidateId": "APPROVE_REMEDY:hum-02:PATROL-1:pick_place",
+    "picked": null,
+    "sawCandidatesVersion": "sha256:fd1ea1118d55a5e076e6b2c9a176cf525ecd97d100c9a7a90ab44b192149fef2",
+    "rationale": "remedySteps 가 단일 걸음이고 requires 가 빈 목록이라 \"여러 걸음 자동 승인은 대상 참조가 없는 걸음에만 성립한다\"는 범위 안에 그대로 든다[출처: 시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt), 4. 외부 미결 과제 (External Open — 외부 실물 연동 필요)]. 승인 API 가 조치가 아니라 jobOrderId 로 제안을 가리키는 ADR 44 의 설계와 후보 A 의 식별자 형식이 일치한다[출처: ADR 44 — 승인은 조치를 기술하지 않고 제안을 가리킨다, 5. 파급 효과].",
+    "card": [
+     {
+      "label": "절차",
+      "text": "이 실패와 같은 축(파지·잔여 파지)을 다루는 절차 문서는 SOP-01 이며, 파지 실패(GRASP_FAILED)와 잔여 파지(residualHold) 둘을 따로 둔다[출처: SOP-01 파지 실패와 잔여 파지 처리, 5. 절차]."
+     },
+     {
+      "label": "먼저",
+      "text": "remedySteps 의 expectedHold·onFailureHold 가 가리키는 잔여 파지 절차의 첫 걸음은 \"하류를 먼저 멈춘다 — 끝났다고 알고 있는 쪽이 다음 자재를 올리면 충돌한다\"이다[출처: SOP-01 파지 실패와 잔여 파지 처리, 5. 절차]."
+     },
+     {
+      "label": "금지",
+      "text": "잔여 파지를 다룰 때 단위의 최종 상태를 SUCCEEDED 로 두지 않는다[출처: SOP-01 파지 실패와 잔여 파지 처리, 5. 절차]."
+     },
+     {
+      "label": "갈림",
+      "text": "상위 두 후보(A·ESCALATE)를 가를 관측은 hum-02 의 실시간 파지(liveHold)가 \"이름 없는 HOLDING\"인지 여부이고, 그 판정은 순수 판정 함수 RemedyValues 의 단위 시험에서만 재현된다[출처: 시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt), 4. 외부 미결 과제 (External Open — 외부 실물 연동 필요)]."
+     },
+     {
+      "label": "근거 세기",
+      "text": "사실에 requiredEvidence·reachedEvidence·verification 값이 없어 이 사건의 근거 등급을 사실만으로는 확인할 수 없다[출처: 오케스트레이션 — 세 층과 자원 소유, 6. 사건 조회면의 모양]."
+     }
+    ],
+    "cause": "후보 A (APPROVE_REMEDY:hum-02:PATROL-1:pick_place) — 직접 뒷받침 둘, 인과 미확정 하나. 직접: (1) requires 가 빈 단일 걸음이라는 사실 구조가 \"대상 참조가 없는 걸음에만 자동 승인이 성립한다\"는 조건을 문자 그대로 채운다[출처: 시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt), 4. 외부 미결 과제 (External Open — 외부 실물 연동 필요)]. (2) 후보 A 의 식별자(기체+주문 id, 조치 설명 없음)가 승인 API 를 jobOrderId 기반으로 바꾼 ADR 44 의 결정과 형식이 맞는다[출처: ADR 44 — 승인은 조치를 기술하지 않고 제안을 가리킨다, 5. 파급 효과]. 미확정: 제안이 계획 시점 거절(PRECONDITION_UNMET)에서 나온 것인지, 아니면 사건 뒤 사람의 재작업 걸음을 전제로 한 것인지는 사실에 분류(fault)·사건 번호가 없어 가릴 수 없다 — \"사건 뒤에 탐색을 세우려면 사람이 재작업을 한 걸음 내야 한다\"는 조건이 이미 충족됐는지는 근거가 답하지 않는다[출처: 시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt), 3. 소비자 대기 (Consumer-Gated — 쓸 소비자가 생겨야 지음)].\n\n후보 ESCALATE — 이 사실 조합을 직접 가리키는 근거는 없고 인과 미확정이다. 잔여 파지 절차(SOP-01 §5.2)가 사람의 물리적 걸음(하류 정지·안전 개방·손상 확인·VERIFICATION_MISMATCH 정정)을 요구하는 것은 맞지만[출처: SOP-01 파지 실패와 잔여 파지 처리, 5. 절차], 이 절차가 시스템의 승인 창구(승인·제안 장부)와 같은 트랙인지 별개의 수동 트랙인지는 근거가 말하지 않는다. \"자동 승인은 거절돼야 한다\"는 지시도 이름 없는 HOLDING 관측이 실제로 있을 때만 서는 조건이며, 그 관측 자체가 사실에 없다[출처: 시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt), 4. 외부 미결 과제 (External Open — 외부 실물 연동 필요)].\n\n후보 A 를 택할 때의 전제를 사실과 나란히 적는다. 전제 (a): hum-02 의 live hold 가 이름 없는 HOLDING 상태가 아니어야 한다 — 사실에는 이 값이 없다[출처: 시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt), 4. 외부 미결 과제 (External Open — 외부 실물 연동 필요)]. 전제 (b): PATROL-1 이 다른 기체에서 멱등 접힘으로 이미 돌고 있지 않아야 한다 — 그렇지 않으면 승인이 REMEDY_NOT_APPLIED 로 조용히 떨어진다 — 사실에는 이 값도 없다[출처: 시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt), 2. 내부 미결 과제 (Internal Open — 자체 구현으로 해소 가능)].\n\n**범위 표기.** SOP-01 은 파지 실패(5.1)와 잔여 파지(5.2) 두 절차를 따로 두는데, 사실에는 어느 분류(fault)인지가 없어 5.2 를 고른 것은 remedySteps 의 expectedHold/onFailureHold 구조에 근거한 판단이지, 사실이 직접 분류를 댄 것이 아니다[출처: SOP-01 파지 실패와 잔여 파지 처리, 5. 절차].",
+    "citations": [
+     {
+      "title": "시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt)",
+      "section": "4. 외부 미결 과제 (External Open — 외부 실물 연동 필요)",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "ADR 44 — 승인은 조치를 기술하지 않고 제안을 가리킨다",
+      "section": "5. 파급 효과",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "SOP-01 파지 실패와 잔여 파지 처리",
+      "section": "5. 절차",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "SOP-01 파지 실패와 잔여 파지 처리",
+      "section": "5. 절차",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "SOP-01 파지 실패와 잔여 파지 처리",
+      "section": "5. 절차",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt)",
+      "section": "4. 외부 미결 과제 (External Open — 외부 실물 연동 필요)",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "오케스트레이션 — 세 층과 자원 소유",
+      "section": "6. 사건 조회면의 모양",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt)",
+      "section": "4. 외부 미결 과제 (External Open — 외부 실물 연동 필요)",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "ADR 44 — 승인은 조치를 기술하지 않고 제안을 가리킨다",
+      "section": "5. 파급 효과",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt)",
+      "section": "3. 소비자 대기 (Consumer-Gated — 쓸 소비자가 생겨야 지음)",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "SOP-01 파지 실패와 잔여 파지 처리",
+      "section": "5. 절차",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt)",
+      "section": "4. 외부 미결 과제 (External Open — 외부 실물 연동 필요)",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt)",
+      "section": "4. 외부 미결 과제 (External Open — 외부 실물 연동 필요)",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt)",
+      "section": "2. 내부 미결 과제 (Internal Open — 자체 구현으로 해소 가능)",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     },
+     {
+      "title": "SOP-01 파지 실패와 잔여 파지 처리",
+      "section": "5. 절차",
+      "verified": true,
+      "provenance_tier": "authored",
+      "provenance_mark": ""
+     }
+    ],
+    "unverifiedClaims": [],
+    "uncitedSentences": [],
+    "versions": {
+     "modelId": "claude-sonnet-5",
+     "promptVersion": "73536dc7c9c0",
+     "corpusVersion": "07871dfef95e",
+     "searchFingerprint": "b071397c854c",
+     "narratorCommit": "ea52e3d"
+    },
+    "elapsedSeconds": 256.2
+   },
+   "rawPick": "A",
+   "resolved": "APPROVE_REMEDY:hum-02:PATROL-1:pick_place",
+   "recordOutcome": "GIVEN",
+   "answer": "권고: A\n이유: remedySteps 가 단일 걸음이고 requires 가 빈 목록이라 \"여러 걸음 자동 승인은 대상 참조가 없는 걸음에만 성립한다\"는 범위 안에 그대로 든다[출처: 시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt), 4. 외부 미결 과제 (External Open — 외부 실물 연동 필요)]. 승인 API 가 조치가 아니라 jobOrderId 로 제안을 가리키는 ADR 44 의 설계와 후보 A 의 식별자 형식이 일치한다[출처: ADR 44 — 승인은 조치를 기술하지 않고 제안을 가리킨다, 5. 파급 효과].\n절차: 이 실패와 같은 축(파지·잔여 파지)을 다루는 절차 문서는 SOP-01 이며, 파지 실패(GRASP_FAILED)와 잔여 파지(residualHold) 둘을 따로 둔다[출처: SOP-01 파지 실패와 잔여 파지 처리, 5. 절차].\n먼저: remedySteps 의 expectedHold·onFailureHold 가 가리키는 잔여 파지 절차의 첫 걸음은 \"하류를 먼저 멈춘다 — 끝났다고 알고 있는 쪽이 다음 자재를 올리면 충돌한다\"이다[출처: SOP-01 파지 실패와 잔여 파지 처리, 5. 절차].\n금지: 잔여 파지를 다룰 때 단위의 최종 상태를 SUCCEEDED 로 두지 않는다[출처: SOP-01 파지 실패와 잔여 파지 처리, 5. 절차].\n갈림: 상위 두 후보(A·ESCALATE)를 가를 관측은 hum-02 의 실시간 파지(liveHold)가 \"이름 없는 HOLDING\"인지 여부이고, 그 판정은 순수 판정 함수 RemedyValues 의 단위 시험에서만 재현된다[출처: 시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt), 4. 외부 미결 과제 (External Open — 외부 실물 연동 필요)].\n근거 세기: 사실에 requiredEvidence·reachedEvidence·verification 값이 없어 이 사건의 근거 등급을 사실만으로는 확인할 수 없다[출처: 오케스트레이션 — 세 층과 자원 소유, 6. 사건 조회면의 모양].\n\n후보 A (APPROVE_REMEDY:hum-02:PATROL-1:pick_place) — 직접 뒷받침 둘, 인과 미확정 하나. 직접: (1) requires 가 빈 단일 걸음이라는 사실 구조가 \"대상 참조가 없는 걸음에만 자동 승인이 성립한다\"는 조건을 문자 그대로 채운다[출처: 시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt), 4. 외부 미결 과제 (External Open — 외부 실물 연동 필요)]. (2) 후보 A 의 식별자(기체+주문 id, 조치 설명 없음)가 승인 API 를 jobOrderId 기반으로 바꾼 ADR 44 의 결정과 형식이 맞는다[출처: ADR 44 — 승인은 조치를 기술하지 않고 제안을 가리킨다, 5. 파급 효과]. 미확정: 제안이 계획 시점 거절(PRECONDITION_UNMET)에서 나온 것인지, 아니면 사건 뒤 사람의 재작업 걸음을 전제로 한 것인지는 사실에 분류(fault)·사건 번호가 없어 가릴 수 없다 — \"사건 뒤에 탐색을 세우려면 사람이 재작업을 한 걸음 내야 한다\"는 조건이 이미 충족됐는지는 근거가 답하지 않는다[출처: 시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt), 3. 소비자 대기 (Consumer-Gated — 쓸 소비자가 생겨야 지음)].\n\n후보 ESCALATE — 이 사실 조합을 직접 가리키는 근거는 없고 인과 미확정이다. 잔여 파지 절차(SOP-01 §5.2)가 사람의 물리적 걸음(하류 정지·안전 개방·손상 확인·VERIFICATION_MISMATCH 정정)을 요구하는 것은 맞지만[출처: SOP-01 파지 실패와 잔여 파지 처리, 5. 절차], 이 절차가 시스템의 승인 창구(승인·제안 장부)와 같은 트랙인지 별개의 수동 트랙인지는 근거가 말하지 않는다. \"자동 승인은 거절돼야 한다\"는 지시도 이름 없는 HOLDING 관측이 실제로 있을 때만 서는 조건이며, 그 관측 자체가 사실에 없다[출처: 시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt), 4. 외부 미결 과제 (External Open — 외부 실물 연동 필요)].\n\n후보 A 를 택할 때의 전제를 사실과 나란히 적는다. 전제 (a): hum-02 의 live hold 가 이름 없는 HOLDING 상태가 아니어야 한다 — 사실에는 이 값이 없다[출처: 시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt), 4. 외부 미결 과제 (External Open — 외부 실물 연동 필요)]. 전제 (b): PATROL-1 이 다른 기체에서 멱등 접힘으로 이미 돌고 있지 않아야 한다 — 그렇지 않으면 승인이 REMEDY_NOT_APPLIED 로 조용히 떨어진다 — 사실에는 이 값도 없다[출처: 시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt), 2. 내부 미결 과제 (Internal Open — 자체 구현으로 해소 가능)].\n\n**범위 표기.** SOP-01 은 파지 실패(5.1)와 잔여 파지(5.2) 두 절차를 따로 두는데, 사실에는 어느 분류(fault)인지가 없어 5.2 를 고른 것은 remedySteps 의 expectedHold/onFailureHold 구조에 근거한 판단이지, 사실이 직접 분류를 댄 것이 아니다[출처: SOP-01 파지 실패와 잔여 파지 처리, 5. 절차].",
+   "diagnostics": {
+    "timing": {
+     "total_ms": 2500,
+     "bm25_ms": 2469,
+     "llm_ms": 252346
+    },
+    "evidence": 29,
+    "identifierChannel": [
+     "HOLD_KIND_EMPTY",
+     "HOLD_KIND_HOLDING"
+    ],
+    "identifierChannelAsked": true,
+    "evidenceDocs": [
+     "ADR 42 — 소유자 미확정 자원에 대한 명령 금지 원칙",
+     "ADR 44 — 승인은 조치를 기술하지 않고 제안을 가리킨다",
+     "Boston Dynamics Orbit — 벤더 API 사양 분석 및 측정 노트 (Vendor Measurement Note)",
+     "Middleware.kt 접합부 분리 구현 계획서",
+     "SOP-01 파지 실패와 잔여 파지 처리",
+     "SOP-03 자재 결품과 대체 슬롯 운용",
+     "SOP-04 이동 경로 차단 대응",
+     "SOP-06 제어권 상실과 명령 덮어쓰기",
+     "picasso — 표준 용어 사전 (Glossary)",
+     "시스템 한계 및 미결 과제 대장 (Known Limits & Technical Debt)",
+     "오케스트레이션 — 세 층과 자원 소유",
+     "운영 시나리오 명세서 — 3대 작업 흐름 및 인터페이스 경계 정의",
+     "합성 SOP 6종 — 코퍼스 안내",
+     "현장 배포 및 시운전(Commissioning) 운영 가이드"
+    ],
+    "usage": {
+     "input_tokens": null,
+     "output_tokens": null,
+     "cost_usd": null,
+     "model": "claude-sonnet-5"
+    },
+    "weak_evidence": false,
+    "top_distance": 0.3524806289386363,
+    "top_bm25": 1.2014950513839722,
+    "degraded": [],
+    "enrichment_failed": [],
+    "unverified_citations": 0,
+    "unverified_numbers": 0,
+    "numbers": [
+     {
+      "value": "44",
+      "grounded": true,
+      "found_in": [
+       "evidence"
+      ]
+     },
+     {
+      "value": "5.2",
+      "grounded": true,
+      "found_in": [
+       "evidence"
+      ]
+     },
+     {
+      "value": "5.1",
+      "grounded": true,
+      "found_in": [
+       "evidence"
+      ]
+     }
+    ],
+    "prompt_version": "73536dc7c9c0",
+    "corpus_version": "07871dfef95e",
+    "search_fingerprint": "b071397c854c"
+   }
+  }
+ ]
+}

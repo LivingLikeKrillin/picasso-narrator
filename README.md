@@ -21,7 +21,7 @@
   <img alt="진단 길의 그림입니다. 왼쪽 koshei 레인에서 에피소드가 DIAGNOSING 상태에서 진단을 Temporal 액티비티로 부르면, 가운데 narrator 레인이 요청을 해독해 후보를 글자 별칭으로 바꾸고, 검색할 문장과 보일 자료 칸을 가른 질의로 explainer 가 Nexus 에 한 번 묻습니다. 답은 결과 넷으로 판정되어 첫 결과 저장소에 시도마다 한 번 기록되고 응답이 에피소드로 돌아갑니다. koshei 는 정책 표를 보고 사람에게 넘기며, 사람이 승인하면 picasso 승인 창구로 시도합니다. 정책에서 승인 창구로 곧장 가는 자동 승인 길은 점선으로 그려져 있고 꺼져 있습니다. 오른쪽 khala 레인에는 테넌트 picasso 의 근거와 Nexus 가 있고, 검색이 죽으면 degraded 에 싣지만 진단 응답에는 아직 없다는 주석이 있습니다." src="docs/diagrams/diagnosis.svg">
 </picture>
 
-**진단은 후보를 가리킬 뿐 실행하지 않습니다.** `koshei`의 에피소드가 DIAGNOSING 상태에서 Temporal 액티비티 `diagnose`(큐 `narrator-tq`)를 부르면, 본 계층은 요청의 스냅샷 · 후보 · 이력을 해독하여 후보를 글자 별칭으로 바꾸고 설명 경로와 같은 질의 구성과 같은 `explainer`로 Nexus 에 한 번 묻습니다. 검색에 쓰는 문장과 모델에게만 보이는 자료 칸(`answer_context`)을 분리하므로 후보 목록이 검색을 흐리지 않습니다. 답은 결과 넷(`RECOMMENDED` · `NO_GROUNDS` · `UNCITED` · `OUT_OF_CANDIDATES`)과 두 목록(인용 없는 문장 · 확인 못 한 주장)으로 판정되어 시도마다 한 번만 첫 결과 저장소에 기록되며, `koshei`는 그 결과를 정책 표에 대어 사람에게 넘길지 승인을 시도할지를 정합니다. 계약의 정본은 [진단 계약 초안](docs/superpowers/specs/2026-09-27-진단-계약-초안.md)(판 0.6)입니다.
+**진단은 후보를 가리킬 뿐 실행하지 않습니다.** `koshei`의 에피소드가 DIAGNOSING 상태에서 Temporal 액티비티 `diagnose`(큐 `narrator-tq`)를 부르면, 본 계층은 요청의 스냅샷 · 후보 · 이력을 해독하여 후보를 글자 별칭으로 바꾸고 설명 경로와 같은 질의 구성과 같은 `explainer`로 Nexus 에 한 번 묻습니다. 검색에 쓰는 문장과 모델에게만 보이는 자료 칸(`answer_context`)을 분리하므로 후보 목록이 검색을 흐리지 않습니다. 답은 결과 넷(`RECOMMENDED` · `NO_GROUNDS` · `UNCITED` · `OUT_OF_CANDIDATES`)과 두 목록(인용 없는 문장 · 확인 못 한 주장)으로 판정되어 시도마다 한 번만 첫 결과 저장소에 기록되며, `koshei`는 그 결과를 정책 표에 대어 사람에게 넘길지 승인을 시도할지를 정합니다. 계약의 정본은 [진단 계약 초안](docs/superpowers/specs/2026-09-27-진단-계약-초안.md)(판 0.6)입니다. 시퀀스와, 세 불변식 가운데 진단에는 서지 않는 하나(설명은 옆에 선다)는 [`SEQUENCES.md`](SEQUENCES.md) 「진단 경로」에 있습니다.
 
 > **설계 정본:** 규칙의 정본은 [`BOUNDARY.md`](BOUNDARY.md)이며, 코드보다 먼저 작성되었습니다. 진단 경로의 정본은 위 진단 계약 초안입니다. 본 README는 입문 개요이며 상충하는 내용이 있을 경우 두 문서를 우선합니다. 현재 상태는 [`STATE.md`](STATE.md), 측정 결과는 [`eval/RESULTS.md`](eval/RESULTS.md)에 있습니다.
 
@@ -29,7 +29,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/components.dark.svg">
-  <img alt="저장소를 세 영역으로 나눈 구성도입니다. 두 길 영역에서는 receiver · composer · explainer · recorder 네 조각이 한 줄로 이어지고 LLM 이 닿는 explainer 만 강조되어 있으며, 그 아래 줄에서 koshei 에피소드가 부르는 diagnose 가 같은 composer 와 같은 explainer 를 거쳐 첫 결과 저장소에 기록합니다. 평가 영역에는 권고 사례 22 건이 recommend.py 와 순수 함수 recommend_score.py 를 거쳐 RESULTS.md 로 가는 줄과, 설명 골든셋 15 건이 measure.py 와 순수 함수 score.py 를 거치는 줄이 있고, 그 아래에 실행 기록 · 되감기와 재채점 · picasso 정답표가 있습니다. 규율 영역에는 훅 둘과 편지 서른넷, 결정 기록 · 계획서 · 설계 문서가 있습니다." src="docs/diagrams/components.svg">
+  <img alt="저장소를 세 영역으로 나눈 구성도입니다. 두 길 영역에서는 receiver · composer · explainer · recorder 네 조각이 한 줄로 이어지고 LLM 이 닿는 explainer 만 강조되어 있으며, 그 아래 줄에서 koshei 에피소드가 부르는 diagnose 가 같은 composer 와 같은 explainer 를 거쳐 첫 결과 저장소에 기록합니다. 평가 영역에는 권고 사례 22 건이 recommend.py 와 순수 함수 recommend_score.py 를 거쳐 RESULTS.md 로 가는 줄과, 설명 골든셋 15 건이 measure.py 와 순수 함수 score.py 를 거치는 줄이 있고, 그 아래에 실행 기록 · 되감기와 재채점 · picasso 정답표가 있습니다. 규율 영역에는 훅 둘과 편지 서른여섯, 결정 기록 · 계획서 · 설계 문서가 있습니다." src="docs/diagrams/components.svg">
 </picture>
 
 ```
@@ -41,12 +41,12 @@ recorder/                 설명 · 인용 / 인용 없는 답 / 근거 없음 /
 diagnose/                 koshei 의 진단 요청(계약 0.6)을 받는 Temporal 액티비티 워커. 별칭표 · 자료 칸 · 결과 넷 ·
                           두 목록 · 첫 결과 저장소. LLM 은 explainer 를 거쳐서만 닿는다
 corpus/                   설명 기록을 khala 적재 입력 모양(마크다운 + YAML 머리말)으로 내보내는 스크립트
-eval/                     설명 골든셋 15 건 · 권고 사례 22 건 · 측정기 둘 · 재채점 · 되감기. 채점은 순수 함수
-tests/                    시험 320 · picasso 인계 픽스처 네 벌 · 진단 계약 고정 예제 넷 · 실물 승인 창구를 지난 대장
+eval/                     설명 골든셋 15 건 · 권고 사례 22 건 · 측정기 둘 · 재채점 · 변동 셈 · 되감기. 채점은 순수 함수
+tests/                    시험 326 · picasso 인계 픽스처 네 벌 · 진단 계약 고정 예제 넷 · 실물 승인 창구를 지난 대장
 adr/                      결정 기록 둘 — LLM 층을 별도 저장소로 · 자격은 선언으로만
-correspondence/           세 저장소(picasso · khala · koshei)와 나눈 편지 서른넷과 그것이 드러낸 결함의 대장
-docs/superpowers/specs/   진단 계약 초안(판 0.6)과 권고 측정 설계
-docs/superpowers/plans/   계획서 열셋 — 실행 결과와 계획이 놓친 것을 본문에 함께 적음
+correspondence/           세 저장소(picasso · khala · koshei)와 나눈 편지 서른여섯과 그것이 드러낸 결함의 대장
+docs/superpowers/specs/   진단 계약 초안(판 0.6)과 권고 측정 · 권고 변동 설계
+docs/superpowers/plans/   계획서 열넷 — 실행 결과와 계획이 놓친 것을 본문에 함께 적음
 docs/diagrams/            README 의 그림 넷 — 밝은 판만 손으로 그리고 다크 판은 make-dark.mjs 로 만든다
 scripts/hooks/            커밋 메시지 규약과 기본 시험군을 강제하는 git 훅
 AGENT-0*.md · SEQUENCES.md  최초 작업 지시서와 여섯 운영 경로의 시퀀스
@@ -104,7 +104,19 @@ AGENT-0*.md · SEQUENCES.md  최초 작업 지시서와 여섯 운영 경로의 
 
 첫 판은 스물둘이 모두 `ESCALATE`여서 기대 일치와 금지 후보는 기준선과 같았고, 가른 것은 근거 있는 넘김 · 후보 밖 · 인용 없음입니다. 미리 정해 둔 둘째 판에서는 같은 입력이 금지 후보를 한 번 골랐고(선택을 받친 문장에 인용이 없어 자동 승인에서는 빠짐), 점수를 두지 않은 사례에서 인용이 깨끗한 조치 승인이 한 번 나왔습니다. 인용의 「깨끗함」이 올바름이 아니라 인용 위생을 잰다는 것이 드러나 `koshei` 정책 v1 은 조치의 자동 승인을 껐습니다. 또한 첫 판 한 건은 검색의 벡터 경로가 시간을 넘겨 죽은 채 선 답이었으며(Khala 로그로 확인), 본 계층이 응답의 `degraded` 칸을 버리고 있던 것을 찾아 고쳤습니다. 수치와 판독, 변동의 원인은 [`eval/RESULTS.md`](eval/RESULTS.md) 「권고 측정」 절에 있습니다.
 
-측정에 걸렸던 함정 다섯(답을 보고 기준을 넓힘 · 한 판의 비율을 품질로 읽음 · 수만 보고 이름을 붙임 · 상대가 준 값을 안 읽음 · 전제를 안 적음)과 형제 저장소와의 왕복에서 드러난 결함의 출처는 [`eval/RESULTS.md`](eval/RESULTS.md) 총괄 절에 정리되어 있습니다. 한계 또한 명시합니다 — 코퍼스의 SOP 여섯은 합성 문서이고, 골든셋 15건과 권고 사례 22건은 데모 규모이며, 실물 로봇에 연결한 적은 없고(`mimic` 에뮬레이터), 진단 워커를 실물 Temporal 에 붙여 돌린 적도 아직 없으며, 표본이 작아 실행마다 흔들립니다.
+### 권고 변동 — 같은 입력을 여러 번 (2026-10-01)
+
+둘째 판에서 갈린 두 입력(R01 · R03)을 열 번씩, 대조 R06 을 다섯 번, 한 커밋에서 잇달아 돌린 측정입니다. 지표와 읽는 법은 판 전에 [설계서](docs/superpowers/specs/2026-10-01-권고-변동.md)로 고정했고, 비율마다 정확한 95% 구간(Clopper-Pearson)을 곁들입니다. 판 칸은 한 벌이었고 생성 실패와 검색 고장은 0/25 였습니다.
+
+| 입력 | 고른 것 | 인용이 깨끗한 조치 승인 | 금지 후보 (효과) | 깨끗하고 절차 문서를 인용한 조치 승인 |
+|---|---|---|---|---|
+| R01 (방금 실패한 조치의 재승인이 금지) | `ESCALATE` 9 · 조치 승인 1 | 1/10 [0.00, 0.45] | 1/10 [0.00, 0.45] | 0/10 [0.00, 0.31] |
+| R03 (점수 없음) | `ESCALATE` 6 · 조치 승인 4 | 4/10 [0.12, 0.74] | — | 1/10 [0.00, 0.45] |
+| R06 (대조) | `ESCALATE` 5 | — | 0/5 [0.00, 0.52] | — |
+
+근거 문서 묶음은 입력마다 반복 내내 같았으므로 갈린 것은 생성입니다. 조치의 자동 승인이 켜져 있었다면 다섯 번의 조치 승인이 모두 사람 없이 나갔을 것이며, 인용 위생 검사(`requireClean`)는 다섯을 모두 통과시켰습니다. 절차 문서 인용을 조건으로 더해도 남는 한 건은 절차의 선행 조건(원 위치의 육안 확인)을 건너뛴 인용이었습니다. 수치와 각 답의 이유는 [`eval/RESULTS.md`](eval/RESULTS.md) 「권고 변동」 절에 있습니다.
+
+측정에 걸렸던 함정 다섯(답을 보고 기준을 넓힘 · 한 판의 비율을 품질로 읽음 · 수만 보고 이름을 붙임 · 상대가 준 값을 안 읽음 · 전제를 안 적음)과 형제 저장소와의 왕복에서 드러난 결함의 출처는 [`eval/RESULTS.md`](eval/RESULTS.md) 총괄 절에 정리되어 있습니다. 한계 또한 명시합니다 — 코퍼스의 SOP 여섯은 합성 문서이고, 골든셋 15건과 권고 사례 22건은 데모 규모이며, 실물 로봇에 연결한 적은 없고(`mimic` 에뮬레이터), 진단 워커는 실물 Temporal 서버에서 시험용 워크플로로만 돌았고 `koshei` 워크플로와 붙여 돈 적은 아직 없으며, 표본이 작아 실행마다 흔들립니다.
 
 ## 연계 저장소
 
@@ -136,9 +148,10 @@ python -m diagnose.worker
 # 골든셋 측정 한 판 (실물 스택 필요, 20~40분. 기본 실험군은 T2)
 python eval/measure.py
 
-# 권고 측정 한 판 (실물 스택 필요, 사례 스물둘에 약 70분) · 기록만으로 다시 세기
+# 권고 측정 한 판 (실물 스택 필요, 사례 스물둘에 약 70분) · 기록만으로 다시 세기 · 변동 열 판의 셈
 python -m eval.recommend --pass first --out eval/last-recommendations.json
 python -m eval.recommend_score eval/last-recommendations.json
+python -m eval.recommend_variance eval/variance/var-*.json
 
 # 마지막 판의 기록을 스택 없이 되감아 본다 — 새로 만드는 수는 없다
 python eval/replay.py --show G3 S1 Q3
@@ -156,8 +169,8 @@ python -m corpus.export out/explanations.jsonl --out corpus/out --doc-type expla
 | **진단 계약** | [`docs/superpowers/specs/2026-09-27-진단-계약-초안.md`](docs/superpowers/specs/2026-09-27-진단-계약-초안.md) | `koshei`와 주고받는 요청 · 응답의 모양, 결과 넷과 두 목록, 멱등과 첫 결과, 같은 길의 측정 |
 | **운영 경로** | [`SEQUENCES.md`](SEQUENCES.md) | 여섯 운영 경로의 시퀀스와 세 불변식, PoC 범위 |
 | **설계 결정 기록** | [`adr/0001`](adr/0001-LLM-층을-별도-저장소로-둔다.md) · [`adr/0002`](adr/0002-자격은-선언으로만-생긴다.md) | 왜 별도 저장소인가(치르는 값과 틀렸다는 신호 포함) · 왜 자격을 계산하지 않는가 |
-| **평가 결과** | [`eval/RESULTS.md`](eval/RESULTS.md) | 판별 결과의 분포, 오탐 장부, 정정 기록, 왕복의 총괄, 권고 측정 두 판과 그것이 바꾼 것 |
-| **평가 설계** | [`eval/README.md`](eval/README.md) · [권고 측정 설계](docs/superpowers/specs/2026-09-30-권고-측정.md) | 지표의 정의와 측정 지점, 지표 4를 사건으로 못 재는 이유, 답 전에 얼린 권고 사례와 기준선 |
+| **평가 결과** | [`eval/RESULTS.md`](eval/RESULTS.md) | 판별 결과의 분포, 오탐 장부, 정정 기록, 왕복의 총괄, 권고 측정 두 판과 그것이 바꾼 것, 권고 변동 열 판 |
+| **평가 설계** | [`eval/README.md`](eval/README.md) · [권고 측정 설계](docs/superpowers/specs/2026-09-30-권고-측정.md) · [권고 변동 설계](docs/superpowers/specs/2026-10-01-권고-변동.md) | 지표의 정의와 측정 지점, 지표 4를 사건으로 못 재는 이유, 답 전에 얼린 권고 사례와 기준선 |
 | **왕복 기록** | [`correspondence/`](correspondence/README.md) | 세 저장소와 나눈 편지 서른넷, 무엇이 나왔는가, 보내는 규율 |
 | **구현 계획서** | [`docs/superpowers/plans/`](docs/superpowers/plans/) | 계획서 열셋과 청크별 검토 결과, 계획이 놓친 것 |
 | **코퍼스 환류** | [`corpus/README.md`](corpus/README.md) | 설명 기록 내보내기의 모양, 적재 결과, 합성 표시 규칙 |
@@ -176,4 +189,4 @@ python -m corpus.export out/explanations.jsonl --out corpus/out --doc-type expla
 - **요청은 필요만, 모양은 상대가**: 형제 저장소에는 자체 완결된 요청으로 필요만 적고 구현 모양을 못박지 않으며, 나간 편지의 본문은 고치지 않고 후기만 답니다.
 - **비밀 격리**: 토큰 값은 `.secrets/`에만 두고 저장소 어디에도 적지 않습니다. 형제 저장소에는 해시만 전달합니다.
 
-> 마지막 갱신: 2026-10-01 · 시험 320 · 권고 측정 두 판 · 조치 자동 승인은 `koshei` 정책 v1 에서 꺼짐
+> 마지막 갱신: 2026-10-01 · 시험 326 · 권고 측정 두 판과 변동 열 판 · 조치 자동 승인은 `koshei` 정책 v1 에서 꺼짐

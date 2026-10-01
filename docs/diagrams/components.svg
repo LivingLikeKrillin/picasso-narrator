@@ -90,7 +90,7 @@
 
   <rect x="240" y="504" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
   <text x="324" y="528" font-size="12.5" fill="#1f2328" text-anchor="middle">recommend.py</text>
-  <text x="324" y="546" font-size="11" fill="#57606a" text-anchor="middle">진단과 같은 함수 · 판 둘</text>
+  <text x="324" y="546" font-size="11" fill="#57606a" text-anchor="middle">진단과 같은 함수 · 판 열둘</text>
 
   <rect x="432" y="504" width="168" height="58" rx="6" fill="#eaf3ea" stroke="#1a7f37"/>
   <text x="516" y="528" font-size="12.5" font-weight="600" fill="#1f2328" text-anchor="middle">recommend_score.py</text>
@@ -150,15 +150,15 @@
 
   <rect x="240" y="858" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
   <text x="324" y="882" font-size="12.5" fill="#1f2328" text-anchor="middle">scripts/hooks/</text>
-  <text x="324" y="900" font-size="11" fill="#57606a" text-anchor="middle">커밋 전 시험 320 · 메시지 규약</text>
+  <text x="324" y="900" font-size="11" fill="#57606a" text-anchor="middle">커밋 전 시험 326 · 메시지 규약</text>
 
   <rect x="432" y="858" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
   <text x="516" y="882" font-size="12.5" fill="#1f2328" text-anchor="middle">correspondence/</text>
-  <text x="516" y="900" font-size="11" fill="#57606a" text-anchor="middle">세 저장소와의 편지 서른넷</text>
+  <text x="516" y="900" font-size="11" fill="#57606a" text-anchor="middle">세 저장소와의 편지 서른여섯</text>
 
   <rect x="624" y="858" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
   <text x="708" y="882" font-size="12.5" fill="#1f2328" text-anchor="middle">adr/ · plans/ · specs/</text>
-  <text x="708" y="900" font-size="11" fill="#57606a" text-anchor="middle">결정 2 · 계획서 13 · 설계 2</text>
+  <text x="708" y="900" font-size="11" fill="#57606a" text-anchor="middle">결정 2 · 계획서 14 · 설계 3</text>
 
   <polyline points="132,858 132,664" fill="none" stroke="#9a6700" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#aw)"/>
   <text x="138" y="760" font-size="11" fill="#9a6700">변경 알림</text>
