@@ -1,4 +1,4 @@
-"""멱등의 열쇠 — `BOUNDARY.md` §3.4, §8."""
+"""멱등성 키 — `BOUNDARY.md` §3.4, §8."""
 
 import pytest
 
@@ -27,14 +27,14 @@ def test_실행_식별자가_없으면_조용히_넘어가지_않는다():
 
 def test_탐색_줄은_해시가_없어_식별자로_민다():
     """탐색 기록에는 `digest` 가 없다 — 번들과 달리 해시를 계산하지 않는다.
-    그래서 열쇠의 뒷자리가 `searchId` 다. 앞자리가 실행인 것은 같은 이유다."""
+    그래서 멱등성 키의 뒷자리가 `searchId` 다. 앞자리가 실행인 것은 같은 이유다."""
     record = {"searchId": "search-3", "outcome": "WITHHELD"}
 
     assert idempotency_key(record, manifest={"runId": "run-7"}) == ("run-7", "search-3")
 
 
 def test_열쇠로_쓸_것이_없으면_멈춘다():
-    """열쇠가 없는 줄을 그냥 넘기면 매 구동마다 다시 설명되거나 영영 안 된다.
+    """멱등성 키가 없는 줄을 그냥 넘기면 매 실행마다 다시 설명되거나 영영 안 된다.
     어느 쪽이든 조용하다."""
     with pytest.raises(NoIdentity):
         idempotency_key({"outcome": "NONE"}, manifest={"runId": "run-7"})

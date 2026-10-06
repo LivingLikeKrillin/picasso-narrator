@@ -10,26 +10,19 @@
 // Re-run it after editing a light SVG, or the dark variant silently goes stale.
 import { readFileSync, writeFileSync } from 'node:fs';
 
-// light token -> GitHub dark token. Keys are the arch-diagram design tokens plus the two
-// semantic accents this diagram adds (attention amber, danger red).
+// light token -> dark token. Keys are the eight engineering-diagram tokens (2026-10-05 redraw):
+// paper, ink, grey, hairline, governed, governed-tint, governed-text2, command. Governed is lifted
+// to a light blue on dark — #2b3f6b on a dark page is unreadable — so the inverted core box
+// becomes light blue with dark text (paper -> #1a1a1a) and its second line dark blue.
 const MAP = {
-  '#ffffff': '#0d1117',   // canvas
-  '#fbfcfd': '#161b22',   // lane fill
-  '#f6f8fa': '#1c2128',   // node fill
-  '#1f2328': '#c9d1d9',   // ink
-  '#57606a': '#8b949e',   // muted
-  '#8b95a1': '#8b949e',   // faint (zone headers)
-  '#d0d7de': '#30363d',   // border
-  '#e6e9ee': '#21262d',   // lane stroke
-  '#0969da': '#58a6ff',   // accent / control
-  '#ddf4ff': '#121d2f',   // accent fill
-  '#eef5ff': '#101a28',   // accent fill, faint (zone behind nodes)
-  '#cfe0f5': '#22334d',   // accent border, faint
-  '#1a7f37': '#3fb950',   // success
-  '#eaf3ea': '#0f2f1a',   // success fill
-  '#9a6700': '#d29922',   // attention
-  '#cf222e': '#f85149',   // danger
-  '#ffebe9': '#25171c',   // danger fill
+  '#ffffff': '#1a1a1a',   // paper (box fill, text on the inverted core)
+  '#262626': '#e6e6e6',   // ink
+  '#6f6f6f': '#9a9a9a',   // grey
+  '#bdbdbd': '#4a4a4a',   // hairline
+  '#2b3f6b': '#8fa3cc',   // governed
+  '#e8ebf3': '#232a3a',   // governed-tint
+  '#cfd6e6': '#2b3f6b',   // governed-text2 (second line on the inverted core)
+  '#b23a1d': '#d4654a',   // command
 };
 
 const src = process.argv[2];

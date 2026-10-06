@@ -1,16 +1,16 @@
-"""권고 측정기 — 설계서 `docs/superpowers/specs/2026-09-30-권고-측정.md` §6. **실물 khala 를 부른다.**
+"""권고 측정기 — 설계서 `docs/superpowers/specs/2026-09-30-권고-측정.md` §6. **실제 서비스 khala 를 부른다.**
 
-    NEXUS_TOKEN=… python -m eval.recommend                                   # 첫 판 → eval/last-recommendations.json
+    NEXUS_TOKEN=… python -m eval.recommend                                   # 첫 실행 → eval/last-recommendations.json
     NEXUS_TOKEN=… python -m eval.recommend --only R03,R11 --out eval/last-recommendations-rerun.json
     NEXUS_TOKEN=… python -m eval.recommend --pass repeat --only R01,R03 --out eval/last-recommendations-repeat.json
 
 진단 워커와 **같은 함수**(`diagnose.core.run_diagnosis`)를 부른다(계약 §7 「같은 길」). 저장소를 모르는 함수라 첫 결과
 저장소에 걸리지 않는다. khala 클라이언트는 워커와 같은 인자이고 빼는 종류에 과거 사례(`case`)만 더한다(계약 §7).
 
-**얼릴 것이 커밋되지 않았거나 고쳐진 트리에서는 돌지 않는다**(설계서 §0) — 기록의 `env` 에 적은 객체 해시가 곧 이 판을 잰
+**고정할 것이 커밋되지 않았거나 고쳐진 트리에서는 돌지 않는다**(설계서 §0) — 기록의 `env` 에 적은 객체 해시가 곧 이 실행을 잰
 규칙이다. **먼저 다 본다** — khala 를 부르기 전에 사례 전부를 읽고 짓는다. 하나라도 안 되면 아무것도 안 부른다. **멈춰도
-기록은 남긴다** — 사례마다 기록을 통째로 다시 쓰고 `complete` 는 판 끝에서만 참이다. **있는 기록을 덮지 않는다** — 다시
-돌기는 다른 파일에 쓰고 재채점이 합친다(`--force` 로만 덮는다).
+기록은 남긴다** — 사례마다 기록을 통째로 다시 쓰고 `complete` 는 실행 끝에서만 참이다. **있는 기록을 덮지 않는다** — 다시
+돌기는 다른 파일에 쓰고 재평가가 합친다(`--force` 로만 덮는다).
 """
 
 import argparse
@@ -44,7 +44,7 @@ ABORT_ON = ("quota", "auth")
 #: 잇달아 이만큼 실패하면 멈춘다(설명 측정과 같다).
 ABORT_AFTER = 2
 FROZEN = ("eval/goldenset-recommend.json", "eval/recommend-requests", "eval/recommend_score.py", "eval/recommend.py")
-#: ⚠ 윈도에서는 누가 기록을 열어 둔 동안(재채점으로 엿보기 · 백신 검사) 이름 바꾸기가 `PermissionError` 로 막힌다 — 이만큼
+#: ⚠ 윈도에서는 누가 기록을 열어 둔 동안(재평가로 엿보기 · 백신 검사) 이름 바꾸기가 `PermissionError` 로 막힌다 — 이만큼
 #: 쉬며 이만큼 다시 해 본다.
 WRITE_PAUSE, WRITE_TRIES = 0.5, 20
 
@@ -118,7 +118,7 @@ def environment(doc, pass_name, only, base):
 def attempt(prep, client, commit, clock=time.time, timer=time.monotonic):
     """한 번. `(시도 기록, Diagnosis 또는 None, 실패 사유 또는 None)`.
 
-    생성 실패 밖의 예외도 사유(`exception:<종류>`, 재시도 안 함)로 적고 판을 잇는다 — 몇 시간짜리 판이 사례 하나의 뜻밖의
+    생성 실패 밖의 예외도 사유(`exception:<종류>`, 재시도 안 함)로 적고 실행을 잇는다 — 몇 시간짜리 실행이 사례 하나의 뜻밖의
     예외로 죽지 않게. 끊기(`KeyboardInterrupt`)는 잡지 않는다 — 그때까지의 기록은 이미 파일에 있다.
     """
     started, t0 = clock(), timer()
@@ -126,7 +126,7 @@ def attempt(prep, client, commit, clock=time.time, timer=time.monotonic):
         diagnosis = run_diagnosis(prep["request"], client, commit)
     except DiagnoseFailed as failed:
         return {"at": started, "elapsed": round(timer() - t0, 1), "reason": failed.reason}, None, failed.reason
-    except Exception as error:  # noqa: BLE001 — 판을 잇는다. 무엇이었는지는 기록에 남긴다
+    except Exception as error:  # noqa: BLE001 — 실행을 잇는다. 무엇이었는지는 기록에 남긴다
         reason = f"exception:{type(error).__name__}"
         return ({"at": started, "elapsed": round(timer() - t0, 1), "reason": reason, "detail": str(error)[:500]},
                 None, reason)
@@ -152,7 +152,7 @@ def row_of(prep, attempts, diagnosis, reason):
 
 
 def run_case(prep, client, commit, attempts=None, rerun=False, budget=MAX_ATTEMPTS, **clocks):
-    """사례 하나를 재시도까지. 재시도할 사유면 한 번 더([MAX_ATTEMPTS]). 시도는 다 적는다. 판 끝에서 다시 도는 시도는
+    """사례 하나를 재시도까지. 재시도할 사유면 한 번 더([MAX_ATTEMPTS]). 시도는 다 적는다. 실행 끝에서 다시 도는 시도는
     koshei 의 `maxAttempts` 밖이라 `rerun` 으로 표시하고 한 번만 한다(`budget=1`)."""
     attempts = list(attempts or [])
     while True:
@@ -187,7 +187,7 @@ def stop(row, straight):
 
 
 def measure(prepared, client, commit, env, out, **clocks):
-    """판 하나. 사례 차례대로, 멈춤 규칙과 끝의 다시 돌기(사례마다 한 번, 같은 멈춤 규칙)까지. `(rows, complete)`."""
+    """실행 하나. 사례 차례대로, 멈춤 규칙과 끝의 다시 돌기(사례마다 한 번, 같은 멈춤 규칙)까지. `(rows, complete)`."""
     rows, straight = [], 0
     for prep in prepared:
         row = run_case(prep, client, commit, **clocks)
@@ -219,7 +219,7 @@ def measure(prepared, client, commit, env, out, **clocks):
 
 
 def client_for(base, token, transport=http_transport):
-    """`client(answer_context)` — 워커와 같은 인자(테넌트 · `top_k` · 식별자 채널 · 자료 칸)에 빼는 종류만 [EXCLUDE]."""
+    """`client(answer_context)` — 워커와 같은 인자(테넌트 · `top_k` · 식별자 채널 · 답변 컨텍스트)에 빼는 종류만 [EXCLUDE]."""
 
     def client(answer_context):
         return nexus_client(base, token=token, tenant=TENANT, transport=transport, exclude_doc_types=EXCLUDE,

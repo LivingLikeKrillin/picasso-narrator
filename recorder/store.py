@@ -5,7 +5,7 @@
 참인지 판정할 방법이 없다. **적힌 것이 곧 처리한 것이다.**
 
 형식은 picasso 의 적재면과 같은 모양이다 — 줄 단위 JSON. 덧붙이기가 줄 추가로
-그대로 옮겨지기 때문이고, 한 벌 스냅샷이 아니라 시간에 걸쳐 쌓이는 것이라
+그대로 옮겨지기 때문이고, 번들 스냅샷이 아니라 시간에 걸쳐 쌓이는 것이라
 `manifest` 는 두지 않는다.
 """
 
@@ -16,7 +16,7 @@ from recorder.record import Record
 
 
 class AlreadyRecorded(Exception):
-    """같은 열쇠에 두 번째 설명을 적으려 했다.
+    """같은 멱등성 키에 두 번째 설명을 적으려 했다.
 
     **사건당 설명은 한 건이다.** 커서가 이미 막고 있으므로 여기까지 온 것은 결함이고,
     조용히 덮으면 그 결함이 안 보인다.
@@ -46,11 +46,11 @@ class RecordStore:
         return [_decode(json.loads(l)) for l in raw.splitlines() if l.strip()]
 
     def seen(self):
-        """처리한 열쇠. 이것이 수신기의 `seen` 이 된다(`BOUNDARY.md` §3.4)."""
+        """처리한 멱등성 키. 이것이 수신기의 `seen` 이 된다(`BOUNDARY.md` §3.4)."""
         return {r.key for r in self.load()}
 
     def subjects(self):
-        """이 층이 본 사건의 주체. 재발을 셀 이력이다(`receiver/history.py`)."""
+        """이 계층이 본 사건의 주체. 재발을 셀 이력이다(`receiver/history.py`)."""
         return [r.subject for r in self.load() if r.subject]
 
 

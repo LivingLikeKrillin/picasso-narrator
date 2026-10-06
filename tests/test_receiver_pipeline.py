@@ -1,4 +1,4 @@
-"""한 벌을 설명으로 옮긴다 — `BOUNDARY.md` §1.5, §3.4."""
+"""번들을 설명으로 옮긴다 — `BOUNDARY.md` §1.5, §3.4."""
 
 from receiver.pipeline import explain
 from receiver.scan import scan
@@ -21,8 +21,8 @@ def _answers(citations=1):
 
 
 def test_두_줄기를_모두_설명한다(export_dir):
-    """**사건만 설명하고 탐색 줄을 버리지 않는다.** 「대안 없음」과 「가려졌다」는
-    탐색 줄에만 있고, 그 둘이 P2 가 보이려는 것이다."""
+    """**사건만 설명하고 조치 탐색 기록을 버리지 않는다.** 「대안 없음」과 「가려졌다」는
+    조치 탐색 기록에만 있고, 그 둘이 P2 가 보이려는 것이다."""
     batch = scan(export_dir("run-1"), seen=set())
 
     records = explain(batch, search=_answers(), limit=3)
@@ -50,8 +50,8 @@ def test_설명이_통째로_죽어도_한_벌이_다_처리된다(export_dir):
 
 
 def test_검색에는_문장이_간다(export_dir):
-    """소비 표면의 `query` 는 문자열이다. 사실 묶음을 그대로 넘기면 실물에서만
-    깨지고, 가짜를 쓰는 시험은 초록으로 남는다."""
+    """소비 API 표면의 `query` 는 문자열이다. 사실 묶음을 그대로 넘기면 실제 서비스에서만
+    깨지고, 가짜를 쓰는 테스트는 통과로 남는다."""
     sent = []
 
     def search(query):
@@ -87,7 +87,7 @@ def test_일시적_실패만_다시_해본다(export_dir):
 
 
 def test_사유를_기록에_남긴다(export_dir):
-    """「안 끝났다」와 「키가 없다」는 다음 행동이 다르다. 기록이 그걸 들어야
+    """「안 끝났다」와 「키가 없다」는 후속 조치가 다르다. 기록이 그걸 들어야
     운영자가 다시 누를지 사람을 부를지 안다."""
     def slow(query):
         return 200, {
@@ -102,7 +102,7 @@ def test_사유를_기록에_남긴다(export_dir):
 
 
 def test_재발_횟수가_질의에_실린다(export_dir):
-    """저장소가 본 것과 이 한 벌의 것을 합쳐 센다. incident-1 은 hum-02 PAYLOAD_LOST 다."""
+    """저장소가 본 것과 이 번들의 것을 합쳐 센다. incident-1 은 hum-02 PAYLOAD_LOST 다."""
     sent = []
 
     def search(query):

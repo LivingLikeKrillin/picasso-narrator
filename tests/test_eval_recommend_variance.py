@@ -1,4 +1,4 @@
-"""권고 변동의 셈 — 설계서 `docs/superpowers/specs/2026-10-01-권고-변동.md` §2. 가짜 줄로."""
+"""권고 변동의 평가 도구 — 설계서 `docs/superpowers/specs/2026-10-01-권고-변동.md` §2. 가짜 줄로."""
 
 import pytest
 

@@ -41,8 +41,8 @@ def row(cid, *, outcome="RECOMMENDED", raw="ESCALATE", resolved="ESCALATE", answ
 
 
 def test_느슨한_탐지는_꾸민_표지를_잡고_문장은_안_잡는다():
-    """⛔ **첫 실물 진단에서 모델이 표지 줄을 「## 권고: ESCALATE」로 꾸몄다 (2026-09-30).** 꾸밈을 종류로 가른다 — 파서가
-    받는 꾸밈(#, 굵게, 글머리표)은 답하는 법을 안 지킨 수이고, 파서가 거절하는 꾸밈은 후보 밖의 갈래 (ii) 다."""
+    """⛔ **첫 실제 서비스 진단에서 모델이 라벨 줄을 「## 권고: ESCALATE」로 꾸몄다 (2026-09-30).** 꾸밈을 종류로 가른다 — 파서가
+    받는 꾸밈(#, 굵게, 글머리표)은 답하는 법을 안 지킨 수이고, 파서가 거절하는 꾸밈은 후보 외 선택의 하위 범주 (ii) 다."""
     kinds = {line: s.decorations(line).get("권고") for line in
              ("권고: A", "## 권고: ESCALATE", "**권고**: B", "- 권고: A", "1. 권고: A", "> 권고: A", "### 권고",
               "## 권고 사항: A", "__권고__: A", "*권고*: A", "권고 - A")}
@@ -66,7 +66,7 @@ def test_후보_밖_갈래와_옛_파서():
 
 
 def test_UNCITED_원인_넷():
-    """⚠ 표지 줄의 꾸밈은 원인이 될 수 없다 — 판정 3 은 표지를 보기 전에 인용만 본다(설계서 §3.5)."""
+    """⚠ 라벨 줄의 꾸밈은 원인이 될 수 없다 — 판정 3 은 라벨을 보기 전에 인용만 본다(설계서 §3.5)."""
     bare = row("R04", outcome="UNCITED", citations=[], answer="권고: ESCALATE\n이유: 없다")
     assert s.uncited_cause(bare) == "a"
     assert s.uncited_cause(row("R04", outcome="UNCITED", citations=[], answer="이유: (출처: SOP-03)")) == "b"
@@ -78,12 +78,16 @@ def test_UNCITED_원인_넷():
 
 
 def test_맨_정수는_미리_박은_제외_뒤에_센다():
-    """⛔ **「지어낸 수」가 실은 인용 절 번호였다**(함정 3) — 근거 등급 · 절 번호 · 식별자 · 날짜를 먼저 지운다. 걸린 조각을
+    """⛔ **「지어낸 수」가 실은 인용 절 번호였다**(오류 유형 3) — 근거 등급 · 절 번호 · 식별자 · 날짜를 먼저 지운다. 걸린 조각을
     다 돌려줘 사람이 연다."""
     assert s.bare_integers("E2 근거로 1회, [출처: SOP-01, §5.1] exec-8 은 최대 2.") == ["1", "2"]
     assert s.bare_integers("RACK-204.S06 은 §5.1 ② 대로 5절 2항, 2026-09-06T00:00:04Z 에 X_FIXTURE_E9001") == []
     assert s.bare_integers("③ 확인 뒤 3 번째 시도") == ["3", "③"]
     assert s.bare_integers(None) == []
+    # ⛔ 두 실행에서 난 헛잡음(설계서 §3.7, 2026-10-01) — 토씨가 붙은 근거 등급과 장 · 단계 · 스키마 번호는 다음 실행부터 지운다
+    assert s.bare_integers("사실의 reachedEvidence 가 E0로 requiredEvidence 인 E2에 못 미치고 E0가 보고됐다") == []
+    assert s.bare_integers("SOP-01 5장의 절차 1단계는 스키마 5 를 따른다") == []
+    assert s.bare_integers("5 장비 가운데 3단계") == ["5"], "장비의 「장」은 장 번호가 아니다"
 
 
 def test_판독_대리값과_뺀_조치를_가리키는_말():
@@ -120,7 +124,7 @@ def test_늘_ESCALATE_는_기대를_다_채우고_금지는_0():
 
 
 def test_금지는_표지와_효과로_따로_센다():
-    """표지로 골랐어도 인용 없음으로 끝나면 사람에게 간다 — 해가 나는 것은 효과 쪽이다(설계서 §3.3)."""
+    """라벨로 골랐어도 인용 없음으로 끝나면 사람에게 간다 — 해가 나는 것은 효과 쪽이다(설계서 §3.3)."""
     rows = all_escalate()
     ar = "APPROVE_REMEDY:hum-02:PATROL-1:pick_place"
     rows[0] = row("R01", outcome="UNCITED", raw="A", resolved=ar, citations=[], rationale="없다.")
@@ -131,8 +135,8 @@ def test_금지는_표지와_효과로_따로_센다():
 
 
 def test_판독은_목록에_있는_후보를_다_읽었을_때만_센다():
-    """덜 읽은 판독을 「아니다」로 세면 판독이 자동 값보다 낮게 거짓말한다 — 그때는 판독 전이다. 판독에서 받는 후보는 그
-    사례의 판독 목록에 있는 것뿐이다 — 금지 후보를 판독으로 받으면 채점 규칙을 답 뒤에 넓힌 것이 된다(함정 1)."""
+    """덜 읽은 인간 평가를 「아니다」로 세면 인간 평가가 자동 값보다 낮게 거짓말한다 — 그때는 인간 평가 전이다. 인간 평가에서 받는 후보는 그
+    사례의 인간 평가 목록에 있는 것뿐이다 — 금지 후보를 인간 평가로 받으면 채점 규칙을 답 뒤에 넓힌 것이 된다(오류 유형 1)."""
     rows = all_escalate()
     cd = "OPERATOR_DECISION:exec-4:RACK-204.S03:CONFIRM_DONE"
     i = next(i for i, r in enumerate(rows) if r["id"] == "R11")
@@ -159,7 +163,7 @@ def test_분모가_0_이면_짝으로_적고_판독_전은_따로_적는다():
 
 
 def test_판_칸이_두_벌이면_머리_수치가_아니다():
-    """반쪽끼리는 사례 구성이 달라 비율을 견줄 수 없다(설계서 §6). 모델에게 가는 글이 같은 프롬프트 판은 한 무리다."""
+    """반쪽끼리는 사례 구성이 달라 비율을 견줄 수 없다(설계서 §6). 모델에게 가는 글이 같은 프롬프트 버전은 한 무리다."""
     rows = all_escalate()
     rows[3] = row(rows[3]["id"], versions=dict(VERSIONS, corpusVersion="aaaaaaaaaaaa"))
     report = s.score(_doc(), rows)
@@ -171,6 +175,16 @@ def test_판_칸이_두_벌이면_머리_수치가_아니다():
     assert split["headline"] is False and split["versions"][0]["cases"] == ["R04"], "다시 돌 사례를 무리마다 적는다"
     unknown = s.score(_doc(), [row(c["id"], versions=dict(VERSIONS, corpusVersion=None)) for c in _doc()["cases"]])
     assert unknown["headline"] is False, "모르는 판(None)은 같다고 못 한다"
+    # ⛔ 버전 필드 규칙은 검색이 온전했나를 못 본다(설계서 §6, 2026-10-01) — 검색 부분 실패 줄도 버전 필드가 갈린 줄처럼 한 번 다시 돈다
+    rows = all_escalate()
+    rows[0]["diagnostics"].update(degraded=["vector"], enrichment_failed=[])
+    broken = s.score(_doc(), rows)
+    assert broken["headline"] is False and broken["searchBroken"] == ["R01"], "다시 돌 사례"
+    rows[0]["diagnostics"].update(degraded=[], enrichment_failed=["section_fill"])
+    assert s.score(_doc(), rows)["searchBroken"] == ["R01"]
+    rows[0]["diagnostics"].update(enrichment_failed=[])
+    assert s.score(_doc(), rows)["headline"] is True
+    assert s.score(_doc(), all_escalate())["searchBroken"] == [], "칸이 없는 줄(모름)은 막지 않는다 — 칸이 생기기 전의 기록이다"
 
 
 def test_합치기는_사례_파일이_같을_때만():
@@ -183,8 +197,8 @@ def test_합치기는_사례_파일이_같을_때만():
 
 
 def test_사례_파일이_바뀌면_다시_세지_않고_다른_기록의_판독은_안_쓴다(tmp_path, capsys, monkeypatch):
-    """재채점은 기록 때의 사례 파일로만 한다(설계서 §0). `--allow-drift` 로 켜면 결과 머리에 적는다. 판독 파일은 같은 사례
-    판과 같은 기록들의 것일 때만 쓴다 — 둘째 판을 첫 판의 판독으로 세지 않는다(설계서 §5)."""
+    """재평가는 기록 때의 사례 파일로만 한다(설계서 §0). `--allow-drift` 로 켜면 결과 머리에 적는다. 인간 평가 파일은 같은 사례
+    버전과 같은 기록들의 것일 때만 쓴다 — 둘째 실행을 첫 실행의 인간 평가로 세지 않는다(설계서 §5)."""
     monkeypatch.setattr(s, "READINGS", tmp_path / "readings.json")
     record = tmp_path / "record.json"
     record.write_text(json.dumps({"env": {"cases": {"scoringHash": "기록 때의 것"}, "at": "t1"}, "complete": True,

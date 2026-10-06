@@ -1,7 +1,7 @@
-"""권고 변동의 셈 — 설계서 `docs/superpowers/specs/2026-10-01-권고-변동.md` §2.
+"""권고 변동의 평가 도구 — 설계서 `docs/superpowers/specs/2026-10-01-권고-변동.md` §2.
 
 **순수 함수다.** 측정기 기록 여럿(`{env, complete, rows}`)과 사례 파일만으로 센다. 채점기의 `merge` 는 쓰지 않는다 — 사례마다
-마지막 줄만 남겨 반복을 접는다. 비율은 `(k, n)` 짝이고, 곁에 정확한 양쪽 95% 구간(Clopper-Pearson)을 보조로 낸다.
+마지막 줄만 남겨 반복을 접는다. 비율은 `(k, n)` 쌍이고, 곁에 정확한 양쪽 95% 구간(Clopper-Pearson)을 보조로 낸다.
 
     python -m eval.recommend_variance eval/variance/var-*.json
 """
@@ -19,7 +19,7 @@ SPEC = "docs/superpowers/specs/2026-10-01-권고-변동.md"
 SELF = "eval/recommend_variance.py"
 APPROVE = "APPROVE_REMEDY"
 
-#: 코퍼스의 절차 문서 일곱 — 사례 불변식 시험(`tests/test_eval_recommend_cases.py`)의 목록과 같다.
+#: 코퍼스의 절차 문서 일곱 — 사례 불변식 테스트(`tests/test_eval_recommend_cases.py`)의 목록과 같다.
 PROCEDURE_TITLES = (
     "SOP-01 파지 실패와 잔여 파지 처리", "SOP-02 안착 실패와 품번 불일치", "SOP-03 자재 결품과 대체 슬롯 운용",
     "SOP-04 이동 경로 차단 대응", "SOP-05 자기 위치 상실 복구", "SOP-06 제어권 상실과 명령 덮어쓰기",
@@ -28,13 +28,13 @@ PROCEDURE_TITLES = (
 
 
 def kind_of(row):
-    """풀린 표지의 후보 종류. 풀리지 않았으면 `None`."""
+    """풀린 라벨의 후보 종류. 풀리지 않았으면 `None`."""
     return row["kinds"].get(row["resolved"]) if row["resolved"] is not None else None
 
 
 def search_state(row):
-    """검색 고장 칸 둘(`degraded` · `enrichment_failed`)로 `broken` · `unknown` · `intact`. 하나라도 빈 목록이 아니면 고장이고,
-    고장이 아닌데 하나라도 `None` 이면 모름이다 — 칸이 없던 판의 줄은 온전하다고 못 한다."""
+    """검색 부분 실패 칸 둘(`degraded` · `enrichment_failed`)로 `broken` · `unknown` · `intact`. 하나라도 빈 목록이 아니면 고장이고,
+    고장이 아닌데 하나라도 `None` 이면 모름이다 — 칸이 없던 실행의 줄은 온전하다고 못 한다."""
     diagnostics = row.get("diagnostics") or {}
     values = [diagnostics.get("degraded"), diagnostics.get("enrichment_failed")]
     if any(isinstance(v, list) and v for v in values):
@@ -127,10 +127,10 @@ def _measure(case, rows):
 
 
 def tally(doc, records):
-    """기록 여럿 → 입력마다의 수(설계서 §2). 사례 판이 다른 기록은 안 센다.
+    """기록 여럿 → 입력마다의 수(설계서 §2). 사례 버전이 다른 기록은 안 센다.
 
-    한 입력의 답한 줄이 같은 입력의 칸 여섯과 판 칸 넷으로 둘 이상의 갈래면 `parts` 에 갈래마다 따로 센다 — 설계서 §2
-    「갈리면 무리마다 적고 합치지 않는다」. 그때 그 입력의 `all` · `intact` 는 합친 값이라 머리 수치가 아니다."""
+    한 입력의 답한 줄이 같은 입력의 칸 여섯과 버전 필드 넷으로 둘 이상의 하위 범주면 `parts` 에 하위 범주마다 따로 센다 — 설계서 §2
+    「갈리면 무리마다 적고 합치지 않는다」. 그때 그 입력의 `all` · `intact` 는 합친 값이라 대표 지표가 아니다."""
     now = scoring_hash(doc)
     cases = {c["id"]: c for c in doc["cases"]}
     order = list(cases)
@@ -211,7 +211,7 @@ def report_lines(out):
 
 
 def _ancestry_warnings(records):
-    """설계서와 셈을 마지막으로 고친 커밋이 기록마다의 `narratorCommit` 의 조상인가(설계서 §5) — 아니면 판 뒤에 고친 것이다."""
+    """설계서와 평가 도구를 마지막으로 고친 커밋이 기록마다의 `narratorCommit` 의 조상인가(설계서 §5) — 아니면 실행 뒤에 고친 것이다."""
     last = subprocess.run(["git", "log", "-1", "--format=%H", "--", SPEC, SELF], cwd=ROOT,
                           capture_output=True, text=True).stdout.strip()
     out = []

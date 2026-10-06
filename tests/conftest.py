@@ -1,6 +1,6 @@
-"""실물 응답 픽스처 — 2026-09-18 라이브 Nexus 에서 뜬 전문(`AGENT-05` 인계).
+"""실제 서비스 응답 픽스처 — 2026-09-18 라이브 Nexus 에서 뜬 전문(`AGENT-05` 인계).
 
-추측한 모양이 아니라 실제로 받은 것이라, 이 파일들이 소비 표면의 계약이다.
+추측한 모양이 아니라 실제로 받은 것이라, 이 파일들이 소비 API 표면의 계약이다.
 """
 
 import json
@@ -27,7 +27,7 @@ EXPORTS = pathlib.Path(__file__).parent / "fixtures" / "picasso"
 
 @pytest.fixture
 def export_dir():
-    """`export_dir("run-1")` -> picasso 가 실물로 낸 한 벌의 경로."""
+    """`export_dir("run-1")` -> picasso 가 실제 서비스로 낸 번들의 경로."""
     return lambda name: EXPORTS / name
 
 
@@ -54,7 +54,7 @@ SEARCH_1 = {
                "onFailureHold": "HOLD_KIND_HOLDING"}],
 }
 
-#: 권고 예제의 후보 둘. 식별자는 계약 §3.1 의 재료 순서(기체 · 주문 · 조치 열).
+#: 권고 예제의 후보 둘. 식별자는 계약 §3.1 의 재료 순서(로봇 · 주문 · 조치 열).
 APPROVE = {
     "candidateId": "APPROVE_REMEDY:hum-02:PATROL-1:pick_place", "kind": "APPROVE_REMEDY",
     "ref": {"robotId": "hum-02", "jobOrderId": "PATROL-1", "searchId": "search-1"},
@@ -67,7 +67,7 @@ ESCALATE_CANDIDATE = {"candidateId": "ESCALATE", "kind": "ESCALATE", "ref": None
 def diagnose_request():
     """`diagnose_request(**칸)` -> 진단 계약 0.6 요청 하나(권고 예제 모양). 칸을 넘기면 덮는다.
 
-    후보 판(`candidatesVersion`)은 koshei 만 계산한다 — 여기 값은 모양만 맞춘 가짜다.
+    후보 버전(`candidatesVersion`)은 koshei 만 계산한다 — 여기 값은 모양만 맞춘 가짜다.
     """
 
     def build(**over):
@@ -88,7 +88,7 @@ def diagnose_request():
     return build
 
 
-#: 권고 A 를 고른 답. 머리 두 줄 · 다섯 표지 · 구분선 · 본문.
+#: 권고 A 를 고른 답. 헤더 두 줄 · 다섯 라벨 · 구분선 · 본문.
 ANSWER_A = (
     "권고: A\n"
     "이유: 탐색이 찾은 조치의 전제가 관측과 맞는다 [출처: SOP-02 안착 실패와 품번 불일치, §3].\n"

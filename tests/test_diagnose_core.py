@@ -41,7 +41,7 @@ def _khala(data, hold=None, on_call=None):
 
 
 def _holder(store):
-    """지금 열쇠를 쥔 쪽 — 시험만 쓰는 엿보기."""
+    """지금 멱등성 키를 쥔 쪽 — 테스트만 쓰는 엿보기."""
     with contextlib.closing(sqlite3.connect(store.path)) as db:
         return db.execute("SELECT owner FROM first_result").fetchone()[0]
 
@@ -62,9 +62,9 @@ class _Gate:
 
 
 def test_권고_한_번(tmp_path, export_dir, diagnose_request, khala_data):
-    """질의는 설명 경로의 조립 그대로(사건 첫째 + 탐색 첫째, 재발 수 없음), 자료 칸은 따로 간다.
+    """질의는 설명 경로의 조립 그대로(사건 첫째 + 탐색 첫째, 재발 횟수 없음), 답변 컨텍스트는 따로 간다.
     khala 는 한 번, 동시 한도의 문 안에서만 불린다. 응답의 칸은 계약 §4 의 순서 그대로다.
-    판 칸의 빈 글자 · 공백만인 글자 · 글자가 아닌 값은 모름이라 `null` 로 옮긴다(koshei 는 판 칸이 `null` 이거나
+    버전 필드의 빈 글자 · 공백만인 글자 · 글자가 아닌 값은 모름이라 `null` 로 옮긴다(koshei 는 버전 필드가 `null` 이거나
     공백만이 아닌 글자이기를 본다)."""
     export = read_export(export_dir("run-1"))
     incident = next(b for b in export.incidents if b["incidentId"] == "incident-1")
@@ -103,7 +103,7 @@ def test_권고_한_번(tmp_path, export_dir, diagnose_request, khala_data):
 
 
 def test_같은_열쇠의_두번째_요청은_khala_를_부르지_않는다(tmp_path, diagnose_request, khala_data):
-    """판 칸은 「배포 없이 판단이 안 바뀐다」를 보증하지 못한다 — 막는 것은 첫 결과 저장소다."""
+    """버전 필드는 「배포 없이 판단이 안 바뀐다」를 보증하지 못한다 — 막는 것은 결과 캐시다."""
     store = FirstResultStore(tmp_path / "f.sqlite3")
     client, sent = _khala(khala_data())
 
@@ -115,7 +115,7 @@ def test_같은_열쇠의_두번째_요청은_khala_를_부르지_않는다(tmp_
 
 
 def test_남이_묻는_중이면_기다렸다_그_결과를_받는다(tmp_path, diagnose_request, khala_data):
-    """같은 열쇠가 동시에 두 번 오면 먼저 잡은 쪽만 khala 를 부른다. 기다리는 동안에도 하트비트를 보낸다."""
+    """같은 멱등성 키가 동시에 두 번 오면 먼저 잡은 쪽만 khala 를 부른다. 기다리는 동안에도 하트비트를 보낸다."""
     store = FirstResultStore(tmp_path / "f.sqlite3")
     store.claim(KEY, "other", now=0.0)
     theirs = {"outcome": "UNCITED"}
@@ -134,7 +134,7 @@ def test_남이_묻는_중이면_기다렸다_그_결과를_받는다(tmp_path, 
 
 def test_문이_안_열리면_브리지_혼잡으로_재시도할_예외다(tmp_path, diagnose_request, khala_data):
     """**문을 기다리는 것도 StartToClose 안이다.** 사슬(420 → 450 → 510 → 540)은 khala 호출이 곧바로 시작된다고
-    잡았으므로, 문 앞에서 오래 서면 시도가 기한을 넘겨 버려지고 그 시도가 또 문을 쥔 곁 스레드가 된다(koshei 지적).
+    잡았으므로, 문 앞에서 오래 서면 시도가 기한을 넘겨 버려지고 그 시도가 또 문을 쥔 백그라운드 스레드가 된다(koshei 지적).
     그래서 [GATE_WAIT] 초만 기다리고, 넘으면 브리지 혼잡(`unavailable`)으로 돌려 기다림을 Temporal 큐
     (ScheduleToClose)로 넘긴다. khala 는 안 불리고 잡은 것은 놓는다."""
     store = FirstResultStore(tmp_path / "f.sqlite3")
@@ -164,9 +164,9 @@ def test_생성_실패는_잡은_것을_놓고_예외로_올린다(tmp_path, dia
 
 
 def test_취소돼도_잡은_것을_놓지_않고_곁_스레드가_끝낸다(tmp_path, diagnose_request, khala_data):
-    """**같은 열쇠에 khala 는 한 번이다**(계약 §6). 취소는 대개 Temporal 이 이미 시간을 넘긴 시도를 버리고
-    다시 보낼 때 온다. 그때 잡은 것을 놓으면 다시 온 요청이 khala 를 또 부르고, 버려진 곁 스레드는 여전히
-    브리지 자리를 문다. 그래서 놓지 않는다 — 곁 스레드가 끝내 결과를 적고, 그동안 임대를 붙든다."""
+    """**같은 멱등성 키에 khala 는 한 번이다**(계약 §6). 취소는 대개 Temporal 이 이미 시간을 넘긴 시도를 버리고
+    다시 보낼 때 온다. 그때 잡은 것을 놓으면 다시 온 요청이 khala 를 또 부르고, 버려진 백그라운드 스레드는 여전히
+    브리지 자리를 문다. 그래서 놓지 않는다 — 백그라운드 스레드가 끝내 결과를 적고, 그동안 임대를 붙든다."""
     store = FirstResultStore(tmp_path / "f.sqlite3", lease=0.3)
     generating = threading.Event()
     client, sent = _khala(khala_data(), hold=generating)
@@ -218,7 +218,7 @@ def test_기다리다_잡은_시도는_늦었거나_취소됐으면_khala_를_�
 
 
 def test_사건_줄이_없으면_탐색_줄_그_자체로_묻는다(tmp_path, export_dir, diagnose_request, khala_data):
-    """근거 없음 · 후보 밖 예제의 모양 — 에피소드를 연 것이 탐색 줄이다(계약 §3 「질의의 주체」)."""
+    """근거 없음 · 후보 외 선택 예제의 모양 — 에피소드를 연 것이 조치 탐색 기록이다(계약 §3 「질의의 주체」)."""
     export = read_export(export_dir("run-1"))
     search = next(s for s in export.searches if s["searchId"] == "search-4")
     payload = diagnose_request(snapshot={"manifest": export.manifest, "incidents": [],

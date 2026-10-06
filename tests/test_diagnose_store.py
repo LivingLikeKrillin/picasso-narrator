@@ -1,4 +1,4 @@
-"""첫 결과 저장소 — 계약 0.6 §6. 같은 열쇠의 두 번째 요청에는 첫 결과를 돌려준다."""
+"""결과 캐시 — 계약 0.6 §6. 같은 멱등성 키의 두 번째 요청에는 첫 결과를 돌려준다."""
 
 from diagnose.store import LEASE, Busy, Claimed, Done, FirstResultStore
 
@@ -8,7 +8,7 @@ SECOND = {"outcome": "UNCITED", "candidateId": None}
 
 
 def test_처음_온_열쇠는_잡는다(tmp_path):
-    """임대는 koshei 의 하트비트 기한(30 초)과 같다 — 잡은 채 죽은 워커의 열쇠를, 그 죽음을 알아챈 Temporal 이
+    """임대는 koshei 의 하트비트 기한(30 초)과 같다 — 잡은 채 죽은 워커의 멱등성 키를, 그 죽음을 알아챈 Temporal 이
     다시 보낸 시도가 곧바로 넘겨받게."""
     store = FirstResultStore(tmp_path / "first.sqlite3")
 
@@ -37,7 +37,7 @@ def test_잡힌_열쇠는_다른_쪽을_기다리게_한다(tmp_path):
 
 def test_임대가_지나면_넘겨받는다(tmp_path):
     """**잡은 것은 임대다.** 잡은 쪽이 임대 안에 알리지 않으면 다른 쪽이 넘겨받는다 — 잡은 채 죽은
-    워커가 열쇠를 영영 막지 않게. 알리면(`touch`) 임대가 늘어난다."""
+    워커가 멱등성 키를 영영 막지 않게. 알리면(`touch`) 임대가 늘어난다."""
     store = FirstResultStore(tmp_path / "first.sqlite3", lease=60.0)
     store.claim(KEY, "w1", now=100.0)
 

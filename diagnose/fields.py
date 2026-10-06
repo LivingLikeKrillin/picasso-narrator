@@ -1,6 +1,6 @@
 """글 칸 둘 — 인용 없는 문장과 확인 못 한 주장(진단 계약 0.6 §4).
 
-**이 층이 결정적으로 센다.** khala 에 새 검사를 요구하지 않는다. 인용 검증기는 「인용한 제목이 꾸러미에
+**이 계층이 결정적으로 센다.** khala 에 새 검사를 요구하지 않는다. 인용 검증기는 「인용한 제목이 꾸러미에
 있었나」만 보고 인용이 안 붙은 문장은 누구도 안 센다 — 그래서 여기서 센다.
 
 **두 목록은 `None` 이 아니다.** koshei 의 자동 승인 조건(`requireClean`)이 「비었다」를 기준으로 삼으므로
@@ -42,7 +42,7 @@ def unverified_claims(citations, diagnostics):
     """`[{kind, text, foundIn}]`. 비었으면 `[]`.
 
     `CITATION` — `verified` 가 참이 아닌 인용. `NUMBER` — khala 숫자 항목 가운데, `found_in` 이 있으면
-    근거(`evidence`)도 자료 칸(`context`)도 없는 것, 없으면 `grounded` 가 참이 아닌 것. 숫자 항목이 없는
+    근거(`evidence`)도 답변 컨텍스트(`context`)도 없는 것, 없으면 `grounded` 가 참이 아닌 것. 숫자 항목이 없는
     응답(옛 응답, 또는 기록기가 모르는 모양이라 `None` 으로 둔 것)은 `unverified_numbers` 개수만큼 `text` 가
     `None` 인 항목.
     """

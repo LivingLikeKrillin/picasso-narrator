@@ -40,9 +40,9 @@ def test_검증_안_된_인용은_CITATION_이다():
 
 
 def test_숫자는_찾은_곳이_있으면_그것으로_없으면_grounded_로():
-    """`found_in` 이 붙은 뒤에는 근거도 자료 칸도 아닌 수만 — `[]`(어디에도 없음)과 `["query"]`(질의에만
+    """`found_in` 이 붙은 뒤에는 근거도 답변 컨텍스트도 아닌 수만 — `[]`(어디에도 없음)과 `["query"]`(질의에만
     있음). 그 전에는 `grounded` 가 거짓인 수. ⛔ khala 결함 — 숫자 뒤 문장부호 쉼표가 `value` 에 붙는다
-    (회신 16). 판정은 맞고 표시만 틀려 이 층이 끝의 쉼표를 뗀다."""
+    (회신 16). 판정은 맞고 표시만 틀려 이 계층이 끝의 쉼표를 뗀다."""
     before = {"numbers": [{"value": "30", "grounded": True}, {"value": "15,", "grounded": False},
                           {"value": "99"}]}
     after = {"numbers": [

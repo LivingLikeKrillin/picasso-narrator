@@ -1,4 +1,4 @@
-"""이 층이 본 사건 안에서의 재발 — `BOUNDARY.md` §4 「사건 이력」."""
+"""이 계층이 본 사건 안에서의 재발 — `BOUNDARY.md` §4 「사건 이력」."""
 
 from receiver.export import read_export
 from receiver.history import count_recurrence, subject
@@ -46,8 +46,8 @@ def test_다른_분류는_세지_않는다():
 
 
 def test_실물_두_벌에는_재발이_없다(export_dir):
-    """⛔ **픽스처 두 벌에는 같은 기체·같은 분류가 없다**(2026-09-20 실측). 두 벌은
-    digest 까지 같아 재실행이다. 그래서 이 시험은 0 을 확인하고, 재발이 있는 시나리오는
+    """⛔ **픽스처 두 번들에는 같은 로봇·같은 분류가 없다**(2026-09-20 실측). 두 번들은
+    digest 까지 같아 재실행이다. 그래서 이 테스트는 0 을 확인하고, 재발이 있는 시나리오는
     picasso 에 요청해 둔 상태다(`correspondence/`)."""
     incidents = (
         read_export(export_dir("run-1")).incidents + read_export(export_dir("run-2")).incidents

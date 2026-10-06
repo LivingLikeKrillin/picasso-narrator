@@ -1,172 +1,137 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="840" height="1020" viewBox="0 0 840 1020" font-family="Malgun Gothic,Apple SD Gothic Neo,Noto Sans KR,Segoe UI,-apple-system,Helvetica,Arial,sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="912" viewBox="0 0 840 912">
   <defs>
-    <marker id="am" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#57606a"/></marker>
-    <marker id="ab" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#0969da"/></marker>
-    <marker id="aw" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9a6700"/></marker>
+    <marker id="data" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M1,1 L8,5 L1,9" fill="none" stroke="#262626" stroke-width="1.2"/></marker>
+    <marker id="obs" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M1,1 L8,5 L1,9" fill="none" stroke="#6f6f6f" stroke-width="1.2"/></marker>
+    <marker id="gov" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M1,1 L8,5 L1,9" fill="none" stroke="#2b3f6b" stroke-width="1.2"/></marker>
+    <marker id="cmd" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,1 L9,5 L0,9 Z" fill="#b23a1d"/></marker>
   </defs>
-  <rect x="6" y="6" width="828" height="1008" rx="14" fill="#ffffff" stroke="#d0d7de"/>
-  <text x="32" y="46" font-size="17" font-weight="600" fill="#1f2328">구성 — 다섯 조각, LLM 은 하나 (Composition)</text>
-  <text x="32" y="70" font-size="12.5" fill="#57606a">설명 바퀴는 파일 한 벌을 읽고 진단 액티비티는 koshei 의 요청을 받는다 — 둘 다 같은 질의 구성과 같은 explainer 를 거친다</text>
-  <text x="32" y="90" font-size="12.5" fill="#57606a">채점은 순수 함수라 실행 기록만 있으면 스택 없이 다시 센다 · 사례 파일과 정답표의 변경은 훅이 알리거나 막는다</text>
-
-  <!-- zone A: the two paths -->
-  <rect x="32" y="116" width="776" height="322" rx="10" fill="#eef5ff" stroke="#cfe0f5"/>
-  <text x="48" y="136" font-size="11" font-weight="700" fill="#0969da" letter-spacing="1">두 길 — python -m receiver 는 파일 한 벌을, python -m diagnose.worker 는 koshei 의 요청을 받는다</text>
-
-  <rect x="48" y="150" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="132" y="174" font-size="12.5" fill="#1f2328" text-anchor="middle">한 벌 (picasso 인계)</text>
-  <text x="132" y="192" font-size="11" fill="#57606a" text-anchor="middle">두 대장 + manifest.json</text>
-
-  <rect x="240" y="150" width="168" height="44" rx="6" fill="#ffffff" stroke="#cfe0f5"/>
-  <text x="324" y="168" font-size="11" fill="#57606a" text-anchor="middle">멱등 열쇠 (runId, digest)</text>
-  <text x="324" y="184" font-size="11" fill="#57606a" text-anchor="middle">두 번 집어도 설명은 한 건</text>
-
-  <rect x="432" y="150" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="516" y="174" font-size="12.5" fill="#1f2328" text-anchor="middle">Nexus (khala) — 밖</text>
-  <text x="516" y="192" font-size="11" fill="#57606a" text-anchor="middle">검색 · 인용 검증</text>
-
-  <rect x="624" y="150" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="708" y="174" font-size="12.5" fill="#1f2328" text-anchor="middle">corpus/export.py</text>
-  <text x="708" y="192" font-size="11" fill="#57606a" text-anchor="middle">설명 기록의 환류 (khala)</text>
-
-  <rect x="48" y="252" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="132" y="276" font-size="12.5" fill="#1f2328" text-anchor="middle">receiver — 수신기</text>
-  <text x="132" y="294" font-size="11" fill="#57606a" text-anchor="middle">스캔 · 멱등 · 재시도</text>
-
-  <rect x="240" y="252" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="324" y="276" font-size="12.5" fill="#1f2328" text-anchor="middle">composer — 질의 구성</text>
-  <text x="324" y="294" font-size="11" fill="#57606a" text-anchor="middle">번들의 사실만 싣는다</text>
-
-  <rect x="432" y="252" width="168" height="58" rx="6" fill="#ddf4ff" stroke="#0969da"/>
-  <text x="516" y="276" font-size="12.5" font-weight="600" fill="#1f2328" text-anchor="middle">explainer — 설명 생성</text>
-  <text x="516" y="294" font-size="11" fill="#0969da" text-anchor="middle">LLM 이 닿는 유일한 조각</text>
-
-  <rect x="624" y="252" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="708" y="276" font-size="12.5" fill="#1f2328" text-anchor="middle">recorder — 기록</text>
-  <text x="708" y="294" font-size="11" fill="#57606a" text-anchor="middle">네 갈래로 가른다</text>
-
-  <rect x="48" y="354" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="132" y="378" font-size="12.5" fill="#1f2328" text-anchor="middle">koshei 에피소드 — 밖</text>
-  <text x="132" y="396" font-size="11" fill="#57606a" text-anchor="middle">Temporal 액티비티를 부른다</text>
-
-  <rect x="240" y="354" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="324" y="378" font-size="12.5" fill="#1f2328" text-anchor="middle">diagnose — 진단</text>
-  <text x="324" y="396" font-size="11" fill="#57606a" text-anchor="middle">계약 0.6 · 결과 넷 · 두 목록</text>
-
-  <path d="M624,354 a84,9 0 0 1 168,0 l0,58 a84,9 0 0 1 -168,0 Z" fill="#f6f8fa" stroke="#d0d7de"/>
-  <path d="M624,354 a84,9 0 0 0 168,0" fill="none" stroke="#d0d7de"/>
-  <text x="708" y="380" font-size="12.5" fill="#1f2328" text-anchor="middle">첫 결과 저장소</text>
-  <text x="708" y="398" font-size="11" fill="#57606a" text-anchor="middle">시도마다 한 결과</text>
-
-  <!-- explanation wheel -->
-  <polyline points="132,208 132,252" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-  <text x="140" y="234" font-size="11" fill="#57606a">한 벌 읽기</text>
-  <polyline points="216,281 240,281" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-  <polyline points="408,281 432,281" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-  <polyline points="600,281 624,281" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-  <polyline points="516,252 516,208" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-  <text x="522" y="234" font-size="11" fill="#57606a">부를 때마다 한 번</text>
-  <polyline points="708,252 708,208" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-  <text x="714" y="234" font-size="11" fill="#57606a">설명 기록</text>
-
-  <!-- diagnosis activity -->
-  <polyline points="216,372 240,372" fill="none" stroke="#0969da" stroke-width="1.6" marker-end="url(#ab)"/>
-  <polyline points="240,396 216,396" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-  <polyline points="300,354 300,310" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-  <text x="306" y="336" font-size="11" fill="#57606a">같은 질의 구성</text>
-  <polyline points="408,368 500,368 500,310" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-  <text x="506" y="340" font-size="11" fill="#57606a">같은 explainer</text>
-  <polyline points="408,396 624,396" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-  <text x="520" y="390" font-size="11" fill="#57606a">첫 결과</text>
-
-  <!-- zone C: evaluation -->
-  <rect x="32" y="470" width="776" height="320" rx="10" fill="#fbfcfd" stroke="#e6e9ee"/>
-  <text x="48" y="490" font-size="11" font-weight="700" fill="#8b95a1" letter-spacing="1">평가 (eval/) — 측정기는 도는 길을 그대로 부르고, 채점은 순수 함수다</text>
-  <text x="792" y="490" font-size="11" fill="#8b95a1" text-anchor="end">답 전에 얼린 권고 사례 22 · 설명 골든셋 15</text>
-
-  <rect x="48" y="504" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="132" y="528" font-size="12.5" fill="#1f2328" text-anchor="middle">권고 사례 22 건</text>
-  <text x="132" y="546" font-size="11" fill="#57606a" text-anchor="middle">goldenset-recommend.json</text>
-
-  <rect x="240" y="504" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="324" y="528" font-size="12.5" fill="#1f2328" text-anchor="middle">recommend.py</text>
-  <text x="324" y="546" font-size="11" fill="#57606a" text-anchor="middle">진단과 같은 함수 · 판 열둘</text>
-
-  <rect x="432" y="504" width="168" height="58" rx="6" fill="#eaf3ea" stroke="#1a7f37"/>
-  <text x="516" y="528" font-size="12.5" font-weight="600" fill="#1f2328" text-anchor="middle">recommend_score.py</text>
-  <text x="516" y="546" font-size="11" fill="#1a7f37" text-anchor="middle">순수 함수 · 기준선 병기</text>
-
-  <rect x="624" y="504" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="708" y="528" font-size="12.5" fill="#1f2328" text-anchor="middle">RESULTS.md</text>
-  <text x="708" y="546" font-size="11" fill="#57606a" text-anchor="middle">수치 · 판독 · 정정 기록</text>
-
-  <rect x="48" y="606" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="132" y="630" font-size="12.5" fill="#1f2328" text-anchor="middle">설명 골든셋 15 건</text>
-  <text x="132" y="648" font-size="11" fill="#57606a" text-anchor="middle">goldenset.json · 금칙어</text>
-
-  <rect x="240" y="606" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="324" y="630" font-size="12.5" fill="#1f2328" text-anchor="middle">measure.py</text>
-  <text x="324" y="648" font-size="11" fill="#57606a" text-anchor="middle">바퀴와 같은 길 · 20~40 분</text>
-
-  <rect x="432" y="606" width="168" height="58" rx="6" fill="#eaf3ea" stroke="#1a7f37"/>
-  <text x="516" y="630" font-size="12.5" font-weight="600" fill="#1f2328" text-anchor="middle">score.py</text>
-  <text x="516" y="648" font-size="11" fill="#1a7f37" text-anchor="middle">순수 함수 · 지표 다섯</text>
-
-  <path d="M240,708 a84,9 0 0 1 168,0 l0,44 a84,9 0 0 1 -168,0 Z" fill="#f6f8fa" stroke="#d0d7de"/>
-  <path d="M240,708 a84,9 0 0 0 168,0" fill="none" stroke="#d0d7de"/>
-  <text x="324" y="729" font-size="12.5" fill="#1f2328" text-anchor="middle">last-answers.json</text>
-  <text x="324" y="745" font-size="11" fill="#57606a" text-anchor="middle">마지막 판의 실행 기록</text>
-
-  <rect x="432" y="708" width="168" height="44" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="516" y="726" font-size="12.5" fill="#1f2328" text-anchor="middle">replay.py · rescore.py</text>
-  <text x="516" y="744" font-size="11" fill="#57606a" text-anchor="middle">스택 없이 되감기 · 재채점</text>
-
-  <rect x="624" y="708" width="168" height="44" rx="6" fill="#f6f8fa" stroke="#9a6700"/>
-  <text x="708" y="726" font-size="12.5" fill="#1f2328" text-anchor="middle">ground-truth.jsonl</text>
-  <text x="708" y="744" font-size="11" fill="#9a6700" text-anchor="middle">picasso 정답표 · 편집 차단</text>
-
-  <!-- recommendation measurement -->
-  <polyline points="216,533 240,533" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-  <polyline points="408,533 432,533" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-  <polyline points="600,533 624,533" fill="none" stroke="#57606a" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#am)"/>
-
-  <!-- explanation measurement -->
-  <polyline points="216,635 240,635" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-  <polyline points="408,635 432,635" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-  <polyline points="600,626 708,626 708,562" fill="none" stroke="#57606a" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#am)"/>
-  <polyline points="324,664 324,699" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-  <text x="330" y="686" font-size="11" fill="#57606a">기록</text>
-  <polyline points="408,730 432,730" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-  <polyline points="516,708 516,664" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-  <text x="522" y="690" font-size="11" fill="#57606a">다시 센다</text>
-  <polyline points="624,730 612,730 612,650 600,650" fill="none" stroke="#57606a" stroke-width="1.6" marker-end="url(#am)"/>
-
-  <!-- zone D: discipline and records -->
-  <rect x="32" y="824" width="776" height="108" rx="10" fill="#fbfcfd" stroke="#e6e9ee"/>
-
-  <rect x="48" y="858" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="132" y="882" font-size="12.5" fill="#1f2328" text-anchor="middle">.claude/hooks/</text>
-  <text x="132" y="900" font-size="11" fill="#57606a" text-anchor="middle">경계 · 사례 파일 · 커밋 규약</text>
-
-  <rect x="240" y="858" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="324" y="882" font-size="12.5" fill="#1f2328" text-anchor="middle">scripts/hooks/</text>
-  <text x="324" y="900" font-size="11" fill="#57606a" text-anchor="middle">커밋 전 시험 326 · 메시지 규약</text>
-
-  <rect x="432" y="858" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="516" y="882" font-size="12.5" fill="#1f2328" text-anchor="middle">correspondence/</text>
-  <text x="516" y="900" font-size="11" fill="#57606a" text-anchor="middle">세 저장소와의 편지 서른여섯</text>
-
-  <rect x="624" y="858" width="168" height="58" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
-  <text x="708" y="882" font-size="12.5" fill="#1f2328" text-anchor="middle">adr/ · plans/ · specs/</text>
-  <text x="708" y="900" font-size="11" fill="#57606a" text-anchor="middle">결정 2 · 계획서 14 · 설계 3</text>
-
-  <polyline points="132,858 132,664" fill="none" stroke="#9a6700" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#aw)"/>
-  <text x="138" y="760" font-size="11" fill="#9a6700">변경 알림</text>
-  <g><rect x="125" y="832" width="14" height="16" fill="#fbfcfd"/>
-     <text x="48" y="844" font-size="11" font-weight="700" fill="#8b95a1" letter-spacing="1">규율과 기록 — 훅이 강제하고 편지가 남긴다</text></g>
-
-  <!-- footer -->
-  <rect x="32" y="948" width="776" height="48" rx="6" fill="#fbfcfd" stroke="#e6e9ee"/>
-  <text x="44" y="968" font-size="11" fill="#57606a">LLM 을 부르는 조각은 explainer 뿐이고(tests/test_explainer_once.py), 두 채점기는 기록만 읽는 순수 함수라 실물 스택 없이 다시 센다</text>
-  <text x="44" y="986" font-size="10" fill="#8b95a1">간선은 모듈 import 에서 옮겼다 · 조각의 규칙은 BOUNDARY.md §1.5 · 진단 계약은 docs/superpowers/specs · 주황 테두리는 이 층이 읽기만 하는 picasso 의 것</text>
+  <g font-family="'Helvetica Neue', Helvetica, Arial, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', 'Noto Sans CJK KR', sans-serif" fill="#262626">
+    <text x="20" y="36" font-size="17" font-weight="700">저장소 구성, LLM을 부르는 구성요소는 하나</text>
+    <text x="20" y="56" font-size="12" fill="#6f6f6f">설명 경로는 picasso 파일 묶음, 진단 경로는 koshei 요청을 받으며, 두 경로가 같은 composer, 같은 explainer 사용</text>
+    <text x="20" y="72" font-size="12" fill="#6f6f6f">측정 도구는 운영 경로와 같은 함수를 호출하며, 채점 함수는 부작용 없이 실행 기록만으로 재계산 가능</text>
+    <rect x="32" y="104" width="776" height="400" fill="none" stroke="#2b3f6b"/>
+    <text x="44" y="120" font-size="11" fill="#2b3f6b" font-weight="700">실행 경로 둘, python -m receiver, python -m diagnose.worker</text>
+    <rect x="48" y="140" width="152" height="52" fill="#ffffff" stroke="#bdbdbd"/>
+    <text x="60" y="161" font-size="12" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">handoff/narrator/</text>
+    <text x="60" y="177" font-size="11" fill="#6f6f6f">picasso 파일 묶음 보관</text>
+    <rect x="448" y="140" width="152" height="52" fill="#ffffff" stroke="#bdbdbd"/>
+    <text x="460" y="161" font-size="12" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">Nexus</text>
+    <text x="460" y="177" font-size="11" fill="#6f6f6f">khala 검색, 인용 검증</text>
+    <rect x="48" y="236" width="152" height="52" fill="#e8ebf3" stroke="#2b3f6b" stroke-width="1.5"/>
+    <text x="60" y="257" font-size="12.5" font-weight="700" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">receiver</text>
+    <text x="60" y="273" font-size="11" fill="#6f6f6f">사건 선별. 재시도 관리</text>
+    <rect x="248" y="236" width="152" height="52" fill="#e8ebf3" stroke="#2b3f6b" stroke-width="1.5"/>
+    <text x="260" y="257" font-size="12.5" font-weight="700" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">composer</text>
+    <text x="260" y="273" font-size="11" fill="#6f6f6f">사실 기반 정형 질의 생성</text>
+    <rect x="448" y="236" width="152" height="52" fill="#2b3f6b" stroke="#2b3f6b" stroke-width="1.5"/>
+    <rect x="452" y="240" width="144" height="44" fill="none" stroke="#ffffff" stroke-width="0.75" stroke-opacity="0.6"/>
+    <text x="460" y="257" font-size="12.5" fill="#ffffff" font-weight="700" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">explainer</text>
+    <text x="460" y="273" font-size="11" fill="#cfd6e6">유일한 LLM 호출 모듈</text>
+    <rect x="648" y="236" width="152" height="52" fill="#e8ebf3" stroke="#2b3f6b" stroke-width="1.5"/>
+    <text x="660" y="257" font-size="12.5" font-weight="700" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">recorder</text>
+    <text x="660" y="273" font-size="11" fill="#6f6f6f">결과 4종 분류 기록</text>
+    <rect x="48" y="332" width="152" height="52" fill="#ffffff" stroke="#bdbdbd"/>
+    <text x="60" y="353" font-size="12" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">koshei episode</text>
+    <text x="60" y="369" font-size="11" fill="#6f6f6f">Temporal 진단 호출</text>
+    <rect x="248" y="332" width="152" height="52" fill="#e8ebf3" stroke="#2b3f6b" stroke-width="1.5"/>
+    <text x="260" y="353" font-size="12.5" font-weight="700" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">diagnose</text>
+    <text x="260" y="369" font-size="11" fill="#6f6f6f">계약 0.6 응답 생성</text>
+    <rect x="648" y="332" width="152" height="52" fill="#e8ebf3" stroke="#2b3f6b" stroke-width="1.5"/>
+    <text x="660" y="353" font-size="12.5" font-weight="700" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">corpus.export</text>
+    <text x="660" y="369" font-size="11" fill="#6f6f6f">설명 기록 khala 반환</text>
+    <rect x="248" y="428" width="152" height="56" fill="#ffffff" stroke="#bdbdbd"/>
+    <path d="M248,434 H400" fill="none" stroke="#bdbdbd"/>
+    <text x="260" y="454" font-size="12" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">first_result</text>
+    <text x="260" y="470" font-size="11" fill="#6f6f6f">시도별 첫 결과 저장</text>
+    <rect x="648" y="428" width="152" height="52" fill="#ffffff" stroke="#bdbdbd"/>
+    <text x="660" y="449" font-size="12" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">tenant narrator</text>
+    <text x="660" y="465" font-size="11" fill="#6f6f6f">설명 기록 저장소</text>
+    <path d="M124,192 V234" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="132" y="217" font-size="10.5">파일 묶음 읽기</text>
+    <path d="M200,262 H246" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="204" y="255" font-size="10.5">사건</text>
+    <path d="M400,262 H446" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="404" y="255" font-size="10.5">질의</text>
+    <path d="M600,262 H646" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="604" y="255" font-size="10.5">답</text>
+    <path d="M524,236 V194" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="532" y="217" font-size="10.5">질의, 호출마다 1회</text>
+    <path d="M724,288 V330" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="732" y="313" font-size="10.5">기록 전달</text>
+    <path d="M724,384 V426" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="732" y="409" font-size="10.5">적재</text>
+    <path d="M200,348 H246" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="204" y="341" font-size="10.5">요청</text>
+    <path d="M248,372 H202" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="204" y="365" font-size="10.5">응답</text>
+    <path d="M324,332 V290" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="332" y="313" font-size="10.5">같은 질의를 구성</text>
+    <path d="M400,358 H524 V290" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="532" y="341" font-size="10.5">explainer 사용</text>
+    <path d="M324,384 V426" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="332" y="409" font-size="10.5">첫 결과 저장</text>
+    <rect x="32" y="536" width="776" height="312" fill="none" stroke="#bdbdbd"/>
+    <text x="44" y="552" font-size="11" fill="#6f6f6f">평가 도구 eval/, 측정은 운영 경로를 그대로 호출, 채점은 부작용 없는 함수</text>
+    <text x="44" y="568" font-size="11" fill="#6f6f6f">평가 사례와 채점 함수는 답을 보기 전에 고정, 사례 파일, 정답표 변경 시 훅이 알림 또는 차단</text>
+    <rect x="48" y="588" width="152" height="52" fill="#ffffff" stroke="#bdbdbd"/>
+    <text x="60" y="609" font-size="11.0" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">goldenset-recommend</text>
+    <text x="60" y="625" font-size="11" fill="#6f6f6f">권고 22건. 사전 고정</text>
+    <rect x="248" y="588" width="152" height="52" fill="#e8ebf3" stroke="#2b3f6b" stroke-width="1.5"/>
+    <text x="260" y="609" font-size="12.5" font-weight="700" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">recommend.py</text>
+    <text x="260" y="625" font-size="11" fill="#6f6f6f">진단 경로 동일 함수 호출</text>
+    <rect x="448" y="588" width="152" height="52" fill="#e8ebf3" stroke="#2b3f6b" stroke-width="1.5"/>
+    <text x="460" y="609" font-size="11.5" font-weight="700" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">recommend_score.py</text>
+    <text x="460" y="625" font-size="11" fill="#6f6f6f">채점. 기준선 동시 산출</text>
+    <rect x="648" y="588" width="152" height="52" fill="#ffffff" stroke="#bdbdbd"/>
+    <text x="660" y="609" font-size="12" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">RESULTS.md</text>
+    <text x="660" y="625" font-size="11" fill="#6f6f6f">수치, 판독, 정정 기록</text>
+    <rect x="48" y="684" width="152" height="52" fill="#ffffff" stroke="#bdbdbd"/>
+    <text x="60" y="705" font-size="12" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">goldenset.json</text>
+    <text x="60" y="721" font-size="11" fill="#6f6f6f">설명 15건과 금칙어</text>
+    <rect x="248" y="684" width="152" height="52" fill="#e8ebf3" stroke="#2b3f6b" stroke-width="1.5"/>
+    <text x="260" y="705" font-size="12.5" font-weight="700" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">measure.py</text>
+    <text x="260" y="721" font-size="11" fill="#6f6f6f">설명 경로 그대로 실행</text>
+    <rect x="448" y="684" width="152" height="52" fill="#e8ebf3" stroke="#2b3f6b" stroke-width="1.5"/>
+    <text x="460" y="705" font-size="12.5" font-weight="700" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">score.py</text>
+    <text x="460" y="721" font-size="11" fill="#6f6f6f">부작용 없는 채점 함수</text>
+    <rect x="248" y="780" width="152" height="56" fill="#ffffff" stroke="#bdbdbd"/>
+    <path d="M248,786 H400" fill="none" stroke="#bdbdbd"/>
+    <text x="260" y="806" font-size="12" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">last-answers.json</text>
+    <text x="260" y="822" font-size="11" fill="#6f6f6f">마지막 측정 실행 기록</text>
+    <rect x="448" y="780" width="152" height="52" fill="#e8ebf3" stroke="#2b3f6b" stroke-width="1.5"/>
+    <text x="460" y="801" font-size="12.5" font-weight="700" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">replay, rescore</text>
+    <text x="460" y="817" font-size="11" fill="#6f6f6f">기록 되감기. 재채점</text>
+    <rect x="648" y="780" width="152" height="52" fill="#ffffff" stroke="#bdbdbd"/>
+    <text x="660" y="801" font-size="11.5" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">ground-truth.jsonl</text>
+    <text x="660" y="817" font-size="11" fill="#6f6f6f">picasso 정답표</text>
+    <path d="M200,614 H246" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="204" y="607" font-size="10.5">사례</text>
+    <path d="M400,614 H446" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="404" y="607" font-size="10.5">기록</text>
+    <path d="M600,614 H646" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="604" y="607" font-size="10.5">수치</text>
+    <path d="M200,710 H246" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="204" y="703" font-size="10.5">골든셋</text>
+    <path d="M400,710 H446" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="404" y="703" font-size="10.5">답</text>
+    <path d="M324,736 V778" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="332" y="761" font-size="10.5">실행 기록 저장</text>
+    <path d="M400,808 H446" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="404" y="801" font-size="10.5">기록</text>
+    <path d="M524,780 V738" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="532" y="761" font-size="10.5">다시 채점</text>
+    <path d="M600,700 H708 V642" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="716" y="670" font-size="10.5">수치</text>
+    <path d="M760,780 V724 H602" fill="none" stroke="#262626" stroke-width="1.2" marker-end="url(#data)"/>
+    <text x="768" y="766" font-size="10.5">정답</text>
+    <path d="M20,884 H44" fill="none" stroke="#262626" stroke-width="1.2"/>
+    <text x="52" y="888" font-size="10.5" fill="#6f6f6f">데이터 흐름</text>
+    <rect x="128" y="876" width="16" height="12" fill="#e8ebf3" stroke="#2b3f6b" stroke-width="1.5"/>
+    <text x="152" y="888" font-size="10.5" fill="#6f6f6f">이 저장소</text>
+    <rect x="216" y="876" width="16" height="12" fill="#2b3f6b" stroke="#2b3f6b"/>
+    <text x="240" y="888" font-size="10.5" fill="#6f6f6f">LLM 호출</text>
+    <rect x="300" y="876" width="16" height="12" fill="none" stroke="#bdbdbd"/>
+    <text x="324" y="888" font-size="10.5" fill="#6f6f6f">외부 시스템</text>
+    <text x="820" y="888" font-size="10.5" fill="#6f6f6f" text-anchor="end">구성요소 다섯 중 LLM 호출은 explainer 하나</text>
+  </g>
 </svg>

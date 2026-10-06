@@ -1,7 +1,7 @@
 """전송이 끊겼을 때 — `BOUNDARY.md` §3.4.
 
-**한 줄의 실패가 한 벌을 죽이면 안 된다.** 설명이 없어도 사건 처리가 진행된다는
-원칙은 이 층의 하네스 안에서도 같다.
+**한 줄의 실패가 번들을 죽이면 안 된다.** 설명이 없어도 사건 처리가 진행된다는
+원칙은 이 계층의 하네스 안에서도 같다.
 """
 
 import httpx
@@ -54,7 +54,7 @@ def test_끊긴_것은_답이_아니다(monkeypatch):
 
 
 def test_끊긴_사유가_기록까지_간다(monkeypatch, export_dir):
-    """**「안 끝났다」와 「끊겼다」는 다음 행동이 다르다.** 예외로 올리면서 사유를
+    """**「안 끝났다」와 「끊겼다」는 후속 조치가 다르다.** 예외로 올리면서 사유를
     버리면 기록에 「unreachable」 하나만 남고, khala 가 코드를 가른 뜻이 사라진다."""
     from receiver.pipeline import explain
     from receiver.scan import scan

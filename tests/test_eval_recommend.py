@@ -14,7 +14,7 @@ ANSWER = ("권고: ESCALATE\n이유: 사람이 먼저 본다 [출처: SOP-01 파
 
 
 def data(**over):
-    """khala 답변의 `data` 하나 — 표지가 ESCALATE 인 권고, 검증된 인용 하나, 판 칸 셋."""
+    """khala 답변의 `data` 하나 — 라벨이 ESCALATE 인 권고, 검증된 인용 하나, 버전 필드 셋."""
     base = {"answer": ANSWER, "citations": [{"title": "SOP-01 파지 실패와 잔여 파지 처리", "section": "§5.1",
                                              "verified": True}],
             "abstained": False, "weak_evidence": False, "llm_failed": False, "llm_failure_reason": None,
@@ -55,7 +55,7 @@ def test_먼저_보기가_깨진_요청에서_khala_를_안_부른다(tmp_path):
 
 
 def test_워커와_같은_클라이언트_인자를_쓴다(tmp_path):
-    """같은 길(계약 §7) — 테넌트 · `top_k` · 식별자 채널 · 자료 칸은 워커와 같고, 빼는 종류에 과거 사례만 더한다."""
+    """같은 길(계약 §7) — 테넌트 · `top_k` · 식별자 채널 · 답변 컨텍스트는 워커와 같고, 빼는 종류에 과거 사례만 더한다."""
     prepared = m.prepare(load_cases(), only=["R11"])
     client, calls = fake([data()])
     m.measure(prepared, client, "abc1234", {}, tmp_path / "out.json")
@@ -97,7 +97,7 @@ def test_한도와_인증은_곧바로_멈추고_기록을_남긴다(tmp_path, m
 
 
 def test_잇단_실패_둘에_멈추고_뜻밖의_예외도_실패로_적는다(tmp_path):
-    """뜻밖의 예외가 몇 시간짜리 판을 죽이지 않는다 — 사유로 적고(재시도 안 함) 잇단 실패로 센다."""
+    """뜻밖의 예외가 몇 시간짜리 실행을 죽이지 않는다 — 사유로 적고(재시도 안 함) 잇단 실패로 센다."""
     prepared = m.prepare(load_cases(), only=["R04", "R05", "R08"])
     client, calls = fake([failing("unreachable"), RuntimeError("전송이 터졌다")])
     rows, complete = m.measure(prepared, client, "abc1234", {}, tmp_path / "out.json")
@@ -123,7 +123,7 @@ def test_재시도할_사유로_끝난_사례는_판_끝에_다시_돈다(tmp_pa
 
 
 def test_얼릴_것이_커밋되지_않았거나_기록이_있으면_돌지_않는다(tmp_path, monkeypatch):
-    """기록의 해시가 곧 이 판을 잰 규칙이다 — 커밋 안 한 사례 파일이나 고친 채 돈 판은 어느 규칙으로 잰 것인지 말하지
+    """기록의 해시가 곧 이 실행을 잰 규칙이다 — 커밋 안 한 사례 파일이나 고친 채 돈 실행은 어느 규칙으로 잰 것인지 말하지
     못한다(설계서 §0). ⚠ 한 번도 커밋 안 한 새 파일은 `--untracked-files=no` 에 안 잡힌다. 빈 저장소를 지어 본다 — 커밋 전
     훅 안에서 돌면 git 이 `GIT_DIR` · `GIT_INDEX_FILE` 을 물려주므로 먼저 지운다. 있는 기록은 덮지 않는다."""
     for name in [n for n in os.environ if n.startswith("GIT_")]:

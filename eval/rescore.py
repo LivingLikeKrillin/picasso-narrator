@@ -2,13 +2,13 @@
 
     python eval/rescore.py                      # eval/last-answers.json
     python eval/rescore.py path/to/answers.json
-    python eval/rescore.py path/to/answers.json path/to/goldenset.json   # 옛 판은 그때의 골든셋과 함께
+    python eval/rescore.py path/to/answers.json path/to/goldenset.json   # 옛 실행은 그때의 골든셋과 함께
 
-`rows` 를 `Record` 로 되돌려 순수 함수 `score` 에 넣는다. **인용 객체는 옛 판에 없다**
-(제목만 저장했다). 그래서 인용 검증(지표 3)은 판 당시 출력의 값을 쓴다. 본문으로 세는 것
-(절차 적중 · 어긋남 · 카드)과 **계측으로 세는 것**(검색이 준 문서)은 여기서 다시 센다.
+`rows` 를 `Record` 로 되돌려 순수 함수 `score` 에 넣는다. **인용 객체는 옛 실행에 없다**
+(제목만 저장했다). 그래서 인용 검증(지표 3)은 실행 당시 출력의 값을 쓴다. 본문으로 세는 것
+(절차 적중 · 불일치 · 답변 카드)과 **계측으로 세는 것**(검색이 준 문서)은 여기서 다시 센다.
 
-⛔ **기록의 모양이 둘이다.** I 판(`722bebe`)은 줄의 배열이고 `env` 가 없다 — `measure.py`
+⛔ **기록의 모양이 둘이다.** I 실행(`722bebe`)은 줄의 배열이고 `env` 가 없다 — `measure.py`
 가 `{"env", "rows"}` 로 바뀐 것이 그 2분 뒤였다. 둘 다 읽는다([rows_of]).
 """
 
@@ -25,24 +25,24 @@ from recorder.record import Record
 
 
 def load_version(path="eval/goldenset.json"):
-    """지금 골든셋의 판. 안 맞을 때 무엇과 무엇이 안 맞는지 말하려고 쓴다."""
+    """지금 골든셋의 버전. 안 맞을 때 무엇과 무엇이 안 맞는지 말하려고 쓴다."""
     with open(path, encoding="utf-8") as handle:
         return json.load(handle).get("version")
 
 
 def rows_of(saved):
-    """`(rows, env)`. 옛 판은 배열이고 `env` 가 없다. 새 판은 `{"env", "rows"}` 다."""
+    """`(rows, env)`. 옛 실행은 배열이고 `env` 가 없다. 새 실행은 `{"env", "rows"}` 다."""
     if isinstance(saved, list):
         return saved, None
     return saved["rows"], saved.get("env")
 
 
 def records_from_rows(rows):
-    """기록의 줄을 채점할 기록으로. 본문과 갈래와 **계측**을 되살린다.
+    """기록의 줄을 채점할 기록으로. 본문과 하위 범주와 **계측**을 되살린다.
 
     ⛔ **계측을 빠뜨리면 거기 기대는 지표가 조용히 `None` 이 된다 (2026-09-20 실측).**
     검색이 준 문서(`evidenceDocs`)와 근거 없는 수(`unverified_numbers`)가 계측에 있다.
-    본문만 되살리던 판에서는 K 판 기록을 다시 세도 검색 쪽 수가 안 나왔다.
+    본문만 되살리던 실행에서는 K 실행 기록을 다시 세도 검색 쪽 수가 안 나왔다.
     """
     return [
         Record(key=("rescore", row["id"]), outcome=Outcome(row["outcome"]),
@@ -73,7 +73,7 @@ def load_rows(path, goldenset="eval/goldenset.json"):
 
 def report(entries, rows, env):
     """채점표를 찍는다. **본문으로 세는 것과 계측으로 세는 것만 다시 센다** — 인용 검증은
-    판 당시 출력의 값이다(인용 객체는 기록에 없다)."""
+    실행 당시 출력의 값이다(인용 객체는 기록에 없다)."""
     result = score(entries, records_from_rows(rows))
     print("환경", json.dumps(env, ensure_ascii=False) if env else "없음 (env 이전 기록)")
     for entry, row in zip(entries, rows):

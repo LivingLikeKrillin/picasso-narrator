@@ -1,4 +1,4 @@
-"""검색에 쓰지 않는 자료 칸 — 계약 0.6 §3.5."""
+"""검색에 쓰지 않는 답변 컨텍스트 — 계약 0.6 §3.5."""
 
 import pytest
 
@@ -61,7 +61,7 @@ def test_자료_칸은_넷을_싣는다(diagnose_request):
 
 
 def test_자료_칸이_상한을_넘으면_보내지_않는다(diagnose_request):
-    """khala 는 8,000자를 넘으면 422 로 거절하고 **자르지 않는다**(회신 15). 이 층도 자르지 않는다 —
+    """khala 는 8,000자를 넘으면 422 로 거절하고 **자르지 않는다**(회신 15). 이 계층도 자르지 않는다 —
     자른 후보 목록은 다른 질문이다. 먼저 세어 안 보낸다."""
     many = [{"candidateId": f"OPERATOR_DECISION:ex-{i}:u-{i}:CONFIRM_DONE",
              "kind": "OPERATOR_DECISION",

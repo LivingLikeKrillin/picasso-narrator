@@ -30,8 +30,8 @@ def test_계약_요청을_읽는다(diagnose_request):
 
 
 def test_판이_다르면_거절한다(diagnose_request):
-    """**한 판만 받는다.** 범위로 받으면 모르는 판을 아는 척 읽게 된다(`receiver/export.py` 와 같은 까닭).
-    적재 판도 같다 — picasso 의 `schemaVersion` 은 글자 `"5"` 다(0.5 까지 계약 예제가 숫자로 적어 틀렸다)."""
+    """**한 버전만 받는다.** 범위로 받으면 모르는 버전을 아는 척 읽게 된다(`receiver/export.py` 와 같은 까닭).
+    적재 버전도 같다 — picasso 의 `schemaVersion` 은 글자 `"5"` 다(0.5 까지 계약 예제가 숫자로 적어 틀렸다)."""
     with pytest.raises(ContractViolation, match="0.6"):
         parse_request(diagnose_request(contractVersion="0.5"))
     with pytest.raises(ContractViolation, match="적재 판"):
@@ -42,7 +42,7 @@ def test_판이_다르면_거절한다(diagnose_request):
 def test_빠진_칸과_모양이_틀린_칸은_거절한다(diagnose_request):
     """**값이 없으면 `null`, 키는 빼지 않는다**(계약 §2). 키가 빠지거나 모양이 틀린 것은 형식이 어긋난 것이다.
     여기서 못 잡으면 뒤에서 AttributeError 같은 엉뚱한 예외로 터져 koshei 가 무엇이 어긋났는지 모른다.
-    빈 줄(`{}`)을 받으면 질의가 고정 물음만 싣고 나가 「관측이 없다」로 읽힌다."""
+    빈 줄(`{}`)을 받으면 질의가 고정 질문만 싣고 나가 「관측이 없다」로 읽힌다."""
     payload = diagnose_request()
     del payload["unknowns"]
     with pytest.raises(ContractViolation, match="unknowns"):
@@ -119,7 +119,7 @@ def test_후보의_종류와_모양이_틀리면_거절한다(diagnose_request):
 
 
 def test_후보_판은_sha256_소문자_64자다(diagnose_request):
-    """판은 koshei 만 계산하고 이 층은 되돌려주기만 한다(계약 §3.2). 모양만 본다 — 16진 소문자 64자."""
+    """버전은 koshei 만 계산하고 이 계층은 되돌려주기만 한다(계약 §3.2). 모양만 본다 — 16진 소문자 64자."""
     with pytest.raises(ContractViolation, match="sha256"):
         parse_request(diagnose_request(candidatesVersion="sha256:abc"))
     with pytest.raises(ContractViolation, match="sha256"):

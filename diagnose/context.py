@@ -1,7 +1,7 @@
-"""검색에 쓰지 않는 자료 칸 — 진단 계약 0.6 §3.5.
+"""검색에 쓰지 않는 답변 컨텍스트 — 진단 계약 0.6 §3.5.
 
 **`query` 는 설명 경로 그대로 두고 나머지를 여기 싣는다.** 후보 · 확인 불가 · 이력 · 답하는 법 넷뿐이다.
-「권고」 · 「후보」 같은 낱말이 `query` 에 들어가면 BM25 에 걸려 검색이 측정해 온 경로와 달라진다.
+「권고」 · 「후보」 같은 단어가 `query` 에 들어가면 BM25 에 걸려 검색이 측정해 온 경로와 달라진다.
 스냅샷은 싣지 않는다 — 사실은 `query` 가 이미 든다.
 
 **별칭에 숫자를 쓰지 않는다.** khala 의 숫자 검증기는 10 이상의 정수와 소수를 본다 — 글자 별칭은 숫자
@@ -13,7 +13,7 @@ import string
 from composer.query import UNKNOWN, _flat
 from diagnose.contract import ESCALATE
 
-#: khala 가 받는 상한(파이썬 글자 수). 넘으면 422 이고 자르지 않는다 — 이 층이 먼저 세어 안 보낸다.
+#: khala 가 받는 상한(파이썬 글자 수). 넘으면 422 이고 자르지 않는다 — 이 계층이 먼저 세어 안 보낸다.
 LIMIT = 8000
 
 #: 비었을 때 적는 말. 빈 줄로 두면 모델이 「안 적혔다」와 「없다」를 못 가른다.
@@ -29,7 +29,7 @@ HOW = (
 
 
 class ContextTooLarge(Exception):
-    """자료 칸이 상한을 넘는다. **자르지 않는다** — 자른 후보 목록은 다른 질문이다. 재시도하지 않는다."""
+    """답변 컨텍스트가 상한을 넘는다. **자르지 않는다** — 자른 후보 목록은 다른 질문이다. 재시도하지 않는다."""
 
 
 def aliases(candidates):
@@ -52,7 +52,7 @@ def aliases(candidates):
 
 
 def render(candidates, unknowns, history):
-    """자료 칸의 글. 상한을 넘으면 [ContextTooLarge]."""
+    """답변 컨텍스트의 글. 상한을 넘으면 [ContextTooLarge]."""
     by_id = {c["candidateId"]: c for c in candidates}
     lines = ["후보 (별칭 · 식별자 · 대상)"]
     lines += [f"{alias} · {cid} · {_target(by_id[cid])}" for alias, cid in aliases(candidates).items()]
@@ -80,7 +80,7 @@ _v = _flat
 
 
 def _target(c):
-    """후보가 무엇을 하는지 한 줄. **값은 `ref` 에서만 온다** — 이 층이 조치를 기술하지 않는다."""
+    """후보가 무엇을 하는지 한 줄. **값은 `ref` 에서만 온다** — 이 계층이 조치를 기술하지 않는다."""
     ref = c.get("ref") or {}
     kind = c["kind"]
     if kind == "APPROVE_REMEDY":
@@ -97,9 +97,9 @@ def _target(c):
 
 
 def _unknown(u):
-    """확인 불가 항목 한 줄. **시각(`since`)은 싣지 않는다** — 자료 칸의 숫자는 khala 가 근거로 세므로
+    """확인 불가 항목 한 줄. **시각(`since`)은 싣지 않는다** — 답변 컨텍스트의 숫자는 khala 가 근거로 세므로
     (`found_in` 의 `context`), 시각 하나가 여러 수를 근거에 넣는 질의의 약점을 여기 다시 들이게 된다."""
-    # 탐색 식별자는 추적용이라 싣지 않는다 — 후보 줄(`_target`)과 같은 선이고, 10 이상의 수를 자료 칸에 들인다
+    # 탐색 식별자는 추적용이라 싣지 않는다 — 후보 줄(`_target`)과 같은 선이고, 10 이상의 수를 답변 컨텍스트에 들인다
     subject = " · ".join(f"{k}={_v(v)}" for k, v in (u.get("subject") or {}).items()
                          if k != "searchId") or UNKNOWN
     return f"{subject} 의 {_v(u.get('what'))} ({_v(u.get('source'))})"

@@ -76,7 +76,7 @@ def test_재시도할_생성_실패는_재시도_가능한_오류다(tmp_path, d
 
 
 def test_계약_위반과_영원한_실패와_뜻밖의_것은_재시도하지_않는다(tmp_path, diagnose_request, khala_data):
-    """다시 보내도 같은 것 — 계약 위반 · `quota` · `auth` · `other` — 은 `non_retryable` 이다. **이 층의 뜻밖의
+    """다시 보내도 같은 것 — 계약 위반 · `quota` · `auth` · `other` — 은 `non_retryable` 이다. **이 계층의 뜻밖의
     예외도 그렇다** — 모르는 것을 재시도 가능으로 치지 않는다(계약 §5 의 `other` 와 같은 까닭). 재시도마다
     LLM 에 다시 묻게 되기 때문이다. khala 가 글자가 아닌 사유를 주면 글자로 적는다 — 아니면 SDK 가 실패를 못 적고
     재시도할 실패로 바꿔 적는다."""
@@ -91,7 +91,7 @@ def test_계약_위반과_영원한_실패와_뜻밖의_것은_재시도하지_�
     with pytest.raises(ApplicationError) as raised:
         ActivityEnvironment().run(ok, diagnose_request(contractVersion="0.5"))
     assert (raised.value.type, raised.value.non_retryable) == ("ContractViolation", True)
-    # 이 시험 환경은 입력을 풀지 않아 SDK 의 몫을 못 본다 — 힌트가 있으면 SDK 가 먼저 풀어 객체가 아닌 요청이
+    # 이 테스트 환경은 입력을 풀지 않아 SDK 의 책임을 못 본다 — 힌트가 있으면 SDK 가 먼저 풀어 객체가 아닌 요청이
     # 계약 위반이 아니라 재시도할 실패가 된다(묶음 5 검토)
     assert "payload" not in typing.get_type_hints(ok), "입력의 모양은 parse_request 가 본다"
 
@@ -133,7 +133,7 @@ def test_부르는_동안_하트비트를_보낸다(tmp_path, diagnose_request, 
 def test_취소는_실패가_아니라_취소로_알린다(tmp_path, diagnose_request, khala_data, monkeypatch):
     """`Cancelled` 를 그대로 올리면 SDK 가 재시도할 실패로 적는다 — 취소로 알려야 에피소드의 인수 · 끄기가
     이력에 맞게 남는다. SDK 의 취소는 기다리는 고리가 `is_cancelled` 로 본다 — 스레드에 던져 넣게 두면
-    (`no_thread_cancel_exception` 을 빼면) 뜻밖의 예외가 되어 재시도하지 않는 실패로 적힌다. 곁 스레드는 그래도 답을
+    (`no_thread_cancel_exception` 을 빼면) 뜻밖의 예외가 되어 재시도하지 않는 실패로 적힌다. 백그라운드 스레드는 그래도 답을
     적는다(계약 §6)."""
     monkeypatch.setattr(worker, "BEAT", 0.01)
     store = FirstResultStore(tmp_path / "f.sqlite3")
@@ -150,8 +150,8 @@ def test_취소는_실패가_아니라_취소로_알린다(tmp_path, diagnose_re
 
 
 def test_판_환경_변수의_공백은_판이_아니다(monkeypatch):
-    """`NARRATOR_COMMIT` 의 앞뒤 공백은 떼고, 공백만이면 없는 것으로 보고 커밋에서 읽는다. koshei 는 판 칸이 `null` 이거나
-    공백만이 아닌 글자이기를 보므로 공백 판 하나가 이 워커의 모든 응답을 계약 위반으로 만든다(2026-09-30)."""
+    """`NARRATOR_COMMIT` 의 앞뒤 공백은 떼고, 공백만이면 없는 것으로 보고 커밋에서 읽는다. koshei 는 버전 필드가 `null` 이거나
+    공백만이 아닌 글자이기를 보므로 공백 버전 하나가 이 워커의 모든 응답을 계약 위반으로 만든다(2026-09-30)."""
     described = []
 
     def run(args, **kwargs):

@@ -11,7 +11,7 @@ TABLE = {"A": "APPROVE_REMEDY:hum-02:PATROL-1:pick_place", "ESCALATE": "ESCALATE
 
 def test_약한_근거는_표지보다_먼저_NO_GROUNDS(khala_data):
     """약한 근거면 khala 시스템 프롬프트가 첫 문장에서 그것을 말하게 해 「권고:」와 부딪힌다(회신 15).
-    이 판정이 표지보다 먼저 보므로 부딪혀도 결과가 흔들리지 않는다. 표지 값은 기록용으로 남는다."""
+    이 판정이 라벨보다 먼저 보므로 부딪혀도 결과가 흔들리지 않는다. 라벨 값은 기록용으로 남는다."""
     verdict = judge(from_answer(KEY, khala_data(weak_evidence=True)), TABLE)
 
     assert (verdict.outcome, verdict.candidate_id, verdict.picked) == ("NO_GROUNDS", None, None)
@@ -21,7 +21,7 @@ def test_약한_근거는_표지보다_먼저_NO_GROUNDS(khala_data):
 
 def test_검증된_인용이_없으면_UNCITED(khala_data):
     """**설명 경로보다 엄하다.** 설명은 인용이 하나라도 붙으면 답으로 치지만 권고는 승인자가 누를 근거라
-    꾸러미에 있던 문서를 하나는 대야 한다."""
+    근거 묶음에 있던 문서를 하나는 대야 한다."""
     unverified = [{"title": "지어낸 문서", "section": "§1", "verified": False}]
 
     verdict = judge(from_answer(KEY, khala_data(citations=unverified)), TABLE)

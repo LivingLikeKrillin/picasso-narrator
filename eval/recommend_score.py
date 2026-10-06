@@ -1,8 +1,8 @@
 """권고 측정의 채점 — 설계서 `docs/superpowers/specs/2026-09-30-권고-측정.md` §3.
 
-**순수 함수다.** 기록(`{env, complete, rows}`)과 사례 파일만으로 다시 센다. 파생값(표지 갈래 · 꾸밈 · 맨 정수 조각 · 인용 없음의
-원인)은 기록에 넣지 않고 여기서 매번 센다 — 정규식을 고쳐도 옛 기록을 다시 센다(함정 3). 비율은 `(k, n)` 짝이고 `n` 이 0 이어도
-짝 그대로 돌려준다 — 적을 때 `k/n` 으로 적으므로 0 과 「없음」이 섞이지 않는다.
+**순수 함수다.** 기록(`{env, complete, rows}`)과 사례 파일만으로 다시 센다. 파생값(라벨 하위 범주 · 꾸밈 · 단위 없는 정수 조각 · 인용 없음의
+원인)은 기록에 넣지 않고 여기서 매번 센다 — 정규식을 고쳐도 옛 기록을 다시 센다(오류 유형 3). 비율은 `(k, n)` 쌍이고 `n` 이 0 이어도
+쌍 그대로 돌려준다 — 적을 때 `k/n` 으로 적으므로 0 과 「없음」이 섞이지 않는다.
 
     python -m eval.recommend_score                              # eval/last-recommendations.json
     python -m eval.recommend_score A.json B.json                # 사례마다 뒤의 기록
@@ -38,7 +38,7 @@ def load_cases(path=CASES):
 
 
 def scoring_hash(doc):
-    """사례 파일의 판 · 판독 기준 · 사례마다의 채점 칸의 sha256. 차례와 빈칸에 흔들리지 않게 정규화한다."""
+    """사례 파일의 버전 · 인간 평가 기준 · 사례마다의 채점 칸의 sha256. 차례와 빈칸에 흔들리지 않게 정규화한다."""
     body = {"version": doc["version"], "criteria": doc["criteria"],
             "cases": [{k: case[k] for k in SCORING_KEYS} for case in doc["cases"]]}
     text = json.dumps(body, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
@@ -47,10 +47,10 @@ def scoring_hash(doc):
 
 # ── 조각 — 답 하나에서 세는 것(설계서 §3.2 · §3.4~3.7) ──
 
-#: `1005cd1` 앞의 머리 줄 정규식 — 제목 기호(`#`)를 안 받았다. 옛 파서로 센 후보 밖(M2)에 쓴다.
+#: `1005cd1` 앞의 헤더 줄 정규식 — 제목 기호(`#`)를 안 받았다. 옛 파서로 센 후보 외 선택(M2)에 쓴다.
 HEAD_OLD = re.compile(r"^\s*(?:[-*]\s*)?(?:\*\*)?(권고|이유)(?:\*\*)?\s*[:：]\s*(?:\*\*)?\s*(.*?)\s*$")
 
-#: 느슨한 탐지 — 줄머리의 꾸밈(인용 · 제목 · 목록 · 강조) 뒤에 표지 이름이 오고, 그 뒤가 콜론 · 줄 끝 · 「사항」 · 대시인 줄.
+#: 느슨한 탐지 — 줄머리의 꾸밈(인용 · 제목 · 목록 · 강조) 뒤에 라벨 이름이 오고, 그 뒤가 콜론 · 줄 끝 · 「사항」 · 대시인 줄.
 #: 본문의 「권고하지 않는다」 같은 문장은 안 걸린다.
 LOOSE = re.compile(
     r"^\s*(?P<quote>(?:>\s*)+)?(?P<heading>#{1,6}\s*)?(?P<list>(?:[-*+]|\d+[.)])\s+)?(?P<emph>\*\*|__|\*|_)?"
@@ -60,19 +60,21 @@ LOOSE = re.compile(
 #: 인용 같은 글 — khala 가 못 읽은 표기(원인 (b)).
 CITELIKE = re.compile(r"출처\s*[:：]|\[[^\]\n]*(?:§|SOP-)[^\]\n]*\]")
 
-#: 맨 정수의 제외(설계서 §3.7). 차례에 뜻이 있다 — 날짜 · 시각을 식별자보다 먼저 지운다.
+#: 단위 없는 정수의 제외(설계서 §3.7). 차례에 뜻이 있다 — 날짜 · 시각을 식별자보다 먼저 지운다. 토씨가 붙은 근거 등급과 장 · 단계 ·
+#: 스키마 번호는 두 실행의 헛잡음을 보고 다음 실행부터 더했다(§3.7 의 ⛔) — 「장비」의 장은 장 번호가 아니다.
 EXCLUDE = (
     re.compile(r"\d{4}-\d{2}-\d{2}(?:T[0-9:.]+Z?)?"),
     re.compile(r"\d{1,2}:\d{2}(?::\d{2})?"),
-    re.compile(r"\bE[0-3]\b"),
+    re.compile(r"(?<![A-Za-z0-9_])E[0-3](?![0-9])"),
     re.compile(r"§\s*\d+(?:\.\d+)*(?:\s*[①-⑳])?"),
     re.compile(r"\d+(?:\.\d+)*\s*(?:절|항)(?:\s*[①-⑳])?"),
+    re.compile(r"\d+\s*(?:장(?!비)|단계)|스키마\s*\d+"),
     re.compile(r"[A-Za-z_][A-Za-z0-9_]*(?:[-.:#][A-Za-z0-9_]+)+"),
 )
 BARE = re.compile(r"(?<![0-9.,§])[0-9](?![0-9]|[.,][0-9]|%)")
 CIRCLED = re.compile(r"[①-⑳]")
 
-#: 판독 기준 C1 의 대리값(설계서 §2.4) — 판독자 앞에 놓는 자동 짚음이고 판독 값은 판독자의 것이다. ⚠ 맨 `E2` 는 (가)로 안
+#: 인간 평가 기준 C1 의 대리값(설계서 §2.4) — 판독자 앞에 놓는 자동 짚음이고 인간 평가는 판독자의 것이다. ⚠ 맨 `E2` 는 (가)로 안
 #: 친다 — 보류 단위의 질의는 모두 `requiredEvidence=E2` 를 실어 「E2 에 못 미친다」에도 나온다.
 EQUIPMENT = re.compile(r"MATCHED|설비")
 HUMAN = re.compile(r"육안|현물|직접\s*확인|눈으로|사람이[^.。]{0,20}확인")
@@ -103,13 +105,13 @@ def head_value_with(pattern, answer, label):
 
 
 def loose_lines(answer, label):
-    """`[(줄 번호, 줄)]` — 느슨한 탐지에 걸린 그 표지의 줄 전부."""
+    """`[(줄 번호, 줄)]` — 느슨한 탐지에 걸린 그 라벨의 줄 전부."""
     return [(i, line) for i, line in enumerate((answer or "").splitlines())
             if (m := LOOSE.match(line)) and m.group("label") == label]
 
 
 def marker_bucket(row):
-    """후보 밖(M2)의 갈래. 풀렸으면 `None`, 아니면 `(갈래, 줄)` — 줄은 (ii) · (iii) 에서만."""
+    """후보 외 선택(M2)의 하위 범주. 풀렸으면 `None`, 아니면 `(갈래, 줄)` — 줄은 (ii) · (iii) 에서만."""
     if row["resolved"] is not None:
         return None
     if row["rawPick"] is not None:
@@ -124,13 +126,13 @@ def marker_bucket(row):
 
 
 def out_of_candidates_old(row):
-    """옛 파서(`1005cd1` 앞)로 풀었으면 후보 밖이었나."""
+    """옛 파서(`1005cd1` 앞)로 풀었으면 후보 외 선택이었나."""
     raw = head_value_with(HEAD_OLD, row["answer"], "권고")
     return raw is None or resolve(raw, row["aliases"]) is None
 
 
 def decorations(answer):
-    """`{표지: [꾸밈 종류]}` — 앞 12줄에서 느슨한 탐지가 처음 잡은 표지 줄마다. 꾸밈이 없으면 `["plain"]`."""
+    """`{표지: [꾸밈 종류]}` — 앞 12줄에서 느슨한 탐지가 처음 잡은 라벨 줄마다. 꾸밈이 없으면 `["plain"]`."""
     out = {}
     for line in (answer or "").splitlines()[:HEAD_LINES]:
         m = LOOSE.match(line)
@@ -164,11 +166,20 @@ def uncited_cause(row):
 
 
 def bare_integers(rationale):
-    """이유 글의 맨 정수 조각(설계서 §3.7). 대괄호 무리와 미리 박은 제외를 지운 뒤에 센다."""
+    """이유 글의 단위 없는 정수 조각(설계서 §3.7). 대괄호 무리와 미리 박은 제외를 지운 뒤에 센다."""
     text = _GROUP.sub(" ", rationale or "")
     for pattern in EXCLUDE:
         text = pattern.sub(" ", text)
     return [m.group(0) for m in BARE.finditer(text)] + CIRCLED.findall(text)
+
+
+def search_broken(row):
+    """검색이 고장 난 줄인가(설계서 §6) — 응답의 `degraded` · `enrichment_failed` 가운데 하나라도 빈 목록이 아니다. 칸이
+    없으면(`None`, 기록기가 칸을 담기 전의 줄) 고장이라고 하지 않는다 — 모름이고, §6 이 말하는 것은 빈 목록이 아닌 줄이다.
+    정의는 권고 변동 설계서 §2 와 같다."""
+    diagnostics = row.get("diagnostics") or {}
+    return any(isinstance(diagnostics.get(key), list) and bool(diagnostics.get(key))
+               for key in ("degraded", "enrichment_failed"))
 
 
 def clean(response):
@@ -183,14 +194,14 @@ def reading_proxy(rationale):
 
 
 def names_removed(row, case):
-    """투영이 뺀 조치를 표지 값이나 이유 글이 가리키나(M3 대리값). 인용 제목은 빼고 본다 — SOP-03 제목에 「대체 슬롯」이 있다."""
+    """투영이 뺀 조치를 라벨 값이나 이유 글이 가리키나(M3 대리값). 인용 제목은 빼고 본다 — SOP-03 제목에 「대체 슬롯」이 있다."""
     text = _GROUP.sub(" ", (row["rawPick"] or "") + "\n" + (row["response"]["rationale"] or ""))
     return any(REMOVED_WORDS[r["action"]].search(text) for r in case["removed"])
 
 
 # ── 표 — 사례 파일과 기록의 줄로 설계서 §3 의 수를 센다 ──
 
-#: 모델에게 가는 글이 바이트까지 같은 `promptVersion` 무리(khala 편지 24) — 앞의 것을 뒤의 것으로 읽는다.
+#: 모델에게 가는 글이 바이트까지 같은 `promptVersion` 무리(khala 요청 문서 24) — 앞의 것을 뒤의 것으로 읽는다.
 PROMPT_SAME = {"81377584ff5a": "73536dc7c9c0"}
 
 
@@ -207,7 +218,7 @@ def version_tuple(row):
 
 
 def merge(records):
-    """기록 여럿 → `(env, rows)`. 사례마다 뒤의 기록이 이긴다. **사례 파일 판이 다른 기록은 합치지 않는다.**"""
+    """기록 여럿 → `(env, rows)`. 사례마다 뒤의 기록이 이긴다. **사례 파일 버전이 다른 기록은 합치지 않는다.**"""
     hashes = {r["env"]["cases"]["scoringHash"] for r in records}
     if len(hashes) != 1:
         raise SystemExit(f"사례 파일 판이 다른 기록은 합치지 않는다: {sorted(hashes)}")
@@ -221,8 +232,8 @@ def merge(records):
 def score(doc, rows, readings=None):
     """사례 파일과 기록의 줄 → 설계서 §3 의 표.
 
-    판독 값(설계서 §5)은 **분모의 사례를 다 읽었을 때만** 센다 — 덜 읽었으면 `None`(판독 전)이다. 덜 읽은 사례를 「아니다」로
-    세면 판독이 자동 값보다 낮게 거짓말한다. 판독에서 받는 후보는 그 사례의 판독 목록에 있는 것뿐이다.
+    인간 평가(설계서 §5)는 **분모의 사례를 다 읽었을 때만** 센다 — 덜 읽었으면 `None`(인간 평가 전)이다. 덜 읽은 사례를 「아니다」로
+    세면 인간 평가가 자동 값보다 낮게 거짓말한다. 인간 평가에서 받는 후보는 그 사례의 인간 평가 목록에 있는 것뿐이다.
     """
     cases = {c["id"]: c for c in doc["cases"]}
     by_id = {r["id"]: r for r in rows}
@@ -253,7 +264,7 @@ def score(doc, rows, readings=None):
 
     subsets = {"all": ids(lambda c: True), "core": ids(lambda c: c["tier"] == "core"),
                "extended": ids(lambda c: c["tier"] == "extended"), "unseen": ids(lambda c: not c["seen"])}
-    # 실패 · 빠짐 · 판 칸은 반복(R02)까지 본다 — 비율에서 빠질 뿐 판의 일부다
+    # 실패 · 빠짐 · 버전 필드는 반복(R02)까지 본다 — 비율에서 빠질 뿐 실행의 일부다
     report = {"failed": {cid: by_id[cid].get("failed") for cid in cases
                          if cid in by_id and by_id[cid].get("response") is None},
               "missing": [cid for cid in cases if cid not in by_id]}
@@ -316,9 +327,12 @@ def score(doc, rows, readings=None):
             groups.setdefault(version_tuple(by_id[cid]), []).append(cid)
     report["versions"] = [{"tuple": list(t), "cases": groups[t]}
                           for t in sorted(groups, key=lambda t: tuple("" if x is None else x for x in t))]
-    # ⚠ 모르는 판(`None`)은 같다고 못 한다 — 한 벌이어도 `None` 이 섞이면 머리 수치가 아니다
+    # ⛔ 버전 필드는 설정의 버전이지 그 호출의 검색이 아니다(설계서 §6) — 검색이 부분 실패한 줄은 버전 필드가 갈린 줄처럼 한 번 다시 돈다
+    report["searchBroken"] = [cid for cid in cases if cid in by_id and by_id[cid].get("response") is not None
+                              and search_broken(by_id[cid])]
+    # ⚠ 모르는 버전(`None`)은 같다고 못 한다 — 한 벌이어도 `None` 이 섞이면 대표 지표가 아니다
     report["headline"] = (len(groups) == 1 and None not in next(iter(groups))
-                          and not report["failed"] and not report["missing"])
+                          and not report["failed"] and not report["missing"] and not report["searchBroken"])
     return report
 
 
@@ -380,8 +394,8 @@ def decoration_counts(per_case):
 
 def report_lines(report):
     """사람이 읽는 모양. 기준선은 「늘 ESCALATE」다(설계서 §2.1)."""
-    lines = ["머리 수치 — 판 칸 한 벌 · 실패 없음 · 빠짐 없음" if report["headline"]
-             else "머리 수치 아님 — 판 칸이 갈렸거나 실패 · 빠짐이 있다",
+    lines = ["머리 수치 — 판 칸 한 벌 · 실패 없음 · 빠짐 없음 · 검색 고장 없음" if report["headline"]
+             else "머리 수치 아님 — 판 칸이 갈렸거나 실패 · 빠짐 · 검색 고장이 있다",
              f'{"":22}' + "".join(f"{label:>10}" for label, _ in SUBSETS) + f'{"기준선":>10}',
              f'{"답한 사례":22}' + "".join(f'{report[key]["answered"]:>10}' for _, key in SUBSETS)]
     for label, key, base in ROWS:
@@ -407,6 +421,7 @@ def report_lines(report):
         "판독 대리값(C1) " + json.dumps(report["readingProxy"], ensure_ascii=False),
         "반복 " + json.dumps(report["repeat"], ensure_ascii=False),
         "판 칸 " + json.dumps(report["versions"], ensure_ascii=False),
+        "검색 고장(한 번 다시 돌 사례) " + json.dumps(report["searchBroken"]),
         "실패 " + json.dumps(report["failed"], ensure_ascii=False) + " · 빠짐 " + json.dumps(report["missing"]),
     ]
     return lines

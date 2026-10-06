@@ -1,7 +1,7 @@
 """진단 계약 — `docs/superpowers/specs/2026-09-27-진단-계약-초안.md`.
 
-**요청을 믿지 않고 읽는다.** 요청은 koshei 의 투영이 짓지만, 칸이 빠지거나 판이 다른 것을 조용히
-넘기면 이 층에서는 「값이 없다」로 보인다 — 형식이 어긋난 것과 관측이 없는 것이 같은 모양이 된다
+**요청을 믿지 않고 읽는다.** 요청은 koshei 의 투영이 짓지만, 칸이 빠지거나 버전이 다른 것을 조용히
+넘기면 이 계층에서는 「값이 없다」로 보인다 — 형식이 어긋난 것과 관측이 없는 것이 같은 모양이 된다
 (`receiver/export.py` 의 `UnknownSchema` 와 같은 까닭). 어긋나면 [ContractViolation] 이고 **재시도하지
 않는다** — 다시 보내도 같다. **앞에서 잡는 까닭은 말이 맞게 멈추려는 것이다** — 못 잡은 모양은 뒤에서
 AttributeError 같은 엉뚱한 예외로 터지고, 워커가 뜻밖의 예외도 재시도하지 않게 해 두었지만 그 이름으로는
@@ -13,14 +13,14 @@ from dataclasses import dataclass
 
 from receiver.export import SCHEMA_VERSION
 
-#: 이 층이 읽고 쓰는 계약의 판. **한 판만 받는다.**
+#: 이 계층이 읽고 쓰는 계약의 버전. **한 버전만 받는다.**
 CONTRACT_VERSION = "0.6"
 
 #: 후보의 종류(계약 §3.1). 늘리려면 계약을 먼저 고친다.
 KINDS = ("APPROVE_REMEDY", "CHOOSE_SOURCE", "OPERATOR_DECISION", "ESCALATE")
 
 #: 종류마다 `ref` 에 있어야 하는 칸 — 값이 없으면 `null` 이고 칸은 빼지 않는다(§3.1, koshei 투영 v1). ⛔ 빠지면 비재시도
-#: 예외다 — 칸 이름이 바뀐 요청을 「모름」으로 조용히 읽으면 자료 칸이 후보를 못 보인 채 권고가 나간다(2026-09-30,
+#: 예외다 — 칸 이름이 바뀐 요청을 「모름」으로 조용히 읽으면 답변 컨텍스트가 후보를 못 보인 채 권고가 나간다(2026-09-30,
 #: `CHOOSE_SOURCE` 의 대체 자리가 `source` 에서 `alternative` 로 바뀜). 더 있는 칸은 받는다.
 REF_KEYS = {
     "APPROVE_REMEDY": ("robotId", "jobOrderId", "searchId"),
@@ -53,7 +53,7 @@ class ContractViolation(Exception):
 
 @dataclass(frozen=True)
 class Request:
-    """읽은 요청. 후보 · 확인 불가 · 이력은 받은 사전 그대로 든다 — 이 층이 모양을 바꾸지 않는다."""
+    """읽은 요청. 후보 · 확인 불가 · 이력은 받은 사전 그대로 든다 — 이 계층이 모양을 바꾸지 않는다."""
 
     episode_id: str
     attempt: int
@@ -65,7 +65,7 @@ class Request:
 
     @property
     def key(self):
-        """첫 결과 저장소의 열쇠 `(episodeId, attempt, candidatesVersion)`(계약 §6)."""
+        """결과 캐시의 멱등성 키 `(episodeId, attempt, candidatesVersion)`(계약 §6)."""
         return (self.episode_id, self.attempt, self.candidates_version)
 
     @property
@@ -178,7 +178,7 @@ def _snapshot(value):
 
 
 def _rows(rows, name, identity):
-    """picasso 줄 그대로인지 — 객체이고 그 줄의 식별자(`receiver/idempotency.py` 의 열쇠 칸)가 있다."""
+    """picasso 줄 그대로인지 — 객체이고 그 줄의 식별자(`receiver/idempotency.py` 의 멱등성 키 칸)가 있다."""
     if not isinstance(rows, list):
         raise ContractViolation(f"snapshot 의 {name} 는 목록이다")
     for row in rows:

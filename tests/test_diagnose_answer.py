@@ -1,4 +1,4 @@
-"""답의 머리 줄 — 계약 0.6 §4 「판정 순서」 4 · 5 와 「글 칸」."""
+"""답의 헤더 줄 — 계약 0.6 §4 「판정 순서」 4 · 5 와 「글 칸」."""
 
 from diagnose.answer import body, card_items, head_value, resolve
 
@@ -7,9 +7,9 @@ TABLE = {"A": "APPROVE_REMEDY:hum-02:PATROL-1:pick_place", "ESCALATE": "ESCALATE
 
 def test_권고_줄은_앞_12줄의_첫_표지_줄이다():
     """첫 줄만 보지 않는다 — khala 프롬프트의 규칙 둘(약한 근거는 첫 문장에서 · 여러 부분이면 몇
-    부분인지)이 표지 앞에 줄을 세울 수 있다(khala 회신 15). 본문 한가운데의 「권고:」는 머리 줄이 아니다.
-    **첫 표지 줄이 정한다** — 값이 비어도 뒤의 표지 줄로 넘어가지 않는다(계약 §4 판정 5).
-    줄머리의 제목 기호(`#`)는 목록 기호 · 굵게처럼 꾸밈이다 — 첫 실물 진단에서 모델이 「## 권고: ESCALATE」로 썼다(2026-09-30).
+    부분인지)이 라벨 앞에 줄을 세울 수 있다(khala 회신 15). 본문 한가운데의 「권고:」는 헤더 줄이 아니다.
+    **첫 라벨 줄이 정한다** — 값이 비어도 뒤의 라벨 줄로 넘어가지 않는다(계약 §4 판정 5).
+    줄머리의 제목 기호(`#`)는 목록 기호 · 굵게처럼 꾸밈이다 — 첫 실제 서비스 진단에서 모델이 「## 권고: ESCALATE」로 썼다(2026-09-30).
     제목 아래 다음 문단은 「이유:」 줄이 아니다."""
     answer = "세 부분입니다.\n권고: A\n이유: 근거가 있다 [출처: X, §1].\n"
 
@@ -24,7 +24,7 @@ def test_권고_줄은_앞_12줄의_첫_표지_줄이다():
 
 
 def test_표지가_없으면_None_이다():
-    """없으면 없는 것이다 — 빈 글자로 적지 않는다. 13번째 줄의 표지는 머리 줄이 아니다."""
+    """없으면 없는 것이다 — 빈 글자로 적지 않는다. 13번째 줄의 라벨은 헤더 줄이 아니다."""
     assert head_value("원인 후보는 둘이다.", "권고") is None
     assert head_value("\n" * 12 + "권고: A", "권고") is None
     assert head_value(None, "이유") is None
@@ -56,7 +56,7 @@ def test_이유와_카드와_본문을_가른다(khala_data):
 
 def test_하나만_가리켜야_받는다():
     """**하나만 가리켜야 한다.** 「A 아니면 ESCALATE」 · 「A 또는 B」에서 A 를 고르면 모델이 망설인 것을
-    이 층이 정한 것이 되고 후보 밖 비율이 그만큼 가려진다. 같은 후보를 풀어 적은 것은 받는다. 별칭이나
+    이 계층이 정한 것이 되고 후보 외 선택 비율이 그만큼 가려진다. 같은 후보를 풀어 적은 것은 받는다. 별칭이나
     식별자 전체를 받는다 — 긴 식별자를 옮겨 적은 것도 맞으면 맞다."""
     assert head_value("**권고:** `A`", "권고") == "`A`"
     assert resolve("`A`", TABLE) == TABLE["A"]
@@ -73,3 +73,31 @@ def test_하나만_가리켜야_받는다():
         "망설임은 대소문자를 가리지 않고 본다"
     assert resolve("A를 권한다", TABLE) == TABLE["A"] and resolve("A (A를 고른다)", TABLE) == TABLE["A"]
     assert resolve("a", TABLE) is None
+
+
+#: 끝까지 한 번(2026-10-04)의 머리 모양 — 라벨 줄마다 빈 줄. 근거 강도가 13번째 줄이다.
+SPACED = (
+    "권고: ESCALATE\n\n이유: 관측이 없다 [출처: X, §7].\n\n"
+    "절차: SOP-01 §5 [출처: SOP-01, 5. 절차]\n\n먼저: 하류를 멈춘다 [출처: SOP-01, 5. 절차]\n\n"
+    "금지: SUCCEEDED 로 두지 않는다 [출처: SOP-01, 5. 절차]\n\n갈림: liveHold 값\n\n"
+    "근거 세기: 사실에 그 칸이 없다 [출처: Y, §6]\n\n후보별 근거는 다음과 같다.\n\n금지: 본문의 문장\n"
+)
+
+
+def test_빈_줄로_띄운_머리는_카드_다섯과_깨끗한_본문으로_간다():
+    """⛔ **끝까지 한 번(2026-10-04)의 응답은 답변 카드가 넷이고 `cause` 가 「근거 세기:」로 시작했다.** 다섯째 라벨이 13번째
+    줄로 밀린 탓이다. 헤더 윈도우가 라벨 줄과 빈 줄을 따라 늘어나면 답변 카드는 다섯이고 본문은 라벨 뒤의 첫 글에서 시작한다.
+    빈 줄 열두 개 뒤의 「권고:」는 여전히 헤더 줄이 아니다(위 테스트)."""
+    assert [item["label"] for item in card_items(SPACED)] == ["절차", "먼저", "금지", "갈림", "근거 세기"]
+    assert body(SPACED).startswith("후보별 근거는 다음과 같다.")
+    assert head_value(SPACED, "권고") == "ESCALATE"
+    assert head_value("\n" * 12 + "권고: A", "권고") is None
+
+    preface = "\n".join(f"머리말 {k}." for k in range(7))
+    late = (preface + "\n\n권고: ESCALATE\n\n이유: x\n\n절차: P\n\n먼저: F\n\n금지: N\n\n갈림: B\n\n근거 세기: E\n\n본문 첫 문장.")
+    assert [item["label"] for item in card_items(late)] == ["절차", "먼저", "금지", "갈림", "근거 세기"], "이유가 12줄 안의 마지막이어도 카드는 창을 따른다"
+    assert body(late).startswith("본문 첫 문장.")
+    empty = "권고: ESCALATE\n\n이유: x\n\n절차: P\n\n먼저: F\n\n금지: N\n\n갈림:\n\n근거 세기: E\n\n본문 첫 문장."
+    assert "근거 세기" in [item["label"] for item in card_items(empty)], "값이 빈 표지도 창의 경계다"
+    assert body(empty).startswith("본문 첫 문장.")
+    assert head_value("권고: A" + "\n" * 12 + "이유: x", "이유") == "x", "권고 뒤 빈 줄만 이어지면 이유도 머리다"

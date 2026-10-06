@@ -1,7 +1,7 @@
 """권고 측정의 사례 — 설계서 `docs/superpowers/specs/2026-09-30-권고-측정.md` §0 · §2 · §7. 스택 없이 돈다.
 
-**사례 파일과 요청 사본은 답을 보기 전에 얼린다.** 편집 도구의 지킴이는 스크립트로 쓴 파일을 못 보므로 여기서 해시를
-박는다 — 바꿔야 하면 [SCORING_HASH] 를 함께 고치고 근거를 커밋 본문에 적는다(함정 1).
+**사례 파일과 요청 사본은 답을 보기 전에 동결한다.** 편집 도구의 지킴이는 스크립트로 쓴 파일을 못 보므로 여기서 해시를
+박는다 — 바꿔야 하면 [SCORING_HASH] 를 함께 고치고 근거를 커밋 본문에 적는다(오류 유형 1).
 """
 
 import hashlib
@@ -13,7 +13,7 @@ from diagnose.core import query_text
 from eval.recommend_score import CASES, SCORING_KEYS, load_cases, scoring_hash
 
 REQUESTS = CASES.parent / "recommend-requests"
-#: 사례 파일 판 1 의 채점 칸과 판독 기준. 바꾸면 다른 측정이다.
+#: 사례 파일 버전 1 의 채점 칸과 인간 평가 기준. 바꾸면 다른 측정이다.
 SCORING_HASH = "d0421418d8f9d711aac6936a2652e50761a26937bbfc7c9389b43e7da7422176"
 #: 코퍼스 문서 일곱의 제목 — 절차 문서는 이 가운데서만 온다.
 CORPUS = {
@@ -45,7 +45,7 @@ def test_요청_사본은_koshei_투영의_바이트_그대로다():
 
 
 def test_사례_파일의_채점_칸이_박은_값과_같다():
-    """⛔ **답을 보고 채점 칸을 넓히면 재는 것이 모델이 아니라 관측한 답이 된다**(함정 1). 스크립트로 바꿔도 여기서 빨개진다."""
+    """⛔ **답을 보고 채점 칸을 넓히면 재는 것이 모델이 아니라 관측한 답이 된다**(오류 유형 1). 스크립트로 바꿔도 여기서 빨개진다."""
     doc = load_cases()
     assert set(SCORING_KEYS) <= set(doc["cases"][0])
     assert scoring_hash(doc) == SCORING_HASH
@@ -79,8 +79,8 @@ def test_기대와_금지와_판독은_그_요청의_후보이고_겹치지_않�
 
 
 def test_판독_목록은_질의_주체인_보류_단위의_완료_확인이다():
-    """**기대와 판독은 모델이 본 것으로 정한다**(설계서 §2.3 원칙) — C1 의 단위는 질의 주체 사건의 것이고 그 사건의 MATCHED
-    가 질의에 실린다. 합류 줄의 CONFIRM_DONE 은 모델이 MATCHED 를 못 보므로 판독 목록에 없다."""
+    """**기대와 인간 평가는 모델이 본 것으로 정한다**(설계서 §2.3 원칙) — C1 의 단위는 질의 주체 사건의 것이고 그 사건의 MATCHED
+    가 질의에 실린다. 합류 줄의 CONFIRM_DONE 은 모델이 MATCHED 를 못 보므로 인간 평가 목록에 없다."""
     seen = []
     for case in _cases():
         request = _request(case)
@@ -121,7 +121,7 @@ def test_반복_짝은_질의와_자료_칸이_같다():
 
 
 def test_질의에_답이_없다():
-    """**메아리를 재지 않는다** — 설명 골든셋의 「정답은 질의에 없는 말」의 권고 판. 후보는 자료 칸으로만 간다."""
+    """**메아리를 재지 않는다** — 설명 골든셋의 「정답은 질의에 없는 말」의 권고 버전. 후보는 답변 컨텍스트로만 간다."""
     for case in _cases():
         text = query_text(_request(case).snapshot)
         assert "ESCALATE" not in text and "권고" not in text, case["id"]

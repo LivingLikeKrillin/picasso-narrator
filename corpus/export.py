@@ -2,17 +2,17 @@
 
     python -m corpus.export <explanations.jsonl> --out <디렉터리> --doc-type <이름> [--labels synthetic]
 
-⛔ **이 층의 설명은 아무 데로도 안 돌아가고 있었다 (2026-09-22).** 다음 사건의 검색도 운영자
+⛔ **이 계층의 설명은 아무 데로도 안 돌아가고 있었다 (2026-09-22).** 다음 사건의 검색도 운영자
 질의도 지난 설명을 못 봤다. khala 가 적재 입력의 모양을 확정해 보냈고(마크다운 + YAML 머리말,
-한 사건이 파일 하나, 인용은 `title` 을 읽는다), 자리와 표시와 이름 셋은 소유자 결정으로 남겼다.
-그래서 여기는 **그 셋을 인자로 받고 나머지를 확정한다.** 테넌트는 적재 명령의 깃발이라 파일에
-없다 — 그 깃발이 곧 「경로가 찍는」 표시다.
+한 사건이 파일 하나, 인용은 `title` 을 읽는다), 자리와 라벨과 이름 셋은 소유자 결정으로 남겼다.
+그래서 여기는 **그 셋을 인자로 받고 나머지를 확정한다.** 테넌트는 적재 명령의 플래그라 파일에
+없다 — 그 플래그가 곧 「경로가 찍는」 라벨이다.
 
-**절이 조각 경계다**(khala, 2026-09-22). 그래서 셋을 지킨다.
+**절이 청크 경계다**(khala, 2026-09-22). 그래서 셋을 지킨다.
 
-- 운영자 카드 다섯 줄은 제 절 하나에 둔다 — 다른 것과 섞으면 카드 절반만 실린 조각이 인용된다
-- 어떤 절도 다른 절을 가리키기만 하지 않는다 — 조각은 혼자 가므로 필요한 값은 그 절 안에 적는다
-- 기체·분류·시각은 제목에 들고, 자리까지 넷은 본문 한 절에 적는다 — 머리말은 질의가 못 읽는다
+- 운영자 답변 카드 다섯 줄은 제 절 하나에 둔다 — 다른 것과 섞으면 답변 카드 절반만 실린 청크가 인용된다
+- 어떤 절도 다른 절을 가리키기만 하지 않는다 — 청크는 혼자 가므로 필요한 값은 그 절 안에 적는다
+- 로봇·분류·시각은 제목에 들고, 자리까지 넷은 본문 한 절에 적는다 — 머리말은 질의가 못 읽는다
 
 **새 사실을 만들지 않는다.** 기록에 있는 것만 옮긴다. ⛔ **답이 없는 기록도 문서로 낸다 (2026-09-22,
 khala 가 짚었다).** 처음엔 안 냈는데, 그러면 hum-04 가 세 번 섰고 하나가 생성 실패일 때 코퍼스에는
@@ -20,12 +20,12 @@ khala 가 짚었다).** 처음엔 안 냈는데, 그러면 hum-04 가 세 번 �
 없는 것이다. 문서로 내되 설명 대신 「설명 없음」 절과 사유를 둔다. 「아직인가 · 실패인가 · 근거가
 없어서인가」가 코퍼스에서도 갈린다(`BOUNDARY.md` §3.4).
 
-**「LLM 이 만든 것」 표시를 `synthetic` 에 태우지 않는다**(khala). `synthetic` 은 내용이 지어낸
+**「LLM 이 만든 것」 라벨을 `synthetic` 에 태우지 않는다**(khala). `synthetic` 은 내용이 지어낸
 것인가이고 실제 사건을 설명하면 `--labels ""` 로 빼는 것이 옳다. LLM 이 만들었다는 것은 제목
 머리와 「이 문서」 절, 그리고 적재의 테넌트가 든다.
 
-**머리말은 YAML 이 읽는다.** 제목과 종류와 표는 저쪽에서 온 검증 안 된 문자열을 품으므로
-따옴표로 감싼다 — JSON 문자열이 곧 YAML 의 큰따옴표 문자열이다. `updated` 는 저쪽 예시대로
+**머리말은 YAML 이 읽는다.** 제목과 종류와 표는 상대 저장소에서 온 검증 안 된 문자열을 품으므로
+따옴표로 감싼다 — JSON 문자열이 곧 YAML 의 큰따옴표 문자열이다. `updated` 는 상대 저장소 예시대로
 맨 글자다.
 """
 
@@ -35,11 +35,11 @@ import pathlib
 import re
 import sys
 
-from recorder.card import HEAD_LINES, LABELS, LINE, parse_card
+from recorder.card import LABELS, LINE, head_window, parse_card
 from recorder.outcome import Outcome
 from recorder.store import RecordStore
 
-#: 제목 머리. **인용은 객체의 `title` 을 읽으므로** 모든 조각이 이 낱말을 들고 다닌다 — 출처 등급
+#: 제목 머리. **인용은 객체의 `title` 을 읽으므로** 모든 청크가 이 단어를 들고 다닌다 — 출처 등급
 #: (khala 결정 B)이 정해지기 전에도 출처가 제목에서 보인다.
 TITLE_HEAD = "narrator 설명"
 
@@ -51,15 +51,15 @@ DEFAULT_LABELS = ("synthetic",)
 #: 제목에 넣는 해시의 길이. 전체(64자)는 본문 「이 문서」 절에 있다.
 DIGEST_HEAD = 12
 
-#: 파일 이름에 못 쓰는 글자를 바꾼다. 구동 열쇠에 `:` 가 든다. ⚠ 안전하지 않은 글자 묶음을 `-`
-#: 하나로 접으므로 서로 다른 열쇠가 한 파일이 될 수는 있다 — 지금 열쇠(sha256 · `search-N` ·
+#: 파일 이름에 못 쓰는 글자를 바꾼다. 실행 멱등성 키에 `:` 가 든다. ⚠ 안전하지 않은 글자 묶음을 `-`
+#: 하나로 접으므로 서로 다른 멱등성 키가 한 파일이 될 수는 있다 — 지금 멱등성 키(sha256 · `search-N` ·
 #: `run-<시각>-<n>`)로는 안 난다.
 UNSAFE = re.compile(r"[^A-Za-z0-9._-]+")
 
-#: 답이 없는 갈래. 문서는 내되 설명 대신 「설명 없음」 절을 둔다.
+#: 답이 없는 하위 범주. 문서는 내되 설명 대신 「설명 없음」 절을 둔다.
 UNANSWERED = (Outcome.NO_EVIDENCE, Outcome.GENERATION_FAILED)
 
-#: 갈래의 이름. 사람이 읽는 자리에 사전 값 그대로 찍지 않는다.
+#: 하위 범주의 이름. 사람이 읽는 자리에 사전 값 그대로 찍지 않는다.
 KIND = {
     Outcome.GIVEN: "설명",
     Outcome.UNCITED: "인용 없는 답",
@@ -73,7 +73,7 @@ MARK = "picasso-narrator 가 Nexus 의 답변 경로(LLM)로 만든 설명이다
 def export(store, out_dir, doc_type, labels=DEFAULT_LABELS):
     """기록마다 파일 하나. `(내보낸 수, 갈래별 수)`.
 
-    파일 이름은 열쇠에서 결정적으로 나온다 — 다시 내보내면 같은 파일을 덮어쓴다.
+    파일 이름은 멱등성 키에서 결정적으로 나온다 — 다시 내보내면 같은 파일을 덮어쓴다.
     """
     out_dir = pathlib.Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -111,18 +111,20 @@ def title(record):
 
 
 def body_without_card(answer):
-    """답에서 카드 줄을 뺀 나머지. 카드는 제 절에 따로 서므로 여기 다시 있으면 같은 문장이 두 조각에
+    """답에서 답변 카드 줄을 뺀 나머지. 답변 카드는 제 절에 따로 서므로 여기 다시 있으면 같은 문장이 두 청크에
     산다.
 
-    ⛔ **파서와 같은 규칙으로 걷는다 (2026-09-22, 검토가 찾았다).** `parse_card` 는 표지마다 첫 줄만
-    카드로 잡는다. 앞 열두 줄의 모든 표지 줄을 걷으면 표지로 시작하는 본문 문장이 카드에도 설명에도
-    없어진다. 카드를 걷었을 때만 머리의 빈 줄과 구분선을 같이 걷고, 본문 한가운데의 구분선 앞에는
-    빈 줄을 둔다 — 바로 위 줄이 제목으로 읽히면 절이 하나 생기고 절은 조각 경계다.
+    ⛔ **파서와 같은 규칙으로 걷는다 (2026-09-22, 검토가 찾았다).** `parse_card` 는 라벨마다 첫 줄만
+    답변 카드로 잡는다. 앞 열두 줄의 모든 라벨 줄을 걷으면 라벨로 시작하는 본문 문장이 답변 카드에도 설명에도
+    없어진다. 답변 카드를 걷었을 때만 머리의 빈 줄과 구분선을 같이 걷고, 본문 한가운데의 구분선 앞에는
+    빈 줄을 둔다 — 바로 위 줄이 제목으로 읽히면 절이 하나 생기고 절은 청크 경계다.
+    창은 파서와 같다(`head_window`, 2026-10-04).
     """
     lines = (answer or "").splitlines()
+    window = set(head_window(lines))
     kept, seen = [], set()
     for i, line in enumerate(lines):
-        match = LINE.match(line) if i < HEAD_LINES else None
+        match = LINE.match(line) if i in window else None
         if match and match.group(1) not in seen:
             seen.add(match.group(1))
             continue
@@ -138,7 +140,7 @@ def body_without_card(answer):
 
 
 def kind_of(record):
-    """갈래 한 문장. 검증은 인용마다이므로 몇 건 중 몇 건으로 센다 — 「검증된 인용이 붙어 있다」는
+    """하위 범주 한 문장. 검증은 인용마다이므로 몇 건 중 몇 건으로 센다 — 「검증된 인용이 붙어 있다」는
     검증 안 된 인용이 옆 절에 있을 때 거짓이었다(2026-09-22, 검토가 찾았다)."""
     if record.outcome is Outcome.GIVEN:
         cited = record.citations or []
@@ -151,8 +153,8 @@ def kind_of(record):
 
 
 def cited_lines(record):
-    """인용 한 줄씩. **표시는 khala 가 렌더해 보낸 문자열을 그대로 붙인다**(`provenance_mark`, 2026-09-23) —
-    등급으로 문자열을 고르면 표면마다 다른 말이 되므로 이 층은 옮기기만 한다. 없거나 빈 문자열이면 그대로다."""
+    """인용 한 줄씩. **라벨은 khala 가 렌더해 보낸 문자열을 그대로 붙인다**(`provenance_mark`, 2026-09-23) —
+    출처 등급으로 문자열을 고르면 API 표면마다 다른 말이 되므로 이 계층은 옮기기만 한다. 없거나 빈 문자열이면 그대로다."""
     lines = []
     for c in record.citations or []:
         where = f"{c.get('title')}{c.get('provenance_mark') or ''}" + (f" · {c.get('section')}" if c.get("section") else "")
@@ -202,7 +204,7 @@ def document(record, doc_type, labels):
 
 def main(argv=None):
     # Windows 콘솔의 기본 코덱이 cp949 라 그대로 찍으면 한글이 깨진다. 인자 읽기 앞에 둔다 — 사용법과
-    # 오류도 한글이다. 시험의 갈무리 스트림처럼 재설정을 못 받는 출력도 있어 못 받으면 그냥 찍는다.
+    # 오류도 한글이다. 테스트의 갈무리 스트림처럼 재설정을 못 받는 출력도 있어 못 받으면 그냥 찍는다.
     for stream in (sys.stdout, sys.stderr):
         try:
             stream.reconfigure(encoding="utf-8", errors="replace")
