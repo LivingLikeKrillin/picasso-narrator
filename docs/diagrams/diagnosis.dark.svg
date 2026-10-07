@@ -38,7 +38,7 @@
     <text x="316" y="257" font-size="11" fill="#9a9a9a">요청 해독. 후보별 글자 별칭 부여</text>
     <rect x="304" y="316" width="232" height="52" fill="#232a3a" stroke="#8fa3cc" stroke-width="1.5"/>
     <text x="316" y="337" font-size="12.5" font-weight="700" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">composer</text>
-    <text x="316" y="353" font-size="11" fill="#9a9a9a">검색에 쓸 글과 answer_context 분리</text>
+    <text x="316" y="353" font-size="11" fill="#9a9a9a">질의, 검색 텍스트, 답변 컨텍스트 분리</text>
     <rect x="304" y="412" width="232" height="52" fill="#8fa3cc" stroke="#8fa3cc" stroke-width="1.5"/>
     <rect x="308" y="416" width="224" height="44" fill="none" stroke="#1a1a1a" stroke-width="0.75" stroke-opacity="0.6"/>
     <text x="316" y="433" font-size="12.5" fill="#1a1a1a" font-weight="700" font-family="Menlo, Consolas, 'DejaVu Sans Mono', monospace">explainer</text>
@@ -66,7 +66,8 @@
     <path d="M420,272 V314" fill="none" stroke="#e6e6e6" stroke-width="1.2" marker-end="url(#data)"/>
     <text x="428" y="297" font-size="10.5">별칭표, 후보 전달</text>
     <path d="M420,368 V410" fill="none" stroke="#e6e6e6" stroke-width="1.2" marker-end="url(#data)"/>
-    <text x="428" y="393" font-size="10.5">검색 글, 자료 전달</text>
+    <text x="428" y="386" font-size="10.5">질의, 검색 텍스트,</text>
+    <text x="428" y="400" font-size="10.5">답변 컨텍스트 전달</text>
     <path d="M420,464 V506" fill="none" stroke="#e6e6e6" stroke-width="1.2" marker-end="url(#data)"/>
     <text x="428" y="489" font-size="10.5">답, 인용 전달</text>
     <path d="M420,572 V610" fill="none" stroke="#e6e6e6" stroke-width="1.2" marker-end="url(#data)"/>

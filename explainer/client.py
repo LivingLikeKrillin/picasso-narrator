@@ -66,9 +66,12 @@ def nexus_client(base_url, token, tenant, transport, top_k=ANSWER_TOP_K,
 
     **답변 컨텍스트(`answer_context`)는 진단 경로만 준다** — 검색에 쓰지 않는 칸이고
     khala 가 받기 전에는 422 다.
+
+    **검색 텍스트(`search_text`)는 돌려준 `search` 가 부를 때마다 받는다** — 질의마다 다른 글이라서다. 비었거나
+    `None` 이면 키를 안 보낸다(khala 도 빈 값을 안 준 것으로 받는다). 인자 하나로 부르면 본문이 한 바이트도 안 바뀐다.
     """
 
-    def search(query):
+    def search(query, search_text=None):
         return transport(
             "POST",
             base_url.rstrip("/") + ANSWER,
@@ -85,7 +88,9 @@ def nexus_client(base_url, token, tenant, transport, top_k=ANSWER_TOP_K,
              **({"identifier_channel": True} if identifier_channel else {}),
              # **진단 경로만 싣는다** (진단 계약 0.6 §3.5). 검색에 안 쓰이고 답변 프롬프트에만 들어간다.
              # `None` 이면 키를 안 보낸다 — 설명 경로의 요청은 한 바이트도 안 바뀐다.
-             **({"answer_context": answer_context} if answer_context is not None else {})},
+             **({"answer_context": answer_context} if answer_context is not None else {}),
+             # **운영 경로 둘(수신기 `_one` · 진단 워커)만 준다** (설계서 `2026-10-07-운영-검색-텍스트`). 검색에만 쓰이고 질의는 그대로 답변에 간다.
+             **({"search_text": search_text} if search_text else {})},
         )
 
     return search

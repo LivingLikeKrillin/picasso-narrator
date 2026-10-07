@@ -60,8 +60,22 @@ SHUTDOWN = timedelta(seconds=540)
 log = logging.getLogger("diagnose.worker")
 
 
-def make_activity(client, store, commit, gate=None):
-    """`diagnose` 액티비티. 의존을 주입받아 테스트가 실제 서비스 없이 문다."""
+def make_client(base, token, tenant, transport=http_transport):
+    """진단 경로의 클라이언트 — `answer_context -> search`. 사건 질의에서 설계 문서를 빼고(`INCIDENT_EXCLUDED`) 식별자 채널을
+    켠다. [main] 과 시험이 같은 함수를 쓰게 모듈 수준에 둔다 — 권고 측정기의 클라이언트(`eval/recommend.py` 의 `client_for`)와는
+    빼는 종류의 `case` 하나만 다르다."""
+
+    def client(answer_context):
+        return nexus_client(base, token=token, tenant=tenant, transport=transport,
+                            exclude_doc_types=INCIDENT_EXCLUDED, identifier_channel=True,
+                            answer_context=answer_context)
+
+    return client
+
+
+def make_activity(client, store, commit, gate=None, search_text=False):
+    """`diagnose` 액티비티. 의존을 주입받아 테스트가 실제 서비스 없이 문다. [search_text] 는 검색 텍스트(Q3)를 실을지다 —
+    기본은 꺼짐이고 [main] 이 켠다."""
 
     # ⛔ **입력에 타입 힌트를 달지 않는다 (묶음 5 검토, 2026-09-28).** SDK 는 힌트로 입력을 먼저 풀고, 못 풀면 이 함수에
     # 들어오기 전에 재시도할 실패(`Failed decoding arguments`)로 적는다 — 객체가 아닌 요청이 계약 위반(재시도 안 함,
@@ -71,7 +85,7 @@ def make_activity(client, store, commit, gate=None):
     def diagnose_activity(payload) -> dict:
         try:
             return diagnose(payload, client=client, store=store, commit=commit, gate=gate,
-                            beat=_beat, cancelled=activity.is_cancelled, poll=BEAT)
+                            beat=_beat, cancelled=activity.is_cancelled, poll=BEAT, search_text=search_text)
         except Cancelled as error:
             raise CancelledError(str(error)) from error
         except (ContractViolation, ContextTooLarge) as error:
@@ -122,11 +136,7 @@ async def main():
     base = os.environ.get("NEXUS_URL", "http://localhost:8000")
     tenant = os.environ.get("NEXUS_TENANT", "picasso")
 
-    def client(answer_context):
-        return nexus_client(base, token=token, tenant=tenant, transport=http_transport,
-                            exclude_doc_types=INCIDENT_EXCLUDED, identifier_channel=True,
-                            answer_context=answer_context)
-
+    client = make_client(base, token, tenant, http_transport)
     gate = threading.BoundedSemaphore(concurrency)
     # 상대 경로는 작업 디렉터리가 아니라 저장소 뿌리에서 푼다(`STORE` 의 까닭). 절대 경로는 그대로고, 비었으면 기본 자리다
     store = FirstResultStore(STORE.parent / (os.environ.get("NARRATOR_DIAGNOSE_STORE") or STORE.name))
@@ -135,7 +145,8 @@ async def main():
                                     namespace=os.environ.get("TEMPORAL_NAMESPACE", "default"))
     with ThreadPoolExecutor(max_workers=concurrency) as executor:
         worker = Worker(temporal, task_queue=TASK_QUEUE,
-                        activities=[make_activity(client, store, commit, gate)],
+                        # 진단 경로에서 검색 텍스트(Q3)를 켜는 자리는 여기 하나다(설계서 `2026-10-07-운영-검색-텍스트`)
+                        activities=[make_activity(client, store, commit, gate, search_text=True)],
                         activity_executor=executor, max_concurrent_activities=concurrency,
                         graceful_shutdown_timeout=SHUTDOWN)
         log.info("%s 에 선다 — 판 %s, 동시 한도 %d, 첫 결과 저장소 %s", TASK_QUEUE, commit, concurrency, store.path)

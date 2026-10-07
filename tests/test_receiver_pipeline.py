@@ -6,7 +6,7 @@ from recorder.outcome import Outcome
 
 
 def _answers(citations=1):
-    def search(query):
+    def search(query, search_text=None):
         return 200, {
             "success": True,
             "data": {
@@ -37,7 +37,7 @@ def test_설명이_통째로_죽어도_한_벌이_다_처리된다(export_dir):
     「아직 안 온 것」인지 「영영 안 올 것」인지 구별하지 못한다."""
     from explainer.ask import NexusUnavailable
 
-    def dead(query):
+    def dead(query, search_text=None):
         raise NexusUnavailable("502")
 
     batch = scan(export_dir("run-1"), seen=set())
@@ -54,7 +54,7 @@ def test_검색에는_문장이_간다(export_dir):
     깨지고, 가짜를 쓰는 테스트는 통과로 남는다."""
     sent = []
 
-    def search(query):
+    def search(query, search_text=None):
         sent.append(query)
         return 200, {"success": True, "data": {"llm_failed": False, "citations": [{"t": 1}]}}
 
@@ -71,7 +71,7 @@ def test_일시적_실패만_다시_해본다(export_dir):
     운영자가 다시 눌러 볼 일처럼 보인다 — 사람이 가서 키를 고칠 일인데."""
     calls = []
 
-    def dead(query):
+    def dead(query, search_text=None):
         calls.append(1)
         return 200, {
             "success": True,
@@ -89,7 +89,7 @@ def test_일시적_실패만_다시_해본다(export_dir):
 def test_사유를_기록에_남긴다(export_dir):
     """「안 끝났다」와 「키가 없다」는 후속 조치가 다르다. 기록이 그걸 들어야
     운영자가 다시 누를지 사람을 부를지 안다."""
-    def slow(query):
+    def slow(query, search_text=None):
         return 200, {
             "success": True,
             "data": {"llm_failed": True, "llm_failure_reason": "timeout", "citations": []},
@@ -105,7 +105,7 @@ def test_재발_횟수가_질의에_실린다(export_dir):
     """저장소가 본 것과 이 번들의 것을 합쳐 센다. incident-1 은 hum-02 PAYLOAD_LOST 다."""
     sent = []
 
-    def search(query):
+    def search(query, search_text=None):
         sent.append(query)
         return 200, {"success": True, "data": {"llm_failed": False, "citations": [{"t": 1}]}}
 

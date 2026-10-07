@@ -69,19 +69,24 @@ class Diagnosis:
     record: object
 
 
-def query_text(snapshot):
-    """스냅샷에서 질의 하나(계약 §3 「질의의 주체」).
+def query_of(snapshot):
+    """스냅샷에서 질의 하나(계약 §3 「질의의 주체」) — `Query` 로.
 
     사건 첫째를 주체로, 탐색 첫째를 짝으로. 사건이 없으면 탐색 첫째를 그 자체로. **재발 횟수는 안 싣는다** —
     워커는 이 계층이 본 사건 전체를 들고 있지 않고, 스냅샷 안에서만 세면 뜻이 바뀐다.
     """
     incidents, searches = snapshot["incidents"], snapshot["searches"]
     if incidents:
-        return compose(incidents[0], searches[0] if searches else None).text
-    return compose_search(searches[0]).text
+        return compose(incidents[0], searches[0] if searches else None)
+    return compose_search(searches[0])
 
 
-def run_diagnosis(request, client, commit, gate=None, gate_wait=GATE_WAIT):
+def query_text(snapshot):
+    """스냅샷에서 질의 하나의 글([query_of] 의 `text`)."""
+    return query_of(snapshot).text
+
+
+def run_diagnosis(request, client, commit, gate=None, gate_wait=GATE_WAIT, search_text=False):
     """진단 한 번. **저장소를 모른다.**
 
     :param client: `answer_context -> search` — 답변 컨텍스트를 실어 khala 를 부를 `search` 를 만든다.
@@ -89,6 +94,8 @@ def run_diagnosis(request, client, commit, gate=None, gate_wait=GATE_WAIT):
     :param gate: khala 호출을 감쌀 문 — 워커의 동시 한도(`acquire(timeout=)` · `release()` 를 가진 세마포어).
         없으면 막지 않는다.
     :param gate_wait: 문을 기다릴 시간(초). [diagnose] 는 잡기를 기다린 시간을 빼고 준다.
+    :param search_text: 참이면 질의의 검색 텍스트(Q3)를 싣는다. **기본은 꺼짐이다** — 권고 측정기와 앞 실행기가 이 함수를
+        기본값으로 부르므로 그들의 본문이 그대로다. 켜는 자리는 진단 워커의 `main` 하나다.
     :raises ContextTooLarge: 답변 컨텍스트를 못 지을 때(재시도 안 함).
     :raises DiagnoseFailed: 생성 실패일 때(사유로 재시도를 가름), 그리고 문이 [GATE_WAIT] 안에 안 열릴 때(`unavailable`).
     """
@@ -97,7 +104,9 @@ def run_diagnosis(request, client, commit, gate=None, gate_wait=GATE_WAIT):
     if gate is not None and not gate.acquire(timeout=gate_wait):
         raise DiagnoseFailed("unavailable")  # 브리지 혼잡 — 기다림은 Temporal 큐로 넘긴다
     try:
-        record = ask_and_record(request.key, query_text(request.snapshot), client(context), limit=1)
+        query = query_of(request.snapshot)
+        record = ask_and_record(request.key, query.text, client(context), limit=1,
+                                search_text=query.search_text if search_text else None)
     finally:
         if gate is not None:
             gate.release()
@@ -131,12 +140,13 @@ def run_diagnosis(request, client, commit, gate=None, gate_wait=GATE_WAIT):
 
 
 def diagnose(payload, *, client, store, commit, gate=None, beat=lambda: None, cancelled=lambda: False,
-             clock=time.time, sleep=time.sleep, poll=POLL):
+             clock=time.time, sleep=time.sleep, poll=POLL, search_text=False):
     """요청 하나 → 응답 하나. 같은 멱등성 키의 두 번째 요청은 첫 결과를 돌려준다(계약 §6).
 
     :param gate: khala 호출을 감쌀 문 — 워커의 동시 한도.
     :param beat: 살아 있다고 알릴 때마다 부른다(워커의 하트비트). 잡자마자 한 번 부른다.
     :param cancelled: 참이면 기다림을 멈춘다(워커의 취소).
+    :param search_text: 참이면 검색 텍스트(Q3)를 싣는다([run_diagnosis]). 기본은 꺼짐이다.
     :raises ContractViolation · ContextTooLarge · DiagnoseFailed · Cancelled:
     """
     request = parse_request(payload)
@@ -169,7 +179,7 @@ def diagnose(payload, *, client, store, commit, gate=None, beat=lambda: None, ca
         """khala 를 부르고 **결과를 적거나 놓는 것까지** 한다 — 부른 쪽이 먼저 떠나도. 오류는 먼저 건네 두고
         놓는다 — 놓기가 실패해도 원래 오류가 가려지지 않게."""
         try:
-            diagnosis = run_diagnosis(request, client, commit, gate, GATE_WAIT - waited)
+            diagnosis = run_diagnosis(request, client, commit, gate, GATE_WAIT - waited, search_text=search_text)
         except BaseException as error:
             outcome["error"] = error
             _quietly(store.release, request.key, owner)

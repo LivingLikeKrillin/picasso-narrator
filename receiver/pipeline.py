@@ -39,16 +39,19 @@ def explain(batch, search, limit=3, prior=()):
     return records
 
 
-def ask_and_record(key, text, search, limit, who=None):
+def ask_and_record(key, text, search, limit, who=None, search_text=None):
     """한 번 물어 한 건을 만든다. **부르는 길이 하나여야 한다.**
 
     평가 하네스가 자기 경로를 따로 가지면 재는 것이 도는 것과 달라진다 — 재시도를
     안 하거나 사유를 안 남기면 평가표의 실패율이 실제 운영의 것이 아니게 되고,
     원천이 둘이면 갈릴 때 어느 쪽이 참인지 모른다.
+
+    검색 텍스트(`search_text`)는 넘겨받기만 한다(`ask_once`). 기본값 `None` 이면 보내는 본문이 그대로라 측정기와
+    앞 실행기가 지나가는 이 자리에서는 켜지 않는다 — 켜는 자리는 `_one` 과 진단 워커다.
     """
     started = time.monotonic()
     try:
-        answer = with_retries(lambda: ask_once(text, search), limit, again=retryable)
+        answer = with_retries(lambda: ask_once(text, search, search_text=search_text), limit, again=retryable)
     except Exhausted as exhausted:
         return from_failure(
             key,
@@ -68,4 +71,6 @@ def ask_and_record(key, text, search, limit, who=None):
 
 
 def _one(record, query, manifest, search, limit, who=None):
-    return ask_and_record(idempotency_key(record, manifest), query.text, search, limit, who=who)
+    """운영 수신기의 한 줄 — 질의(Q0)와 함께 그 질의의 검색 텍스트(Q3)를 싣는다. 설명 경로에서 켜는 자리는 여기 하나다."""
+    return ask_and_record(idempotency_key(record, manifest), query.text, search, limit, who=who,
+                          search_text=query.search_text)

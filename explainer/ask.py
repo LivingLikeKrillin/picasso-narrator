@@ -25,7 +25,7 @@ class NexusUnavailable(Exception):
         self.reason = reason
 
 
-def ask_once(query, search):
+def ask_once(query, search, search_text=None):
     """질의 하나를 던지고 **답의 알맹이**를 돌려준다. 부르는 횟수는 하나다.
 
     재시도는 이 함수의 일이 아니다 — 여기서 돌면 「한 번」이 규율이 아니라 의도가
@@ -33,11 +33,13 @@ def ask_once(query, search):
 
     :param search: `(status, body)` 를 돌려주는 것. 주입받는 이유는 전송(HTTP)이
         이 코드 모듈의 관심사가 아니기 때문이고, 테스트가 실제 서비스 없이 물리기 때문이다.
+    :param search_text: 검색 텍스트(Q3). 있으면 `search` 에 키워드로 넘기고, 비었거나 `None` 이면
+        지금처럼 인자 하나로 부른다 — 인자 하나짜리 `search` 와 그것을 감싼 실행기가 그대로 돈다.
     :returns: 봉투를 벗긴 `data`. 최상위는 `{success, data, error, meta}` 이고
         **한 겹 벗겨야 한다**(2026-09-18 실측).
     :raises NexusUnavailable: 상태가 200 이 아니거나 봉투가 성공이 아닐 때.
     """
-    status, body = search(query)
+    status, body = search(query, search_text=search_text) if search_text else search(query)
     if status != OK:
         raise NexusUnavailable(
             f"{status}: {body.get('detail')}", reason=body.get("llm_failure_reason", "")

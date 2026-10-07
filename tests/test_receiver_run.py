@@ -11,7 +11,7 @@ from receiver.approval_reply import ApprovalRefused, read_outcome
 from receiver.run import once
 
 
-def _ok(query):
+def _ok(query, search_text=None):
     return 200, {
         "success": True,
         "data": {"llm_failed": False, "answer": "…", "citations": [{"verified": True}]},
@@ -133,7 +133,7 @@ def test_설명이_죽어도_승인_시도는_간다(tmp_path, export_dir, appro
     경로에 들어간 것이다."""
     from explainer.ask import NexusUnavailable
 
-    def dead(query):
+    def dead(query, search_text=None):
         raise NexusUnavailable("502")
 
     store = RecordStore(tmp_path / "explanations.jsonl")

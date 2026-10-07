@@ -64,7 +64,7 @@ def test_끊긴_사유가_기록까지_간다(monkeypatch, export_dir):
         raise httpx.ReadTimeout("timed out")
 
     monkeypatch.setattr(httpx, "request", timing_out)
-    search = lambda q: http_transport("POST", "http://x/y", {}, {"query": q})
+    search = lambda q, search_text=None: http_transport("POST", "http://x/y", {}, {"query": q})
 
     records = explain(scan(export_dir("run-1"), seen=set()), search=search, limit=2)
 

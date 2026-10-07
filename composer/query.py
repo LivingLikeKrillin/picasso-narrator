@@ -14,6 +14,7 @@
 """
 
 import json
+import re
 from dataclasses import dataclass
 
 from composer.fields import ABSENT, read_field
@@ -234,6 +235,39 @@ class Query:
         return self.lookup + ASK + " ".join(
             f"{k}={_flat(v)}" for k, v in self.facts.items()
         )
+
+    @property
+    def search_text(self):
+        """검색 텍스트(Q3) — khala 가 검색에만 쓰는 글. 질의(`text`)와 답변 컨텍스트는 그대로 가고 이것이 따로 간다.
+
+        검색 텍스트 칸 측정(`a6c55c6`)의 `eval/ask_trial.py` `texts(query)["Q3"]` 와 바이트까지 같은 글이다 — 운영 코드는 측정
+        코드를 가져다 쓰지 않으므로 여기 다시 짓고, 같음은 `tests/test_operational_search_text.py` 가 본다. 고정 질문([ASK])을
+        빼고, 조회 지시를 맨 앞에 두고, Q0 의 식별자 토큰(열둘까지)을 Q0 의 차례로 세운 뒤 스칼라 사실만 싣는다(겹친 사실은
+        빠진다). 스칼라 사실만으로 토큰 차례가 Q0 와 같으면 토큰을 앞에 세우지 않는다.
+
+        조회 지시도 토큰도 스칼라 사실도 없으면 빈 글이다. 예외를 내지 않는다 — 클라이언트가 키를 안 보낸다.
+        """
+        scalars = " ".join(f"{k}={_flat(v)}" for k, v in self.facts.items() if not isinstance(v, (dict, list)))
+        tokens = _identifier_tokens(self.text)
+        if _identifier_tokens(self.lookup + ASK + scalars) == tokens:
+            text = self.lookup + scalars
+        else:
+            text = self.lookup + " ".join(part for part in (" ".join(tokens), scalars) if part)
+        return text if text.strip() else ""
+
+
+#: khala 식별자 채널의 정규식과 상한(`nexus/search/identifiers.py`)의 사본이다 — 검색 텍스트의 토큰 차례가 khala 가 질의에서
+#: 뽑는 토큰과 같아야 한다. 측정 코드(`eval/query_trial.py` 의 `IDENTIFIER` · `MAX_IDENTIFIERS`)도 같은 사본을 든다.
+IDENTIFIER = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b")
+MAX_IDENTIFIERS = 12
+
+
+def _identifier_tokens(text):
+    """글에서 식별자 토큰 — 처음 나온 차례, 겹침 없음, 열둘까지(khala 와 같은 규칙)."""
+    seen = {}
+    for match in IDENTIFIER.finditer(text or ""):
+        seen.setdefault(match.group(0), None)
+    return list(seen)[:MAX_IDENTIFIERS]
 
 
 #: 널을 적는 말. **거짓과 구별돼야 한다.**
