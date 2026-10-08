@@ -24,9 +24,16 @@ SEARCHES = "remedy-searches.jsonl"
 #: 조치 탐색 기록은 그대로다. run-4 의 길(사건 → 사람의 재작업 → 탐색)에서 그 걸음이 안 보여 이 계층이
 #: 물었고 picasso 가 실었다(`correspondence/`). 4 는 이제 안 읽는다 — 네 벌을 다 5 로 다시 받았다.
 #:
-#: **한 버전만 받는다.** 범위로 받으면 모르는 버전을 아는 척 읽게 되고, 그때 어긋난 칸이
+#: ⛔ **5 에서 6 으로 올랐다 (2026-10-08, picasso PR #82 · ADR 50).** 사건 줄의 칸은 그대로다. `route` 에 갈래
+#: `SIGNAL`(설비 대기 단위, `intent.unitParameters` 에 `signal` · `expect` · `deadlineSeconds` · `onDeadline`, 기한을
+#: 넘기면 `failureClass` 가 `SIGNAL_DEADLINE`)이 더해졌고, 임무 버전이 해시에 들어가 모든 사건의 `digest` 가 바뀌었다.
+#: 이 계층은 `route` 로 가르지 않고(질의에 사실로 실을 뿐) `digest` 를 불투명한 식별 값으로만 쓴다. 그래서 5 와 6 을
+#: 둘 다 받는다(사용자 결정 2026-10-08). 픽스처(`tests/fixtures/picasso`)와 정답 데이터는 5 그대로다 — 측정 기준선을
+#: 흔들지 않으려는 것이다. ⚠ 같은 시나리오의 5 번들과 6 번들은 `digest` 가 달라 한 저장소에 섞이면 재발로 한 번 더 센다.
+#:
+#: **아는 버전만 받는다.** 범위로 받으면 모르는 버전을 아는 척 읽게 되고, 그때 어긋난 칸이
 #: 이 계층에서는 「값이 없다」로 보인다 — 형식이 바뀐 것과 관측이 없는 것이 같은 모양이 된다.
-SCHEMA_VERSION = "5"
+SCHEMA_VERSIONS = ("5", "6")
 
 
 class UnknownSchema(Exception):
@@ -61,8 +68,8 @@ def read_export(directory):
         return None
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     found = manifest.get("schemaVersion")
-    if found != SCHEMA_VERSION:
-        raise UnknownSchema(f"읽을 줄 아는 판은 {SCHEMA_VERSION!r} 인데 {found!r} 가 왔다")
+    if found not in SCHEMA_VERSIONS:
+        raise UnknownSchema(f"읽을 줄 아는 판은 {list(SCHEMA_VERSIONS)} 인데 {found!r} 가 왔다")
     return Export(
         incidents=_read_lines(directory / INCIDENTS),
         searches=_read_lines(directory / SEARCHES),

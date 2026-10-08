@@ -11,7 +11,7 @@ AttributeError 같은 엉뚱한 예외로 터지고, 워커가 뜻밖의 예외�
 import re
 from dataclasses import dataclass
 
-from receiver.export import SCHEMA_VERSION
+from receiver.export import SCHEMA_VERSIONS
 
 #: 이 계층이 읽고 쓰는 계약의 버전. **한 버전만 받는다.**
 CONTRACT_VERSION = "0.6"
@@ -168,8 +168,8 @@ def _snapshot(value):
     if not isinstance(manifest, dict):
         raise ContractViolation(f"snapshot 의 manifest 는 객체다: {manifest!r}")
     found = manifest.get("schemaVersion")
-    if found != SCHEMA_VERSION:
-        raise ContractViolation(f"읽을 줄 아는 적재 판은 {SCHEMA_VERSION!r} 인데 {found!r} 가 왔다")
+    if found not in SCHEMA_VERSIONS:  # 수신기와 같은 목록이다(`receiver/export.py`)
+        raise ContractViolation(f"읽을 줄 아는 적재 판은 {list(SCHEMA_VERSIONS)} 인데 {found!r} 가 왔다")
     _rows(value["incidents"], "incidents", "digest")
     _rows(value["searches"], "searches", "searchId")
     if not value["incidents"] and not value["searches"]:

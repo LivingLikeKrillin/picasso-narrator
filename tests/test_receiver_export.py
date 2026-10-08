@@ -39,3 +39,18 @@ def test_모르는_판은_읽지_않는다(tmp_path):
 
     with pytest.raises(UnknownSchema):
         read_export(tmp_path)
+
+    # 버전 6(2026-10-08)은 안다 — 사건 줄의 칸은 그대로이고 `route` 에 `SIGNAL` 갈래가 더해졌을 뿐이다.
+    # 그 갈래의 줄도 다른 줄과 같은 모양으로 읽힌다. 4 는 이제 안 읽고, 7 은 아직 모른다.
+    (tmp_path / "manifest.json").write_text('{"schemaVersion": "6", "runId": "run-1"}', encoding="utf-8")
+    (tmp_path / "incidents.jsonl").write_text(
+        '{"incidentId": "incident-1", "digest": "abc", "route": "SIGNAL", "failureClass": "SIGNAL_DEADLINE",'
+        ' "intent": {"unitParameters": {"signal": "door", "expect": "OPEN", "deadlineSeconds": 30,'
+        ' "onDeadline": "FAIL"}}}\n', encoding="utf-8")
+    export = read_export(tmp_path)
+    assert export.manifest["schemaVersion"] == "6"
+    assert export.incidents[0]["route"] == "SIGNAL" and export.incidents[0]["failureClass"] == "SIGNAL_DEADLINE"
+    for unknown in ("4", "7", 6):
+        (tmp_path / "manifest.json").write_text(f'{{"schemaVersion": {unknown!r}}}'.replace("'", '"'), encoding="utf-8")
+        with pytest.raises(UnknownSchema):
+            read_export(tmp_path)

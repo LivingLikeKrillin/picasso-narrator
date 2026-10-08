@@ -37,6 +37,14 @@ def test_판이_다르면_거절한다(diagnose_request):
     with pytest.raises(ContractViolation, match="적재 판"):
         parse_request(diagnose_request(
             snapshot={"manifest": {"schemaVersion": 5}, "incidents": [], "searches": [{}]}))
+    # 적재 버전 6(2026-10-08)은 받는다 — 수신기와 같은 목록을 쓴다. 7 은 아직 모른다
+    incident = {"incidentId": "incident-1", "digest": "9760fe546d", "robotId": "hum-02", "route": "SIGNAL"}
+    six = parse_request(diagnose_request(snapshot={"manifest": {"schemaVersion": "6"}, "incidents": [incident],
+                                                   "searches": []}))
+    assert six.snapshot["incidents"][0]["route"] == "SIGNAL"
+    with pytest.raises(ContractViolation, match="적재 판"):
+        parse_request(diagnose_request(snapshot={"manifest": {"schemaVersion": "7"}, "incidents": [incident],
+                                                 "searches": []}))
 
 
 def test_빠진_칸과_모양이_틀린_칸은_거절한다(diagnose_request):
