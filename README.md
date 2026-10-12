@@ -219,3 +219,13 @@ python -m corpus.export out/explanations.jsonl --out corpus/out --doc-type expla
 - **비밀 격리**: 토큰 값은 `.secrets/`에만 두고 저장소 어디에도 적지 않습니다. 형제 저장소에는 해시만 전달합니다.
 
 > 마지막 갱신: 2026-10-07 · 테스트 385 · 검색 텍스트 실험 넷과 생성 실행 둘 · 검색 텍스트 칸 측정과 운영 반영 · koshei 에서 Khala 까지 끝까지 한 번 · 조치 자동 승인은 `koshei` 정책 v1 에서 꺼짐
+
+## 공유 스테이션 근거 설명
+
+`receiver.station`은 Ops의 `ops.station.evidence/1` 파일을 독립적으로 읽는다. 기존 Incident Bundle과 진단 계약을 바꾸지 않는다. Ops의 결정·관측을 단일 Nexus 질의로 설명하며 검증된 인용만 근거로 남긴다. 원본 digest별 생성 예약을 먼저 기록하므로 같은 파일의 재처리는 추가 질의하지 않는다. 생성 도중 중단된 예약은 자동 재시도하지 않는다.
+
+```powershell
+python -m receiver.station station-evidence.json --out out/stations --nexus-url http://localhost:8000 --tenant picasso
+```
+
+토큰은 `NEXUS_TOKEN`으로 제공한다. 이 경로에는 Ops 상태 변경·자원 해제·재실행 API 호출이 없다. 설명 결과는 파일로 저장하며 Ops 화면 자동 표시나 실물 현장 검증을 포함하지 않는다. 관련 계획과 시험 범위는 `docs/superpowers/plans/2026-10-12-station-evidence.md`에 있다.
