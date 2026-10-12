@@ -42,9 +42,17 @@ jobs:
           cache-dependency-path: pyproject.toml
       # temporalio(worker)가 없으면 진단 워커 시험이, PyYAML 이 없으면 머리말 시험이 건너뛰어진다
       - run: pip install -e ".[dev,worker]" pyyaml
-      - run: python -m pytest -q -p no:cacheprovider -rs
+      - run: python -m pytest -q -p no:cacheprovider -rs --junitxml=out/ci/pytest-${{ matrix.python }}.xml
         env:
           PYTHONIOENCODING: utf-8
+      # 시험이 빨개도 결과 파일은 올린다. 이름에 Python 버전을 붙여 두 실행이 겹치지 않게 한다
+      - name: 시험 결과 올리기
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pytest-results-${{ matrix.python }}
+          path: out/ci/pytest-${{ matrix.python }}.xml
+          if-no-files-found: warn
       - name: 훅 자가 시험
         run: python .claude/hooks/selftest.py
         env:
