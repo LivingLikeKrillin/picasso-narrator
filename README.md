@@ -1,5 +1,7 @@
 # picasso-narrator — 로봇 운영 사건을 근거와 함께 설명하는 계층
 
+[![ci](https://github.com/LivingLikeKrillin/picasso-narrator/actions/workflows/ci.yml/badge.svg)](https://github.com/LivingLikeKrillin/picasso-narrator/actions/workflows/ci.yml)
+
 로봇 작업이 멈추면 운영자는 무엇이 관측되었고, 무엇을 아직 모르며, 어떤 절차를 확인해야 하는지 알아야 한다. **picasso-narrator는 이미 기록된 사건과 판정을 읽어 원인 후보와 대응 근거를 설명하는 LLM 계층 PoC다.**
 
 실행 판정은 [picasso](https://github.com/LivingLikeKrillin/picasso)가, 운영과 자원 소유권은 [picasso-ops](https://github.com/LivingLikeKrillin/picasso-ops)가 맡는다. Narrator는 Khala/Nexus의 검색과 인용 검증을 활용하며, 답변·근거·미검증 주장을 구분하여 기록한다. **검증된 인용이 존재한다고 해서 원인 분석의 타당성까지 보장되는 것은 아니다.**

@@ -13,6 +13,9 @@ on:
 permissions:
   contents: read
 
+# 러너 이미지는 ubuntu-24.04 로 고정한다. ubuntu-latest 는 이미지가 바뀌면 결과가 예고 없이 달라질 수 있다.
+# 올릴 때는 세 작업의 runs-on 을 함께 고친다
+
 # 같은 브랜치 · PR 에 새로 밀면 앞서 돌던 실행은 취소한다
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -20,7 +23,7 @@ concurrency:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     strategy:
       fail-fast: false
@@ -59,7 +62,7 @@ jobs:
           PYTHONIOENCODING: utf-8
 
   diagrams:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
@@ -79,8 +82,9 @@ jobs:
           test -z "$(git status --porcelain -- docs/diagrams)"
 
   commit-format:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
+    # Dependabot 의 PR 은 봇이 쓴 메시지라 이 저장소의 규약을 따르지 않으므로 뺀다
+    if: github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]'
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7

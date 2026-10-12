@@ -1,0 +1,13 @@
+# 워크플로가 쓰는 액션의 새 버전을 한 달에 한 번 PR 하나로 묶어 받는다
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: ci
+      include: scope
