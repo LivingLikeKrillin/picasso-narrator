@@ -1,0 +1,84 @@
+# 커밋 전 훅(scripts/hooks)이 로컬에서 거는 검사를 깨끗한 체크아웃에서 다시 건다.
+#
+# 훅은 core.hooksPath 를 설치한 기계에서만 돈다. 여기서는 그 밖의 기계와 Linux 에서도 같은 것이
+# 초록인지 본다. 실물 스택이 필요한 시험은 pyproject.toml 의 addopts(-m "not live")로 빠진다.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 3.11 은 requires-python 의 바닥, 3.13 은 개발 기계의 버전이다
+        python: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # 평가 도구 시험이 HEAD 와 이력을 git 으로 읽는다
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python }}
+      # temporalio(worker)가 없으면 진단 워커 시험이, PyYAML 이 없으면 머리말 시험이 건너뛰어진다
+      - run: pip install -e ".[dev,worker]" pyyaml
+      - run: python -m pytest -q -p no:cacheprovider -rs
+        env:
+          PYTHONIOENCODING: utf-8
+      - name: 훅 자가 시험
+        run: python .claude/hooks/selftest.py
+        env:
+          PYTHONIOENCODING: utf-8
+
+  diagrams:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      # 다크 버전은 밝은 버전에서 make-dark.mjs 로만 만든다(CLAUDE.md 4절). 다시 만들어 달라지면 손으로 고친 것이다
+      - name: 다크 버전이 밝은 버전과 맞는지
+        run: |
+          for f in docs/diagrams/*.svg; do
+            case "$f" in *.dark.svg) continue ;; esac
+            node docs/diagrams/make-dark.mjs "$f"
+          done
+          git status --porcelain -- docs/diagrams
+          test -z "$(git status --porcelain -- docs/diagrams)"
+
+  commit-format:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      # commit-msg 훅과 같은 검사를 PR 의 커밋마다 건다(CLAUDE.md 4절)
+      - name: 커밋 메시지 규약
+        env:
+          PYTHONIOENCODING: utf-8
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          status=0
+          for c in $(git rev-list --no-merges "$BASE..$HEAD"); do
+            git log -1 --format=%B "$c" > "$RUNNER_TEMP/msg.txt"
+            if ! python .claude/hooks/check_commit_format.py --file "$RUNNER_TEMP/msg.txt"; then
+              echo "규약 위반: $(git log -1 --format='%h %s' "$c")"
+              status=1
+            fi
+          done
+          exit $status
