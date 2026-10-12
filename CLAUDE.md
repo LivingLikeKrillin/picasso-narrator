@@ -13,6 +13,14 @@ PYTHONIOENCODING=utf-8 python -m pytest -q
 기본 테스트군은 픽스처로 돌고, 실제 서비스 스택이 필요한 것은 `-m live` 로 따로 돈다. **커밋 전에 전부
 통과여야 한다** — `scripts/hooks/pre-commit` 이 그것을 강제한다.
 
+GitHub Actions(`.github/workflows/ci.yml`, 러너 `ubuntu-24.04`)는 `main` 푸시와 PR에서 로컬 git 훅 검사를
+깨끗한 체크아웃에서 다시 건다. 훅을 대신하지 않으며 훅은 그대로 설치해 쓴다. live 시험과 금지어 검사는
+CI에 없다. **CI 가 빨가면 고치고 나서 다음 일로 간다.**
+
+- `test`: Python 3.11 과 3.13 에서 기본 테스트군과 훅 자가 시험(`python .claude/hooks/selftest.py`)을 돌린다.
+- `diagrams`: 밝은 그림마다 `make-dark.mjs` 를 다시 돌려 다크 그림이 커밋된 것과 다르면 실패한다.
+- `commit-format`: PR 에서 커밋마다 `scripts/hooks/commit-msg` 와 같은 검사를 한다(Dependabot 제외).
+
 ## 2. 저장소 경계
 
 - **이 저장소 밖의 파일을 만들거나 고치지 않는다.** picasso 와 khala 는 형제 저장소이고, 서로
