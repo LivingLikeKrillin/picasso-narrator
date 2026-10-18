@@ -113,4 +113,8 @@ python eval/replay.py --show G3 S1 Q3
 | [사건 인계 픽스처](tests/fixtures/picasso/README.md) | picasso 번들 출처 |
 | [스테이션 설명](docs/superpowers/plans/2026-10-12-station-evidence.md) | Ops 파일 계약·중복 질의 방지 설계 |
 
+## 라이선스
+
+[Apache License 2.0](LICENSE).
+
 > 마지막 갱신: 2026-10-12 · 파일 기반 스테이션 설명과 진단 경로의 대기 관계를 구분
