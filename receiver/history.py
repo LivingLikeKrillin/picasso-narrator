@@ -23,15 +23,47 @@
 붙어 있다). 부등호가 엄격하면 같은 초의 두 사건이 **서로를 앞선 사건으로 세어 둘 다 1 을
 싣는다** — 먼저 난 쪽에게는 거짓이고, 그 거짓은 **미래에 대한 것**이다. 그래서 같으면 안 센다.
 덜 세는 쪽으로 틀린다.
+
+⛔ **재기동 뒤 다시 연 인시던트는 재발이 아니다 (2026-10-18).** picasso 는 재기동마다 같은
+보류를 다시 열고 인시던트를 하나 더 낸다(picasso limits §15.222). digest 가 달라 위의 규칙으로는
+안 걸러지고, 세면 재기동 횟수만큼 재발이 는다. 가르는 칸은 번들에 없고, 근거 창의
+`RESUME_HOLD_REOPENED` 줄 시각이 번들 `at` 과 같은 것만 다시 연 것이다 — 다시 연 뒤 근거 창
+앞 폭 안에 새로 선 보류도 그 줄을 싣지만 시각이 다르다. `wallClockAt` 은 따로 읽은 시계라 대지
+않는다. **다시 연 쪽이 지금 사건이면 원래 보류를 한 번 센다** — 원래 보류와 잇는 칸이 없어 같은
+자리의 진짜 앞선 사건과 가를 수 없다.
 """
 
 #: 재발을 가르는 데 필요한 칸. 이것만 기록에 남긴다 — 번들 전체를 다시 적을 이유가 없다.
 SUBJECT_KEYS = ("robotId", "failureClass", "unitId", "at", "digest")
 
+#: 다시 연 인시던트의 표시. 주체와 함께 기록에 남아 지난 번들의 것도 가른다.
+REOPENED = "reopened"
+
 
 def subject(bundle):
     """번들에서 주체만. **없는 칸은 안 싣는다** — 널을 값으로 바꾸지 않는다."""
-    return {key: bundle[key] for key in SUBJECT_KEYS if bundle.get(key) is not None}
+    me = {key: bundle[key] for key in SUBJECT_KEYS if bundle.get(key) is not None}
+    if _reopened(bundle):
+        me[REOPENED] = True
+    return me
+
+
+def _reopened(bundle):
+    """근거 창에 시각이 `at` 과 같은 `RESUME_HOLD_REOPENED` 줄이 있나."""
+    at = bundle.get("at")
+    if not at:
+        return False
+    return any(
+        line.get("kind") == "RESUME_HOLD_REOPENED" and line.get("occurredAt")
+        and _instant(line["occurredAt"]) == _instant(at)
+        for line in bundle.get("evidenceWindow") or ()
+    )
+
+
+def _instant(text):
+    """ISO 시각을 견줄 꼴로. 소수 초 끝의 0 은 같은 시점이다(`.010Z` 와 `.01Z`)."""
+    head, _, fraction = text.rstrip("Z").partition(".")
+    return head, fraction.rstrip("0")
 
 
 def count_recurrence(current, prior):
@@ -46,6 +78,8 @@ def count_recurrence(current, prior):
     for other in prior:
         digest = other.get("digest")
         if not digest or digest == me.get("digest") or digest in counted:
+            continue
+        if other.get(REOPENED):
             continue
         if other.get("failureClass") != me.get("failureClass"):
             continue

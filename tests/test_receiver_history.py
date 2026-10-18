@@ -45,6 +45,28 @@ def test_다른_분류는_세지_않는다():
     assert count_recurrence(now, [other]) == {"sameRobotSameClass": 0, "sameUnitSameClass": 0}
 
 
+def _line(kind, at):
+    return {"kind": kind, "occurredAt": at}
+
+
+def test_재기동_뒤_다시_연_인시던트는_앞선_재발로_세지_않는다():
+    """⛔ **재기동마다 같은 보류가 인시던트 하나를 더 낸다**(picasso limits §15.222). 그것을
+    세면 재기동 횟수만큼 재발이 는다. 다시 연 것은 근거 창의 `RESUME_HOLD_REOPENED` 줄 시각이
+    번들 `at` 과 **같은** 것뿐이다 — 다시 연 뒤 근거 창 앞 폭 안에 새로 선 보류도 그 줄을
+    싣지만 시각이 달라 진짜 사건이다. 시각은 글자가 아니라 시점으로 견준다."""
+    original = _b("hum-04", "GRASP_FAILED", "RACK-204.S03", "2026-09-06T00:01:00Z", "d1")
+    reopened = dict(_b("hum-04", "GRASP_FAILED", "RACK-204.S03", "2026-09-06T00:02:00.010Z", "d2"),
+                    evidenceWindow=[_line("RESUME_RECORD", "2026-09-06T00:02:00.009Z"),
+                                    _line("RESUME_HOLD_REOPENED", "2026-09-06T00:02:00.01Z")])
+    fresh = dict(_b("hum-04", "GRASP_FAILED", "RACK-204.S03", "2026-09-06T00:02:05Z", "d3"),
+                 evidenceWindow=[_line("RESUME_HOLD_REOPENED", "2026-09-06T00:02:00.01Z")])
+    now = _b("hum-04", "GRASP_FAILED", "RACK-204.S03", "2026-09-06T00:03:00Z", "d4")
+
+    prior = [subject(original), subject(reopened), subject(fresh)]
+
+    assert count_recurrence(now, prior) == {"sameRobotSameClass": 2, "sameUnitSameClass": 2}
+
+
 def test_실물_두_벌에는_재발이_없다(export_dir):
     """⛔ **픽스처 두 번들에는 같은 로봇·같은 분류가 없다**(2026-09-20 실측). 두 번들은
     digest 까지 같아 재실행이다. 그래서 이 테스트는 0 을 확인하고, 재발이 있는 시나리오는
