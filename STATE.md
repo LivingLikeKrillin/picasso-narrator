@@ -136,6 +136,7 @@ claude_llm_bridge  127.0.0.1:8900     호스트 프로세스. claude CLI 를 she
 - 탐색 쌍은 평가에만 있다. 실행 경로는 `BOUNDARY.md` §4.1 대로 사건과 탐색을 각각 다루며, 재는 것과 도는 것이 갈리는 유일한 자리라 `eval/run.py` 의 `query_for` 머리말에 적어 뒀다.
 - 진단 응답에 검색 부분 실패를 실을지는 계약 버전을 올리는 일이라 koshei 가 정한다. koshei 는 그것을 조치 자동 승인을 다시 켜는 조건 셋의 하나로 적었다.
 - 내보내기 버전 5 와 6 을 둘 다 받는다(2026-10-08, 사용자 결정. `receiver/export.py` 의 `SCHEMA_VERSIONS` 와 `diagnose/contract.py` 의 같은 목록). 픽스처와 정답 데이터는 버전 5 에 둔 채라 측정 기준은 안 움직인다. 같은 시나리오를 버전 5 와 6 으로 내보내면 `digest` 가 달라, 둘이 한 기록 저장소에 들어가면 재발이 한 번 더 세어진다.
+- 계약 SemVer 0.10.0 세트를 `tests/fixtures/picasso-0.10.0/` 에 들였으나 측정 기준은 기존 `tests/fixtures/picasso/`(계약 0.9.0)에 둔 채로 유지한다. 과거 측정 기록(`eval/st/` 의 본문 해시), 골든셋 `eval/goldenset.json` 이 품은 줄, koshchei 저장소의 진단 요청·측정 요청 사본이 기존 세트에 바이트로 묶여 있고 질의에 contractSemver 가 실려 새 세트로는 과거 기록을 재현하지 못하기 때문이다. 측정 기준을 새 세트로 옮기는 일은 다음에 실측을 다시 돌릴 때 함께 한다.
 
 ### 작업 이력 — 닫힌 일의 한 줄 요약
 - 승인 시도가 파이프라인 실행에 물렸고 실제 서비스 승인 엔드포인트로 두 차례 파이프라인을 실행했다(2026-09-22, `tests/fixtures/approvals/live-2026-09-22-approvals.jsonl`).
