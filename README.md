@@ -1,5 +1,8 @@
 # picasso-narrator — 로봇 운영 사건을 근거와 함께 설명하는 계층
 
+> 이 저장소는 2026-11-10부로 조직 저장소 [picasso-robotics/incident-narrator](https://github.com/picasso-robotics/incident-narrator)로 이전되었다.
+> 새로운 작업은 해당 조직 저장소에서 진행하며, 이 저장소는 지난 PR과 작업 이력을 보존하기 위해 그대로 유지한다.
+
 [![ci](https://github.com/LivingLikeKrillin/picasso-narrator/actions/workflows/ci.yml/badge.svg)](https://github.com/LivingLikeKrillin/picasso-narrator/actions/workflows/ci.yml)
 
 로봇 작업이 멈추면 운영자는 무엇이 관측되었고, 무엇을 아직 모르며, 어떤 절차를 확인해야 하는지 알아야 한다. **picasso-narrator는 이미 기록된 사건과 판정을 읽어 원인 후보와 대응 근거를 설명하는 LLM 계층 PoC다.**
